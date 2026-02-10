@@ -100,12 +100,9 @@ const BlogSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const featuredPost = allPosts[0];
-
-  const remainingPosts = allPosts.slice(1);
   const filteredPosts = activeCategory === "all"
-    ? remainingPosts
-    : remainingPosts.filter((post) => post.category === activeCategory);
+    ? allPosts
+    : allPosts.filter((post) => post.category === activeCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const paginatedPosts = filteredPosts.slice(
@@ -129,92 +126,114 @@ const BlogSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* Featured Article */}
-        <ScrollReveal variant="fade-up" className="mb-10">
-          <article className="group relative rounded-2xl overflow-hidden cursor-pointer">
-            <div className={`aspect-[21/9] sm:aspect-[3/1] bg-gradient-to-br ${featuredPost.image} relative`}>
-              <div className="absolute inset-0 bg-primary/40 group-hover:bg-primary/50 transition-colors duration-300" />
-              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-foreground bg-electric/90 px-3 py-1 rounded-full">
-                    Artikel Unggulan
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-foreground bg-primary-foreground/20 px-3 py-1 rounded-full">
-                    {categories.find((c) => c.id === featuredPost.category)?.label}
-                  </span>
+        {/* Split Layout: Profiling Banner (Left) + Articles (Right) */}
+        <div className="flex flex-col lg:flex-row gap-8 mb-8">
+          {/* Left: Profiling Banner */}
+          <ScrollReveal variant="fade-left" className="lg:w-[340px] shrink-0">
+            <div className="gradient-navy rounded-2xl p-6 sm:p-8 h-full flex flex-col relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-electric/20 blur-[50px]" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-electric/10 blur-[40px]" />
+              <div className="relative z-10 flex flex-col h-full">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-electric bg-electric/20 px-3 py-1 rounded-full self-start mb-6">
+                  Profil
+                </span>
+                <div className="w-16 h-16 rounded-2xl bg-electric/20 flex items-center justify-center mb-5">
+                  <span className="text-2xl font-black text-electric">S.</span>
                 </div>
-                <h3 className="text-xl sm:text-3xl font-bold text-primary-foreground mb-2 max-w-2xl group-hover:text-electric-light transition-colors">
-                  {featuredPost.title}
-                </h3>
-                <p className="text-primary-foreground/80 text-sm sm:text-base max-w-xl mb-4 line-clamp-2">
-                  {featuredPost.excerpt}
+                <h3 className="text-xl font-bold text-primary-foreground mb-3">Saat.</h3>
+                <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6 flex-1">
+                  Digital agency yang membantu brand berkembang melalui strategi digital, branding, dan teknologi terkini. Kami percaya setiap bisnis punya cerita unik.
                 </p>
-                <div className="flex items-center gap-4 text-xs text-primary-foreground/70">
-                  <span className="flex items-center gap-1"><Calendar size={12} /> {featuredPost.date}</span>
-                  <span className="flex items-center gap-1"><Clock size={12} /> {featuredPost.readTime}</span>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
+                      <span className="text-xs font-bold text-electric">50+</span>
+                    </div>
+                    <span className="text-sm text-primary-foreground/80">Proyek Selesai</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
+                      <span className="text-xs font-bold text-electric">30+</span>
+                    </div>
+                    <span className="text-sm text-primary-foreground/80">Klien Aktif</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
+                      <span className="text-xs font-bold text-electric">3+</span>
+                    </div>
+                    <span className="text-sm text-primary-foreground/80">Tahun Pengalaman</span>
+                  </div>
                 </div>
+                <a
+                  href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20konsultasi."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-electric px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-electric-light transition-colors"
+                >
+                  Konsultasi Gratis <ArrowRight size={14} />
+                </a>
               </div>
             </div>
-          </article>
-        </ScrollReveal>
+          </ScrollReveal>
 
-        {/* Categories */}
-        <ScrollReveal className="flex flex-wrap justify-center gap-3 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryChange(cat.id)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === cat.id
-                  ? "bg-electric text-accent-foreground shadow-soft"
-                  : "bg-card text-muted-foreground hover:text-primary border border-border hover:border-electric/50"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </ScrollReveal>
-
-        {/* Post count */}
-        <div className="text-sm text-muted-foreground mb-6 text-center">
-          Menampilkan {paginatedPosts.length} dari {filteredPosts.length} artikel
-        </div>
-
-        {/* Blog Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {paginatedPosts.map((post, i) => (
-            <ScrollReveal key={post.id} delay={i * 0.1} variant="fade-up">
-              <article className="group rounded-2xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden h-full flex flex-col cursor-pointer">
-                <div className={`aspect-[16/9] bg-gradient-to-br ${post.image} relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent-foreground bg-electric/90 px-3 py-1 rounded-full">
-                      {categories.find((c) => c.id === post.category)?.label}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
-                    <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
-                  </div>
-                  <h3 className="font-bold text-primary mb-2 group-hover:text-electric transition-colors line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-electric group-hover:gap-2 transition-all">
-                    Baca Selengkapnya <ArrowRight size={14} />
-                  </span>
-                </div>
-              </article>
+          {/* Right: Categories + Articles */}
+          <div className="flex-1 min-w-0">
+            {/* Categories */}
+            <ScrollReveal className="flex flex-wrap gap-2 mb-6">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryChange(cat.id)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                    activeCategory === cat.id
+                      ? "bg-electric text-accent-foreground shadow-soft"
+                      : "bg-card text-muted-foreground hover:text-primary border border-border hover:border-electric/50"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
             </ScrollReveal>
-          ))}
-        </div>
 
-        {/* Banner Ad */}
-        <BannerAd />
+            {/* Post count */}
+            <div className="text-xs text-muted-foreground mb-4">
+              Menampilkan {paginatedPosts.length} dari {filteredPosts.length} artikel
+            </div>
+
+            {/* Article List */}
+            <div className="space-y-4 mb-6">
+              {paginatedPosts.map((post, i) => (
+                <ScrollReveal key={post.id} delay={i * 0.08} variant="fade-up">
+                  <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
+                    <div className={`w-28 h-28 sm:w-36 sm:h-28 shrink-0 rounded-xl bg-gradient-to-br ${post.image} relative overflow-hidden`}>
+                      <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
+                    </div>
+                    <div className="flex flex-col flex-1 min-w-0 py-0.5">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-electric">
+                          {categories.find((c) => c.id === post.category)?.label}
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-sm text-primary mb-1 group-hover:text-electric transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-2 flex-1 line-clamp-2 hidden sm:block">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                        <span className="flex items-center gap-1"><Calendar size={10} /> {post.date}</span>
+                        <span className="flex items-center gap-1"><Clock size={10} /> {post.readTime}</span>
+                      </div>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
+            </div>
+
+            {/* Banner Ad */}
+            <BannerAd />
+          </div>
+        </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
