@@ -100,9 +100,12 @@ const BlogSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const featuredPost = allPosts[0];
+
+  const remainingPosts = allPosts.slice(1);
   const filteredPosts = activeCategory === "all"
-    ? allPosts
-    : allPosts.filter((post) => post.category === activeCategory);
+    ? remainingPosts
+    : remainingPosts.filter((post) => post.category === activeCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const paginatedPosts = filteredPosts.slice(
@@ -124,6 +127,35 @@ const BlogSection = () => {
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
             Tips, strategi, dan insight terbaru seputar digital marketing, branding, dan teknologi.
           </p>
+        </ScrollReveal>
+
+        {/* Featured Article */}
+        <ScrollReveal variant="fade-up" className="mb-10">
+          <article className="group relative rounded-2xl overflow-hidden cursor-pointer">
+            <div className={`aspect-[21/9] sm:aspect-[3/1] bg-gradient-to-br ${featuredPost.image} relative`}>
+              <div className="absolute inset-0 bg-primary/40 group-hover:bg-primary/50 transition-colors duration-300" />
+              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-foreground bg-electric/90 px-3 py-1 rounded-full">
+                    Artikel Unggulan
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-foreground bg-primary-foreground/20 px-3 py-1 rounded-full">
+                    {categories.find((c) => c.id === featuredPost.category)?.label}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-3xl font-bold text-primary-foreground mb-2 max-w-2xl group-hover:text-electric-light transition-colors">
+                  {featuredPost.title}
+                </h3>
+                <p className="text-primary-foreground/80 text-sm sm:text-base max-w-xl mb-4 line-clamp-2">
+                  {featuredPost.excerpt}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-primary-foreground/70">
+                  <span className="flex items-center gap-1"><Calendar size={12} /> {featuredPost.date}</span>
+                  <span className="flex items-center gap-1"><Clock size={12} /> {featuredPost.readTime}</span>
+                </div>
+              </div>
+            </div>
+          </article>
         </ScrollReveal>
 
         {/* Categories */}
@@ -163,14 +195,8 @@ const BlogSection = () => {
                 </div>
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={12} />
-                      {post.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={12} />
-                      {post.readTime}
-                    </span>
+                    <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
+                    <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
                   </div>
                   <h3 className="font-bold text-primary mb-2 group-hover:text-electric transition-colors line-clamp-2">
                     {post.title}
@@ -201,7 +227,6 @@ const BlogSection = () => {
             >
               <ChevronLeft size={18} />
             </button>
-
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
@@ -215,7 +240,6 @@ const BlogSection = () => {
                 {page}
               </button>
             ))}
-
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
@@ -229,10 +253,7 @@ const BlogSection = () => {
 
         {/* Show More */}
         <div className="text-center mt-8">
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-electric hover:gap-3 transition-all"
-          >
+          <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-electric hover:gap-3 transition-all">
             Lihat Semua Artikel <ArrowRight size={16} />
           </a>
         </div>
