@@ -5,42 +5,50 @@ const services = [
   {
     icon: Globe,
     title: "Website & System Development",
-    description: "Pembuatan website company profile, landing page, e-commerce, sistem manajemen internal, dashboard, dan aplikasi web custom sesuai kebutuhan bisnis kamu.",
+    description: "Pembuatan website dan sistem digital custom sesuai kebutuhan bisnis kamu.",
+    items: ["Company Profile", "Landing Page", "E-Commerce", "Sistem Manajemen Internal", "Dashboard & Admin Panel", "Aplikasi Web Custom"],
   },
   {
     icon: Palette,
     title: "Branding & Visual Identity",
-    description: "Membangun identitas brand yang kuat mulai dari logo, color palette, brand guideline, typography system, hingga konsistensi visual di semua platform.",
+    description: "Membangun identitas brand yang kuat dan konsisten di semua platform.",
+    items: ["Logo Design", "Color Palette & Typography", "Brand Guideline", "Visual System", "Konsistensi Brand"],
   },
   {
     icon: Megaphone,
     title: "Digital Campaign Strategy",
-    description: "Merancang strategi campaign digital mulai dari Meta Ads, Google Ads, TikTok Ads, hingga influencer marketing untuk meningkatkan reach dan konversi.",
+    description: "Merancang strategi campaign digital untuk meningkatkan reach dan konversi.",
+    items: ["Meta Ads (Facebook & Instagram)", "Google Ads", "TikTok Ads", "Influencer Marketing", "Campaign Analytics"],
   },
   {
     icon: Share2,
     title: "Social Media Management",
-    description: "Mengelola akun social media brand kamu — content planning, pembuatan konten, scheduling, community management, hingga analisis performa bulanan.",
+    description: "Mengelola akun social media brand kamu secara menyeluruh.",
+    items: ["Content Planning", "Pembuatan Konten", "Scheduling & Posting", "Community Management", "Analisis Performa Bulanan"],
   },
   {
     icon: Search,
     title: "SEO Optimization",
-    description: "Meningkatkan visibilitas website di Google melalui on-page SEO, technical SEO, keyword research, dan link building untuk mendatangkan traffic organik.",
+    description: "Meningkatkan visibilitas website di Google untuk mendatangkan traffic organik.",
+    items: ["On-Page SEO", "Technical SEO", "Keyword Research", "Link Building", "SEO Audit"],
   },
   {
     icon: Camera,
     title: "Visual Content Production",
-    description: "Pembuatan desain logo, poster, banner, feeds Instagram, konten TikTok, foto produk, dan berbagai visual kreatif lainnya untuk kebutuhan branding & campaign.",
+    description: "Pembuatan berbagai visual kreatif untuk kebutuhan branding & campaign.",
+    items: ["Desain Logo", "Poster & Banner", "Feeds Instagram", "Konten TikTok", "Foto Produk", "Thumbnail YouTube"],
   },
   {
     icon: Film,
     title: "Company Profile Video",
-    description: "Produksi video company profile profesional untuk mengkomunikasikan cerita brand, value perusahaan, dan membangun kredibilitas secara visual.",
+    description: "Produksi video profesional untuk mengkomunikasikan cerita dan value brand.",
+    items: ["Video Company Profile", "Brand Story Video", "Testimoni Video", "Event Documentation"],
   },
   {
     icon: FileText,
     title: "White Label Content",
-    description: "Solusi konten digital siap pakai untuk agency dan bisnis yang ingin menyajikan konten berkualitas di bawah brand mereka sendiri tanpa ribet produksi.",
+    description: "Solusi konten digital siap pakai untuk agency dan bisnis tanpa ribet produksi.",
+    items: ["Konten Social Media", "Template Desain", "Copywriting", "Konten Blog & Artikel"],
   },
 ];
 
@@ -58,12 +66,20 @@ const ServicesSection = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.08} variant="scale">
-              <div className="group rounded-2xl bg-card p-6 shadow-soft hover:shadow-elevated hover:glow-blue transition-all duration-300 cursor-default h-full">
+              <div className="group rounded-2xl bg-card p-6 shadow-soft hover:shadow-elevated hover:glow-blue transition-all duration-300 cursor-default h-full flex flex-col">
                 <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-electric/10 text-electric group-hover:bg-electric group-hover:text-accent-foreground transition-colors duration-300">
                   <service.icon size={22} />
                 </div>
-                <h3 className="font-bold text-primary mb-2 text-sm">{service.title}</h3>
-                <p className="text-xs leading-relaxed text-muted-foreground">{service.description}</p>
+                <h3 className="font-bold text-primary mb-1.5 text-sm">{service.title}</h3>
+                <p className="text-xs leading-relaxed text-muted-foreground mb-3">{service.description}</p>
+                <ul className="mt-auto space-y-1">
+                  {service.items.map((item) => (
+                    <li key={item} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                      <span className="mt-1.5 w-1 h-1 rounded-full bg-electric shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </ScrollReveal>
           ))}
