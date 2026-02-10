@@ -3,11 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Why Us", href: "#why-us" },
+  { label: "Layanan", href: "#services" },
+  { label: "Kenapa Kami", href: "#why-us" },
   { label: "Portfolio", href: "#portfolio" },
-  { label: "Process", href: "#process" },
-  { label: "Testimonials", href: "#testimonials" },
+  { label: "Proses", href: "#process" },
+  { label: "Blog", href: "#blog" },
+  { label: "Testimoni", href: "#testimonials" },
 ];
 
 const Navbar = () => {
@@ -34,7 +35,7 @@ const Navbar = () => {
             href="#cta"
             className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-navy-light transition-colors"
           >
-            Get Started
+            Mulai Sekarang
           </a>
         </div>
 
@@ -71,7 +72,7 @@ const Navbar = () => {
                 onClick={() => setOpen(false)}
                 className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground text-center"
               >
-                Get Started
+                Mulai Sekarang
               </a>
             </div>
           </motion.div>

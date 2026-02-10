@@ -2,10 +2,10 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { SearchCheck, Target, Rocket, BarChart3 } from "lucide-react";
 
 const steps = [
-  { icon: SearchCheck, number: "01", title: "Discovery & Research", description: "Understanding your brand, market, and goals through deep analysis." },
-  { icon: Target, number: "02", title: "Strategy & Planning", description: "Crafting a tailored roadmap aligned with your business objectives." },
-  { icon: Rocket, number: "03", title: "Creative Execution", description: "Bringing strategy to life with world-class design and development." },
-  { icon: BarChart3, number: "04", title: "Optimization & Growth", description: "Continuous improvement driven by data and performance insights." },
+  { icon: SearchCheck, number: "01", title: "Riset & Analisis", description: "Memahami brand, pasar, dan tujuan kamu melalui analisis mendalam." },
+  { icon: Target, number: "02", title: "Strategi & Perencanaan", description: "Menyusun roadmap yang disesuaikan dengan tujuan bisnis kamu." },
+  { icon: Rocket, number: "03", title: "Eksekusi Kreatif", description: "Mewujudkan strategi menjadi desain dan pengembangan berkualitas tinggi." },
+  { icon: BarChart3, number: "04", title: "Optimasi & Pertumbuhan", description: "Peningkatan berkelanjutan berdasarkan data dan insight performa." },
 ];
 
 const ProcessSection = () => {
@@ -13,8 +13,8 @@ const ProcessSection = () => {
     <section id="process" className="py-24 bg-muted/50">
       <div className="container mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-sm font-semibold text-electric uppercase tracking-wider">How We Work</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Our Process</h2>
+          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Cara Kerja Kami</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Proses Kami</h2>
         </ScrollReveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">

@@ -16,25 +16,25 @@ const Footer = () => {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-primary mb-4 text-sm">Services</h4>
+              <h4 className="font-semibold text-primary mb-4 text-sm">Layanan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#services" className="hover:text-electric transition-colors">Web Development</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Pengembangan Web</a></li>
                 <li><a href="#services" className="hover:text-electric transition-colors">Branding</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Digital Campaigns</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">SEO Optimization</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Kampanye Digital</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Optimasi SEO</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-primary mb-4 text-sm">Company</h4>
+              <h4 className="font-semibold text-primary mb-4 text-sm">Perusahaan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-electric transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-electric transition-colors">Tentang Kami</a></li>
                 <li><a href="#portfolio" className="hover:text-electric transition-colors">Portfolio</a></li>
-                <li><a href="#process" className="hover:text-electric transition-colors">Process</a></li>
-                <li><a href="#cta" className="hover:text-electric transition-colors">Contact</a></li>
+                <li><a href="#process" className="hover:text-electric transition-colors">Proses</a></li>
+                <li><a href="#cta" className="hover:text-electric transition-colors">Kontak</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-primary mb-4 text-sm">Connect</h4>
+              <h4 className="font-semibold text-primary mb-4 text-sm">Hubungi Kami</h4>
               <div className="flex gap-3">
                 {[Twitter, Linkedin, Instagram, Github].map((Icon, i) => (
                   <a key={i} href="#" className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-electric hover:text-accent-foreground transition-colors">
@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
 
           <div className="border-t border-border mt-12 pt-8 text-center text-xs text-muted-foreground">
-            © 2026 Saat. All rights reserved.
+            © 2026 Saat. Semua hak dilindungi.
           </div>
         </ScrollReveal>
       </div>

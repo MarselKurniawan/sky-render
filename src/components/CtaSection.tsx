@@ -1,5 +1,4 @@
 import ScrollReveal from "@/components/ScrollReveal";
-import { motion } from "framer-motion";
 
 const CtaSection = () => {
   return (
@@ -12,10 +11,10 @@ const CtaSection = () => {
 
             <div className="relative z-10 max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
-                Ready to Scale Your Digital Presence?
+                Siap Tingkatkan Kehadiran Digital Kamu?
               </h2>
               <p className="text-primary-foreground/70 mb-10 text-lg">
-                Let's build something extraordinary together.
+                Yuk, bangun sesuatu yang luar biasa bersama.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a
@@ -24,7 +23,7 @@ const CtaSection = () => {
                   rel="noopener noreferrer"
                   className="rounded-xl bg-primary-foreground px-8 py-3.5 text-sm font-semibold text-primary hover:bg-primary-foreground/90 transition-all hover:shadow-elevated"
                 >
-                  Start Your Project
+                  Mulai Project
                 </a>
                 <a
                   href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20request%20quotation%20untuk%20project%20saya."
@@ -32,7 +31,7 @@ const CtaSection = () => {
                   rel="noopener noreferrer"
                   className="rounded-xl border-2 border-primary-foreground/30 px-8 py-3.5 text-sm font-semibold text-primary-foreground hover:border-primary-foreground/60 transition-all"
                 >
-                  Request Quotation
+                  Minta Penawaran
                 </a>
               </div>
             </div>
