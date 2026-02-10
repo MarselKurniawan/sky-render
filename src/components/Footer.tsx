@@ -9,10 +9,10 @@ const Footer = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
               <h3 className="text-xl font-bold text-primary mb-3">
-                NEXAGEN<span className="text-electric">.</span>
+                Saat<span className="text-electric">.</span>
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                A Web3 creative agency building next-generation digital experiences for forward-thinking brands.
+                Creative digital agency yang membantu brand berkembang melalui strategi digital, eksekusi kreatif, dan teknologi yang scalable.
               </p>
             </div>
             <div>
@@ -42,12 +42,13 @@ const Footer = () => {
                   </a>
                 ))}
               </div>
-              <p className="text-sm text-muted-foreground mt-4">hello@nexagen.agency</p>
+              <p className="text-sm text-muted-foreground mt-4">hello@saat.agency</p>
+              <a href="https://wa.me/6285117688118" target="_blank" rel="noopener noreferrer" className="text-sm text-electric hover:underline mt-1 inline-block">WhatsApp: 0851-1768-8118</a>
             </div>
           </div>
 
           <div className="border-t border-border mt-12 pt-8 text-center text-xs text-muted-foreground">
-            © 2026 NEXAGEN. All rights reserved.
+            © 2026 Saat. All rights reserved.
           </div>
         </ScrollReveal>
       </div>

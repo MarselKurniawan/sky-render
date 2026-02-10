@@ -19,13 +19,17 @@ const CtaSection = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a
-                  href="#"
+                  href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20tertarik%20untuk%20memulai%20project%20bersama."
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-xl bg-primary-foreground px-8 py-3.5 text-sm font-semibold text-primary hover:bg-primary-foreground/90 transition-all hover:shadow-elevated"
                 >
                   Start Your Project
                 </a>
                 <a
-                  href="#"
+                  href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20request%20quotation%20untuk%20project%20saya."
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-xl border-2 border-primary-foreground/30 px-8 py-3.5 text-sm font-semibold text-primary-foreground hover:border-primary-foreground/60 transition-all"
                 >
                   Request Quotation
