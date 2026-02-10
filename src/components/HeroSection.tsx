@@ -30,8 +30,8 @@ const HeroSection = () => {
               transition={{ duration: 0.7, delay: 0.35 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-primary mb-6"
             >
-              Building Digital Presence for the{" "}
-              <span className="gradient-text">Next-Gen Brand</span>
+              Bangun Kehadiran Digital untuk{" "}
+              <span className="gradient-text">Brand Masa Depan</span>
             </motion.h1>
 
             <motion.p
@@ -40,7 +40,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed"
             >
-              We help brands grow through digital strategy, creative execution, and scalable technology.
+              Kami membantu brand tumbuh melalui strategi digital, eksekusi kreatif, dan teknologi yang scalable.
             </motion.p>
 
             <motion.div
@@ -53,7 +53,7 @@ const HeroSection = () => {
                 href="#portfolio"
                 className="rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-navy-light transition-all hover:shadow-elevated"
               >
-                View Portfolio
+                Lihat Portfolio
               </a>
               <a
                 href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20request%20quotation%20untuk%20project%20saya."
@@ -61,7 +61,7 @@ const HeroSection = () => {
                 rel="noopener noreferrer"
                 className="rounded-xl border-2 border-primary/20 bg-card px-7 py-3.5 text-sm font-semibold text-primary hover:border-electric hover:text-electric transition-all"
               >
-                Get Quotation
+                Minta Penawaran
               </a>
             </motion.div>
           </motion.div>

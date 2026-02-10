@@ -1,12 +1,12 @@
 import ScrollReveal from "@/components/ScrollReveal";
 
 const projects = [
-  { title: "DeFi Dashboard", category: "Web Development", metric: "+180% User Engagement", gradient: "from-electric/80 to-navy" },
-  { title: "NeoVerse Branding", category: "Branding & Identity", metric: "50K+ Social Impressions", gradient: "from-navy to-electric/60" },
-  { title: "CryptoLaunch Campaign", category: "Digital Campaign", metric: "3x Conversion Rate", gradient: "from-electric/60 to-navy/90" },
-  { title: "MetaStudio Platform", category: "System Development", metric: "99.9% Uptime", gradient: "from-navy/80 to-electric" },
-  { title: "BlockBrand Content", category: "Content Production", metric: "1M+ Video Views", gradient: "from-electric to-navy/70" },
-  { title: "ChainSocial Growth", category: "Social Media", metric: "+400% Followers", gradient: "from-navy to-electric/70" },
+  { title: "Dashboard Keuangan", category: "Pengembangan Web", metric: "+180% User Engagement", gradient: "from-electric/80 to-navy" },
+  { title: "Branding NeoVerse", category: "Branding & Identitas", metric: "50K+ Impresi Sosial", gradient: "from-navy to-electric/60" },
+  { title: "Kampanye CryptoLaunch", category: "Kampanye Digital", metric: "3x Tingkat Konversi", gradient: "from-electric/60 to-navy/90" },
+  { title: "Platform MetaStudio", category: "Pengembangan Sistem", metric: "99.9% Uptime", gradient: "from-navy/80 to-electric" },
+  { title: "Konten BlockBrand", category: "Produksi Konten", metric: "1M+ Tayangan Video", gradient: "from-electric to-navy/70" },
+  { title: "Pertumbuhan ChainSocial", category: "Media Sosial", metric: "+400% Followers", gradient: "from-navy to-electric/70" },
 ];
 
 const PortfolioSection = () => {
@@ -14,8 +14,8 @@ const PortfolioSection = () => {
     <section id="portfolio" className="py-24">
       <div className="container mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Our Work</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Portfolio & Case Studies</h2>
+          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Karya Kami</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Portfolio & Studi Kasus</h2>
         </ScrollReveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
