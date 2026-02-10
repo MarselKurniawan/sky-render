@@ -17,7 +17,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="#" className="text-xl font-bold tracking-tight text-primary">
-          NEXAGEN<span className="text-electric">.</span>
+          Saat<span className="text-electric">.</span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">

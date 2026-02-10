@@ -2,14 +2,46 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { Globe, Palette, Megaphone, Share2, Search, Camera, Film, FileText } from "lucide-react";
 
 const services = [
-  { icon: Globe, title: "Website & System Development", description: "Designing and developing high-performance websites and custom systems tailored to business needs, focusing on scalability, speed, and user experience." },
-  { icon: Palette, title: "Branding & Visual Identity", description: "Building strong brand identity through logo, visual system, tone, and design consistency to ensure brands stand out in the digital ecosystem." },
-  { icon: Megaphone, title: "Digital Campaign Strategy", description: "Creating data-driven digital campaigns that connect brands with the right audience across digital platforms to increase reach and conversions." },
-  { icon: Share2, title: "Social Media Management", description: "Managing and optimizing social media presence through content planning, creative execution, and performance analysis." },
-  { icon: Search, title: "SEO Optimization", description: "Improving website visibility and search engine ranking through on-page optimization, technical SEO, and strategic keyword targeting." },
-  { icon: Camera, title: "Content Production", description: "Producing high-quality photo and video content for branding, campaigns, and social media with a strong storytelling approach." },
-  { icon: Film, title: "Company Profile Video", description: "Creating professional company profile videos to communicate brand story, values, and credibility in a compelling visual format." },
-  { icon: FileText, title: "White Label Content", description: "Providing ready-to-use digital content solutions for agencies and businesses that want to deliver content under their own brand." },
+  {
+    icon: Globe,
+    title: "Website & System Development",
+    description: "Pembuatan website company profile, landing page, e-commerce, sistem manajemen internal, dashboard, dan aplikasi web custom sesuai kebutuhan bisnis kamu.",
+  },
+  {
+    icon: Palette,
+    title: "Branding & Visual Identity",
+    description: "Membangun identitas brand yang kuat mulai dari logo, color palette, brand guideline, typography system, hingga konsistensi visual di semua platform.",
+  },
+  {
+    icon: Megaphone,
+    title: "Digital Campaign Strategy",
+    description: "Merancang strategi campaign digital mulai dari Meta Ads, Google Ads, TikTok Ads, hingga influencer marketing untuk meningkatkan reach dan konversi.",
+  },
+  {
+    icon: Share2,
+    title: "Social Media Management",
+    description: "Mengelola akun social media brand kamu — content planning, pembuatan konten, scheduling, community management, hingga analisis performa bulanan.",
+  },
+  {
+    icon: Search,
+    title: "SEO Optimization",
+    description: "Meningkatkan visibilitas website di Google melalui on-page SEO, technical SEO, keyword research, dan link building untuk mendatangkan traffic organik.",
+  },
+  {
+    icon: Camera,
+    title: "Visual Content Production",
+    description: "Pembuatan desain logo, poster, banner, feeds Instagram, konten TikTok, foto produk, dan berbagai visual kreatif lainnya untuk kebutuhan branding & campaign.",
+  },
+  {
+    icon: Film,
+    title: "Company Profile Video",
+    description: "Produksi video company profile profesional untuk mengkomunikasikan cerita brand, value perusahaan, dan membangun kredibilitas secara visual.",
+  },
+  {
+    icon: FileText,
+    title: "White Label Content",
+    description: "Solusi konten digital siap pakai untuk agency dan bisnis yang ingin menyajikan konten berkualitas di bawah brand mereka sendiri tanpa ribet produksi.",
+  },
 ];
 
 const ServicesSection = () => {
@@ -18,8 +50,9 @@ const ServicesSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-electric/[0.02] to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-sm font-semibold text-electric uppercase tracking-wider">What We Do</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Our Services</h2>
+          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Layanan Kami</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Apa yang Bisa Kami Bantu?</h2>
+          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">Dari website hingga campaign digital, kami siap bantu brand kamu tumbuh di era digital.</p>
         </ScrollReveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

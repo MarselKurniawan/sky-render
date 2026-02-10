@@ -21,7 +21,7 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 rounded-full bg-electric/10 px-4 py-1.5 mb-6"
             >
               <div className="h-2 w-2 rounded-full bg-electric animate-pulse-glow" />
-              <span className="text-xs font-semibold text-electric uppercase tracking-wider">Web3 Creative Agency</span>
+              <span className="text-xs font-semibold text-electric uppercase tracking-wider">Creative Digital Agency</span>
             </motion.div>
 
             <motion.h1
@@ -56,7 +56,9 @@ const HeroSection = () => {
                 View Portfolio
               </a>
               <a
-                href="#cta"
+                href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20request%20quotation%20untuk%20project%20saya."
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-xl border-2 border-primary/20 bg-card px-7 py-3.5 text-sm font-semibold text-primary hover:border-electric hover:text-electric transition-all"
               >
                 Get Quotation
