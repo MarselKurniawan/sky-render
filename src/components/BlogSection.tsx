@@ -126,58 +126,8 @@ const BlogSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* Split Layout: Profiling Banner (Left) + Articles (Right) */}
-        <div className="flex flex-col lg:flex-row gap-8 mb-8">
-          {/* Left: Profiling Banner */}
-          <ScrollReveal variant="fade-left" className="lg:w-[340px] shrink-0">
-            <div className="gradient-navy rounded-2xl p-6 sm:p-8 h-full flex flex-col relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-electric/20 blur-[50px]" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-electric/10 blur-[40px]" />
-              <div className="relative z-10 flex flex-col h-full">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-electric bg-electric/20 px-3 py-1 rounded-full self-start mb-6">
-                  Profil
-                </span>
-                <div className="w-16 h-16 rounded-2xl bg-electric/20 flex items-center justify-center mb-5">
-                  <span className="text-2xl font-black text-electric">S.</span>
-                </div>
-                <h3 className="text-xl font-bold text-primary-foreground mb-3">Saat.</h3>
-                <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6 flex-1">
-                  Digital agency yang membantu brand berkembang melalui strategi digital, branding, dan teknologi terkini. Kami percaya setiap bisnis punya cerita unik.
-                </p>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
-                      <span className="text-xs font-bold text-electric">50+</span>
-                    </div>
-                    <span className="text-sm text-primary-foreground/80">Proyek Selesai</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
-                      <span className="text-xs font-bold text-electric">30+</span>
-                    </div>
-                    <span className="text-sm text-primary-foreground/80">Klien Aktif</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center">
-                      <span className="text-xs font-bold text-electric">3+</span>
-                    </div>
-                    <span className="text-sm text-primary-foreground/80">Tahun Pengalaman</span>
-                  </div>
-                </div>
-                <a
-                  href="https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20ingin%20konsultasi."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-electric px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-electric-light transition-colors"
-                >
-                  Konsultasi Gratis <ArrowRight size={14} />
-                </a>
-              </div>
-            </div>
-          </ScrollReveal>
-
-          {/* Right: Categories + Articles */}
-          <div className="flex-1 min-w-0">
+        <div className="mb-8">
+          <div>
             {/* Categories */}
             <ScrollReveal className="flex flex-wrap gap-2 mb-6">
               {categories.map((cat) => (
