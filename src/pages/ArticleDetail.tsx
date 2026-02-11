@@ -19,6 +19,7 @@ interface Article {
   hashtags: string[] | null;
   seo_title: string | null;
   seo_description: string | null;
+  og_image_url: string | null;
 }
 
 const ArticleDetail = () => {
@@ -28,19 +29,45 @@ const ArticleDetail = () => {
 
   useEffect(() => {
     if (!slug) return;
-    const fetch = async () => {
+    const fetchArticle = async () => {
       const { data } = await supabase
         .from("articles")
-        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description")
+        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();
       setArticle(data);
       setLoading(false);
-      if (data?.seo_title) document.title = data.seo_title;
-      else if (data?.title) document.title = data.title;
+
+      if (data) {
+        // Set document title
+        document.title = data.seo_title || data.title;
+
+        // Set OG meta for sharing
+        const setMeta = (attr: string, name: string, content: string | null) => {
+          if (!content) return;
+          let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+          if (!el) {
+            el = document.createElement("meta");
+            el.setAttribute(attr, name);
+            document.head.appendChild(el);
+          }
+          el.content = content;
+        };
+
+        setMeta("name", "description", data.seo_description || data.excerpt);
+        setMeta("property", "og:title", data.seo_title || data.title);
+        setMeta("property", "og:description", data.seo_description || data.excerpt);
+        setMeta("property", "og:image", data.og_image_url || data.image_url);
+        setMeta("property", "og:type", "article");
+        setMeta("property", "og:url", window.location.href);
+        setMeta("name", "twitter:title", data.seo_title || data.title);
+        setMeta("name", "twitter:description", data.seo_description || data.excerpt);
+        setMeta("name", "twitter:image", data.og_image_url || data.image_url);
+        setMeta("name", "twitter:card", "summary_large_image");
+      }
     };
-    fetch();
+    fetchArticle();
   }, [slug]);
 
   const formatDate = (dateStr: string) =>
@@ -48,6 +75,17 @@ const ArticleDetail = () => {
 
   const backPath = article?.article_type === "profiling" ? "/profiling" : "/";
   const backLabel = article?.article_type === "profiling" ? "Kembali ke Profiling" : "Kembali";
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const title = article?.title || "Saat.";
+    if (navigator.share) {
+      await navigator.share({ title, url });
+    } else {
+      await navigator.clipboard.writeText(url);
+      alert("Link berhasil disalin!");
+    }
+  };
 
   if (loading) {
     return (
@@ -74,7 +112,6 @@ const ArticleDetail = () => {
     );
   }
 
-  // Split content into paragraphs for ad injection
   const paragraphs = article.content?.split("\n").filter((p) => p.trim()) ?? [];
 
   return (
@@ -87,7 +124,6 @@ const ArticleDetail = () => {
               <ArrowLeft size={16} /> {backLabel}
             </Link>
 
-            {/* Hero Image */}
             {article.image_url?.startsWith("http") ? (
               <img src={article.image_url} alt={article.title} className="w-full h-48 sm:h-64 rounded-2xl object-cover mb-8" />
             ) : (
@@ -96,7 +132,6 @@ const ArticleDetail = () => {
               </div>
             )}
 
-            {/* Meta */}
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="text-xs font-bold uppercase tracking-widest text-electric bg-electric/10 px-3 py-1 rounded-full">
                 {article.category}
@@ -105,7 +140,6 @@ const ArticleDetail = () => {
               {article.read_time && <span className="flex items-center gap-1 text-xs text-muted-foreground"><Clock size={12} /> {article.read_time}</span>}
             </div>
 
-            {/* Hashtags */}
             {article.hashtags && article.hashtags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {article.hashtags.map((tag, i) => (
@@ -116,7 +150,6 @@ const ArticleDetail = () => {
 
             <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-6 leading-tight">{article.title}</h1>
 
-            {/* Content with ad injection */}
             <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
               {paragraphs.length > 0 ? (
                 paragraphs.map((p, i) => (
@@ -132,9 +165,9 @@ const ArticleDetail = () => {
               )}
             </div>
 
-            <div className="mt-10 pt-6 border-t border-border flex items-center gap-3">
+            <div className="mt-10 pt-6 border-t border-border flex items-center gap-3 cursor-pointer" onClick={handleShare}>
               <Share2 size={16} className="text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Bagikan artikel ini</span>
+              <span className="text-sm text-muted-foreground hover:text-electric transition-colors">Bagikan artikel ini</span>
             </div>
           </div>
         </div>

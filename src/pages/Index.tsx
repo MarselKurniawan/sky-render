@@ -9,10 +9,17 @@ import BlogSection from "@/components/BlogSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import HiddenKeywords from "@/components/HiddenKeywords";
+import { useSeo } from "@/hooks/useSeo";
+import { useTrackingScripts } from "@/hooks/useTrackingScripts";
 
 const Index = () => {
+  useSeo("/");
+  useTrackingScripts();
+
   return (
     <div className="min-h-screen bg-background">
+      <HiddenKeywords />
       <Navbar />
       <HeroSection />
       <ProfilingSection />

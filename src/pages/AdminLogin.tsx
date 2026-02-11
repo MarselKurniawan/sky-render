@@ -11,8 +11,14 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
+
+  // If already logged in as admin, redirect
+  if (!loading && user && isAdmin) {
+    navigate("/admin", { replace: true });
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +29,8 @@ const AdminLogin = () => {
       toast.error("Login gagal: " + error.message);
     } else {
       toast.success("Login berhasil!");
-      navigate("/admin");
+      // Small delay to let auth state update
+      setTimeout(() => navigate("/admin", { replace: true }), 500);
     }
   };
 

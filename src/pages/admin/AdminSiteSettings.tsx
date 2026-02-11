@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Loader2, Save, Plus, Trash2 } from "lucide-react";
 
@@ -11,6 +12,8 @@ interface Setting {
   key: string;
   value: string | null;
 }
+
+const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords"];
 
 const AdminSiteSettings = () => {
   const [settings, setSettings] = useState<Setting[]>([]);
@@ -28,10 +31,8 @@ const AdminSiteSettings = () => {
 
   useEffect(() => { fetchSettings(); }, []);
 
-  const handleUpdate = async (id: string, value: string) => {
-    const { error } = await supabase.from("site_settings").update({ value }).eq("id", id);
-    if (error) toast.error(error.message);
-  };
+  const getSettingValue = (key: string) => settings.find(s => s.key === key)?.value ?? "";
+  const getSettingId = (key: string) => settings.find(s => s.key === key)?.id;
 
   const handleSaveAll = async () => {
     setSaving(true);
@@ -40,6 +41,15 @@ const AdminSiteSettings = () => {
     }
     setSaving(false);
     toast.success("Settings disimpan!");
+  };
+
+  const handleUpsertSpecial = async (key: string, value: string) => {
+    const existing = settings.find(s => s.key === key);
+    if (existing) {
+      await supabase.from("site_settings").update({ value: value || null }).eq("id", existing.id);
+    } else {
+      await supabase.from("site_settings").insert({ key, value: value || null });
+    }
   };
 
   const handleAdd = async () => {
@@ -61,6 +71,16 @@ const AdminSiteSettings = () => {
     setSettings((prev) => prev.map((s) => (s.id === id ? { ...s, value } : s)));
   };
 
+  const updateLocalByKey = (key: string, value: string) => {
+    setSettings((prev) => {
+      const exists = prev.find(s => s.key === key);
+      if (exists) return prev.map(s => s.key === key ? { ...s, value } : s);
+      return [...prev, { id: "new-" + key, key, value }];
+    });
+  };
+
+  const otherSettings = settings.filter(s => !SPECIAL_KEYS.includes(s.key));
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -71,16 +91,53 @@ const AdminSiteSettings = () => {
       </div>
 
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : (
-        <div className="space-y-3">
-          {settings.map((s) => (
-            <div key={s.id} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
-              <div className="w-48 shrink-0">
-                <span className="text-xs font-mono text-muted-foreground">{s.key}</span>
-              </div>
-              <Input value={s.value ?? ""} onChange={(e) => updateLocal(s.id, e.target.value)} className="flex-1" />
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0"><Trash2 size={16} /></Button>
+        <div className="space-y-6">
+          {/* Google Analytics & Search Console */}
+          <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+            <h3 className="text-sm font-semibold text-primary">📊 Google Analytics & Search Console</h3>
+            <div>
+              <Label className="text-xs">Google Analytics ID (e.g. G-XXXXXXXXXX)</Label>
+              <Input
+                value={getSettingValue("google_analytics_id")}
+                onChange={(e) => updateLocalByKey("google_analytics_id", e.target.value)}
+                placeholder="G-XXXXXXXXXX"
+              />
             </div>
-          ))}
+            <div>
+              <Label className="text-xs">Google Search Console Verification Code</Label>
+              <Input
+                value={getSettingValue("google_search_console_verification")}
+                onChange={(e) => updateLocalByKey("google_search_console_verification", e.target.value)}
+                placeholder="Kode verifikasi dari Google Search Console"
+              />
+            </div>
+          </div>
+
+          {/* Hidden Keywords */}
+          <div className="p-5 rounded-xl bg-card border border-border space-y-3">
+            <h3 className="text-sm font-semibold text-primary">🔑 Hidden Keywords (SEO)</h3>
+            <p className="text-xs text-muted-foreground">Keyword tersembunyi yang ditampilkan di landing page dengan font 1px transparan untuk mendukung SEO.</p>
+            <Textarea
+              value={getSettingValue("hidden_keywords")}
+              onChange={(e) => updateLocalByKey("hidden_keywords", e.target.value)}
+              placeholder="digital agency, jasa pembuatan website, branding, SEO..."
+              rows={3}
+            />
+          </div>
+
+          {/* Other Settings */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-primary">⚙️ Settings Lainnya</h3>
+            {otherSettings.map((s) => (
+              <div key={s.id} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
+                <div className="w-48 shrink-0">
+                  <span className="text-xs font-mono text-muted-foreground">{s.key}</span>
+                </div>
+                <Input value={s.value ?? ""} onChange={(e) => updateLocal(s.id, e.target.value)} className="flex-1" />
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0"><Trash2 size={16} /></Button>
+              </div>
+            ))}
+          </div>
 
           <div className="border-t border-border pt-4 mt-4">
             <h3 className="text-sm font-semibold text-primary mb-3">Tambah Setting Baru</h3>

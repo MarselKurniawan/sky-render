@@ -1,5 +1,6 @@
 import { Twitter, Linkedin, Instagram, Github } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import logoSaat from "@/assets/logo-saat.png";
 
 const Footer = () => {
   return (
@@ -8,9 +9,7 @@ const Footer = () => {
         <ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
-              <h3 className="text-xl font-extrabold mb-3" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                <span style={{ color: '#000000' }}>Sa</span><span style={{ color: '#003161' }}>at</span><span style={{ color: '#ef7722' }}>.</span>
-              </h3>
+              <img src={logoSaat} alt="Saat." className="h-8 mb-3" />
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Creative digital agency yang membantu brand berkembang melalui strategi digital, eksekusi kreatif, dan teknologi yang scalable.
               </p>

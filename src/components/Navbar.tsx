@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import logoSaat from "@/assets/logo-saat.png";
 
 const navLinks = [
   { label: "Layanan", href: "#services" },
@@ -17,8 +18,8 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        <a href="#" className="text-xl font-extrabold tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          <span style={{ color: '#000000' }}>Sa</span><span style={{ color: '#003161' }}>at</span><span style={{ color: '#ef7722' }}>.</span>
+        <a href="/">
+          <img src={logoSaat} alt="Saat." className="h-8" />
         </a>
 
         <div className="hidden md:flex items-center gap-8">

@@ -6,6 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import BannerAd from "@/components/BannerAd";
 import { Calendar, Clock, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useSeo } from "@/hooks/useSeo";
 
 const AD_EVERY_N = 3;
 
@@ -23,6 +24,7 @@ interface ProfilingArticle {
 const Profiling = () => {
   const [articles, setArticles] = useState<ProfilingArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  useSeo("/profiling");
 
   useEffect(() => {
     const fetchArticles = async () => {
