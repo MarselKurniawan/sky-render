@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
-import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock, Music, Building2, Users, Mic2 } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock, Music, Building2, Users, Mic2, Loader2 } from "lucide-react";
 import BannerAd from "@/components/BannerAd";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const banners = [
   {
@@ -35,71 +36,50 @@ const banners = [
   },
 ];
 
-const profilingArticles = [
-  {
-    id: 1,
-    slug: "perjalanan-musik-band-lokal",
-    title: "Perjalanan Musik Band Lokal: Dari Garasi ke Panggung Besar",
-    excerpt: "Kisah inspiratif sebuah band indie lokal yang berhasil menembus industri musik nasional.",
-    category: "musik",
-    date: "8 Feb 2026",
-    readTime: "5 menit",
-    image: "from-electric/60 to-navy",
-  },
-  {
-    id: 2,
-    slug: "profil-dinas-pariwisata-kota-bandung",
-    title: "Profil Dinas Pariwisata Kota Bandung: Inovasi Digital",
-    excerpt: "Bagaimana Dinas Pariwisata menggunakan profil digital untuk mempromosikan destinasi wisata.",
-    category: "instansi",
-    date: "5 Feb 2026",
-    readTime: "7 menit",
-    image: "from-navy to-electric/50",
-  },
-  {
-    id: 3,
-    slug: "komunitas-fotografi-jakarta",
-    title: "Komunitas Fotografi Jakarta: Cerita di Balik Lensa",
-    excerpt: "Dokumentasi perjalanan komunitas fotografi terbesar di Jakarta selama 5 tahun terakhir.",
-    category: "komunitas",
-    date: "2 Feb 2026",
-    readTime: "6 menit",
-    image: "from-electric/80 to-navy/90",
-  },
-  {
-    id: 4,
-    slug: "personal-brand-kreator-konten",
-    title: "Personal Brand: Bagaimana Kreator Konten Ini Membangun Audiensnya",
-    excerpt: "Strategi dan perjalanan seorang kreator konten dalam membangun personal brand yang kuat.",
-    category: "personal",
-    date: "28 Jan 2026",
-    readTime: "4 menit",
-    image: "from-navy/80 to-electric",
-  },
-  {
-    id: 5,
-    slug: "sekolah-musik-yamaha",
-    title: "Sekolah Musik Yamaha: Profil Institusi Pendidikan Musik",
-    excerpt: "Melihat lebih dekat bagaimana institusi pendidikan musik membangun profil digitalnya.",
-    category: "instansi",
-    date: "25 Jan 2026",
-    readTime: "8 menit",
-    image: "from-electric to-navy/70",
-  },
-];
-
 // Config: inject banner ad after article index (0-based)
 const AD_AFTER_INDEX = 1;
+
+interface ProfilingArticle {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  category: string;
+  created_at: string;
+  read_time: string | null;
+  image_url: string | null;
+}
 
 const ProfilingSection = () => {
   const [activeBanner, setActiveBanner] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [articles, setArticles] = useState<ProfilingArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const { data } = await supabase
+        .from("articles")
+        .select("id, slug, title, excerpt, category, created_at, read_time, image_url")
+        .eq("article_type", "profiling")
+        .eq("is_published", true)
+        .order("created_at", { ascending: false })
+        .limit(5);
+      setArticles(data ?? []);
+      setLoading(false);
+    };
+    fetchArticles();
+  }, []);
 
   const prevBanner = () => setActiveBanner((p) => (p === 0 ? banners.length - 1 : p - 1));
   const nextBanner = () => setActiveBanner((p) => (p === banners.length - 1 ? 0 : p + 1));
 
   const current = banners[activeBanner];
   const Icon = current.icon;
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+  };
 
   return (
     <section id="profiling" className="py-24">
@@ -152,41 +132,49 @@ const ProfilingSection = () => {
 
           {/* RIGHT — Scrollable Articles */}
           <div className="flex-1 min-w-0">
-            <div ref={scrollRef} className="space-y-4 max-h-[480px] overflow-y-auto pr-2 scrollbar-thin">
-              {profilingArticles.map((post, i) => (
-                <div key={post.id}>
-                  <ScrollReveal delay={i * 0.06} variant="fade-up">
-                    <Link to={`/artikel/${post.slug}`}>
-                    <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
-                      <div className={`w-24 h-24 sm:w-32 sm:h-24 shrink-0 rounded-xl bg-gradient-to-br ${post.image} relative overflow-hidden`}>
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
-                      </div>
-                      <div className="flex flex-col flex-1 min-w-0 py-0.5">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-electric mb-1">
-                          {post.category}
-                        </span>
-                        <h3 className="font-bold text-sm text-primary mb-1 group-hover:text-electric transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed mb-2 flex-1 line-clamp-2 hidden sm:block">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                          <span className="flex items-center gap-1"><Calendar size={10} /> {post.date}</span>
-                          <span className="flex items-center gap-1"><Clock size={10} /> {post.readTime}</span>
-                        </div>
-                      </div>
-                    </article>
-                    </Link>
-                  </ScrollReveal>
+            {loading ? (
+              <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div>
+            ) : articles.length === 0 ? (
+              <p className="text-muted-foreground text-center py-12">Belum ada artikel profiling.</p>
+            ) : (
+              <div ref={scrollRef} className="space-y-4 max-h-[480px] overflow-y-auto pr-2 scrollbar-thin">
+                {articles.map((post, i) => (
+                  <div key={post.id}>
+                    <ScrollReveal delay={i * 0.06} variant="fade-up">
+                      <Link to={`/artikel/${post.slug}`}>
+                        <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
+                          <div className={`w-24 h-24 sm:w-32 sm:h-24 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url || "from-electric/60 to-navy"} relative overflow-hidden`}>
+                            {post.image_url?.startsWith("http") ? (
+                              <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
+                            )}
+                          </div>
+                          <div className="flex flex-col flex-1 min-w-0 py-0.5">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-electric mb-1">
+                              {post.category}
+                            </span>
+                            <h3 className="font-bold text-sm text-primary mb-1 group-hover:text-electric transition-colors line-clamp-2">
+                              {post.title}
+                            </h3>
+                            <p className="text-xs text-muted-foreground leading-relaxed mb-2 flex-1 line-clamp-2 hidden sm:block">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                              <span className="flex items-center gap-1"><Calendar size={10} /> {formatDate(post.created_at)}</span>
+                              {post.read_time && <span className="flex items-center gap-1"><Clock size={10} /> {post.read_time}</span>}
+                            </div>
+                          </div>
+                        </article>
+                      </Link>
+                    </ScrollReveal>
 
-                  {/* Inject Banner Ad after configured index */}
-                  {i === AD_AFTER_INDEX && <BannerAd />}
-                </div>
-              ))}
-            </div>
+                    {i === AD_AFTER_INDEX && <BannerAd />}
+                  </div>
+                ))}
+              </div>
+            )}
 
-            {/* CTA to Profiling Page */}
             <div className="mt-6 text-center lg:text-left">
               <Link
                 to="/profiling"
