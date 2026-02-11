@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
-import { ArrowRight, Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Calendar, Clock, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import BannerAd from "@/components/BannerAd";
 
 const categories = [
@@ -10,99 +13,29 @@ const categories = [
   { id: "teknologi", label: "Teknologi" },
 ];
 
-const allPosts = [
-  {
-    id: 1,
-    title: "5 Strategi Digital Marketing yang Wajib Dicoba di 2026",
-    excerpt: "Pelajari strategi digital marketing terkini yang bisa meningkatkan pertumbuhan bisnis kamu secara signifikan.",
-    category: "digital-marketing",
-    date: "8 Feb 2026",
-    readTime: "5 menit",
-    image: "from-electric/60 to-navy",
-  },
-  {
-    id: 2,
-    title: "Panduan Lengkap Membangun Brand Identity yang Kuat",
-    excerpt: "Brand identity yang konsisten adalah kunci untuk membangun kepercayaan dan loyalitas pelanggan.",
-    category: "branding",
-    date: "5 Feb 2026",
-    readTime: "7 menit",
-    image: "from-navy to-electric/50",
-  },
-  {
-    id: 3,
-    title: "Tren Website Design 2026: Apa yang Harus Kamu Tahu",
-    excerpt: "Dari AI-powered design hingga immersive experiences, ini tren website yang akan mendominasi tahun ini.",
-    category: "teknologi",
-    date: "2 Feb 2026",
-    readTime: "6 menit",
-    image: "from-electric/80 to-navy/90",
-  },
-  {
-    id: 4,
-    title: "Cara Meningkatkan Engagement di Social Media",
-    excerpt: "Tips dan trik untuk meningkatkan engagement rate di berbagai platform social media.",
-    category: "digital-marketing",
-    date: "28 Jan 2026",
-    readTime: "4 menit",
-    image: "from-navy/80 to-electric",
-  },
-  {
-    id: 5,
-    title: "Mengapa Rebranding Penting untuk Bisnis yang Bertumbuh",
-    excerpt: "Kapan waktu yang tepat untuk rebranding dan bagaimana melakukannya dengan benar.",
-    category: "branding",
-    date: "25 Jan 2026",
-    readTime: "8 menit",
-    image: "from-electric to-navy/70",
-  },
-  {
-    id: 6,
-    title: "SEO vs SEM: Mana yang Lebih Cocok untuk Bisnis Kamu?",
-    excerpt: "Memahami perbedaan dan kapan menggunakan SEO atau SEM untuk hasil maksimal.",
-    category: "digital-marketing",
-    date: "20 Jan 2026",
-    readTime: "5 menit",
-    image: "from-navy to-electric/70",
-  },
-  {
-    id: 7,
-    title: "Memilih Tech Stack yang Tepat untuk Startup",
-    excerpt: "Framework dan tools terbaik untuk membangun produk digital yang scalable di tahun 2026.",
-    category: "teknologi",
-    date: "15 Jan 2026",
-    readTime: "6 menit",
-    image: "from-electric/70 to-navy/80",
-  },
-  {
-    id: 8,
-    title: "Color Psychology dalam Branding: Panduan Praktis",
-    excerpt: "Bagaimana warna mempengaruhi persepsi brand dan cara memilih palet warna yang tepat.",
-    category: "branding",
-    date: "10 Jan 2026",
-    readTime: "5 menit",
-    image: "from-navy/70 to-electric/60",
-  },
-  {
-    id: 9,
-    title: "AI dalam Digital Marketing: Peluang dan Tantangan",
-    excerpt: "Bagaimana AI mengubah landscape digital marketing dan cara memanfaatkannya.",
-    category: "teknologi",
-    date: "5 Jan 2026",
-    readTime: "7 menit",
-    image: "from-electric/50 to-navy",
-  },
-];
-
 const POSTS_PER_PAGE = 3;
 
 const BlogSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { data: posts = [], isLoading } = useQuery({
+    queryKey: ["blog-articles"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .eq("is_published", true)
+        .eq("article_type", "blog")
+        .order("published_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const filteredPosts = activeCategory === "all"
-    ? allPosts
-    : allPosts.filter((post) => post.category === activeCategory);
+    ? posts
+    : posts.filter((post) => post.category === activeCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const paginatedPosts = filteredPosts.slice(
@@ -114,6 +47,13 @@ const BlogSection = () => {
     setActiveCategory(categoryId);
     setCurrentPage(1);
   };
+
+  const gradients = [
+    "from-electric/60 to-navy",
+    "from-navy to-electric/50",
+    "from-electric/80 to-navy/90",
+    "from-navy/80 to-electric",
+  ];
 
   return (
     <section id="blog" className="py-24">
@@ -150,32 +90,59 @@ const BlogSection = () => {
               Menampilkan {paginatedPosts.length} dari {filteredPosts.length} artikel
             </div>
 
+            {/* Loading */}
+            {isLoading && (
+              <div className="flex justify-center py-16">
+                <Loader2 className="animate-spin text-electric" size={28} />
+              </div>
+            )}
+
+            {/* Empty state */}
+            {!isLoading && posts.length === 0 && (
+              <div className="text-center py-16 text-muted-foreground">
+                <p>Belum ada artikel. Tambahkan dari admin panel.</p>
+              </div>
+            )}
+
             {/* Article List */}
             <div className="space-y-4 mb-6">
               {paginatedPosts.map((post, i) => (
                 <ScrollReveal key={post.id} delay={i * 0.08} variant="fade-up">
-                  <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
-                    <div className={`w-28 h-28 sm:w-36 sm:h-28 shrink-0 rounded-xl bg-gradient-to-br ${post.image} relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
-                    </div>
-                    <div className="flex flex-col flex-1 min-w-0 py-0.5">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-electric">
-                          {categories.find((c) => c.id === post.category)?.label}
-                        </span>
+                  <Link to={`/artikel/${post.slug}`}>
+                    <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
+                      <div className={`w-28 h-28 sm:w-36 sm:h-28 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url ? "" : gradients[i % gradients.length]} relative overflow-hidden`}>
+                        {post.image_url ? (
+                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
+                        )}
                       </div>
-                      <h3 className="font-bold text-sm text-primary mb-1 group-hover:text-electric transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed mb-2 flex-1 line-clamp-2 hidden sm:block">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                        <span className="flex items-center gap-1"><Calendar size={10} /> {post.date}</span>
-                        <span className="flex items-center gap-1"><Clock size={10} /> {post.readTime}</span>
+                      <div className="flex flex-col flex-1 min-w-0 py-0.5">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-electric">
+                            {categories.find((c) => c.id === post.category)?.label || post.category}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-sm text-primary mb-1 group-hover:text-electric transition-colors line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-2 flex-1 line-clamp-2 hidden sm:block">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                          {post.published_at && (
+                            <span className="flex items-center gap-1">
+                              <Calendar size={10} />
+                              {new Date(post.published_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                            </span>
+                          )}
+                          {post.read_time && (
+                            <span className="flex items-center gap-1"><Clock size={10} /> {post.read_time}</span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </article>
+                    </article>
+                  </Link>
                 </ScrollReveal>
               ))}
             </div>
