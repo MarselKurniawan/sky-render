@@ -1,42 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
-import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock, Music, Building2, Users, Mic2, Loader2 } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
 import BannerAd from "@/components/BannerAd";
+import ProfilingBanner from "@/components/ProfilingBanner";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
-const banners = [
-  {
-    icon: Music,
-    tag: "#SaatMusik",
-    title: "Profil Band & Musisi",
-    description: "Ceritakan kisah perjalanan musikmu lewat profil digital yang autentik dan menarik.",
-    gradient: "from-electric/80 to-navy",
-  },
-  {
-    icon: Building2,
-    tag: "#SaatnyaKamuTau",
-    title: "Profil Instansi & Organisasi",
-    description: "Bangun citra profesional untuk instansi, komunitas, atau organisasi kamu.",
-    gradient: "from-navy to-electric/60",
-  },
-  {
-    icon: Mic2,
-    tag: "#Saat",
-    title: "Profil Personal Brand",
-    description: "Tampilkan siapa kamu ke dunia — dari kreator, influencer, hingga public figure.",
-    gradient: "from-electric/60 to-navy/90",
-  },
-  {
-    icon: Users,
-    tag: "#SaatnyaKamuTau",
-    title: "Profil Komunitas",
-    description: "Dokumentasikan perjalanan dan pencapaian komunitasmu secara digital.",
-    gradient: "from-navy/80 to-electric",
-  },
-];
-
-// Config: inject banner ad after article index (0-based)
 const AD_AFTER_INDEX = 1;
 
 interface ProfilingArticle {
@@ -51,7 +20,6 @@ interface ProfilingArticle {
 }
 
 const ProfilingSection = () => {
-  const [activeBanner, setActiveBanner] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [articles, setArticles] = useState<ProfilingArticle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,15 +39,8 @@ const ProfilingSection = () => {
     fetchArticles();
   }, []);
 
-  const prevBanner = () => setActiveBanner((p) => (p === 0 ? banners.length - 1 : p - 1));
-  const nextBanner = () => setActiveBanner((p) => (p === banners.length - 1 ? 0 : p + 1));
-
-  const current = banners[activeBanner];
-  const Icon = current.icon;
-
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
-  };
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
   return (
     <section id="profiling" className="py-24">
@@ -93,42 +54,8 @@ const ProfilingSection = () => {
         </ScrollReveal>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* LEFT — Banner Carousel */}
-          <ScrollReveal className="lg:w-[380px] shrink-0" variant="fade">
-            <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${current.gradient} p-8 h-full min-h-[360px] flex flex-col justify-between transition-all duration-500`}>
-              <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-electric/20 blur-[60px]" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-card/20 backdrop-blur flex items-center justify-center mb-4">
-                  <Icon size={28} className="text-primary-foreground" />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-widest text-electric-light bg-card/10 px-3 py-1 rounded-full">
-                  {current.tag}
-                </span>
-                <h3 className="text-2xl font-bold text-primary-foreground mt-4 mb-2">{current.title}</h3>
-                <p className="text-primary-foreground/80 text-sm leading-relaxed">{current.description}</p>
-              </div>
-
-              <div className="relative z-10 flex items-center justify-between mt-6">
-                <div className="flex gap-1.5">
-                  {banners.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveBanner(i)}
-                      className={`h-1.5 rounded-full transition-all ${i === activeBanner ? "w-6 bg-primary-foreground" : "w-1.5 bg-primary-foreground/40"}`}
-                    />
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <button onClick={prevBanner} className="w-8 h-8 rounded-full bg-card/20 backdrop-blur flex items-center justify-center text-primary-foreground hover:bg-card/30 transition-colors">
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button onClick={nextBanner} className="w-8 h-8 rounded-full bg-card/20 backdrop-blur flex items-center justify-center text-primary-foreground hover:bg-card/30 transition-colors">
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
+          {/* LEFT — Submit CTA Banner */}
+          <ProfilingBanner />
 
           {/* RIGHT — Scrollable Articles */}
           <div className="flex-1 min-w-0">
@@ -143,7 +70,7 @@ const ProfilingSection = () => {
                     <ScrollReveal delay={i * 0.06} variant="fade-up">
                       <Link to={`/artikel/${post.slug}`}>
                         <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
-                          <div className={`w-24 h-24 sm:w-32 sm:h-24 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url || "from-electric/60 to-navy"} relative overflow-hidden`}>
+                          <div className={`w-24 h-24 sm:w-32 sm:h-24 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url?.startsWith("http") ? "" : (post.image_url || "from-electric/60 to-navy")} relative overflow-hidden`}>
                             {post.image_url?.startsWith("http") ? (
                               <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
                             ) : (
