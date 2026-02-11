@@ -1,50 +1,63 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BannerAd from "@/components/BannerAd";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import ReactMarkdown from "react-markdown";
 
-// Sample article data (will be from DB later)
-const sampleArticles: Record<string, {
+interface Article {
   title: string;
   category: string;
-  date: string;
-  readTime: string;
-  image: string;
-  content: string[];
-}> = {
-  "perjalanan-musik-band-lokal": {
-    title: "Perjalanan Musik Band Lokal: Dari Garasi ke Panggung Besar",
-    category: "musik",
-    date: "8 Feb 2026",
-    readTime: "5 menit",
-    image: "from-electric/60 to-navy",
-    content: [
-      "Setiap band besar punya cerita kecil di baliknya. Begitu juga dengan Senja Kala, sebuah band indie asal Bandung yang memulai perjalanan musiknya dari garasi rumah sang vokalis pada tahun 2021.",
-      "Dengan modal gitar akustik bekas dan semangat yang membara, mereka mulai menulis lagu-lagu pertama mereka. Genre mereka? Campuran indie folk dengan sentuhan musik tradisional Sunda yang membuat mereka unik di tengah lautan band indie Indonesia.",
-      "Titik balik datang ketika single pertama mereka, 'Hujan di Bulan Juni', viral di media sosial. Dalam waktu dua minggu, lagu tersebut diputar lebih dari 500.000 kali di platform streaming. Label rekaman mulai melirik, dan tawaran manggung berdatangan.",
-      "Kini, Senja Kala telah merilis dua album penuh dan tampil di berbagai festival musik besar di Indonesia. Dari Synchronize Fest hingga Java Jazz Festival, mereka membuktikan bahwa musik yang autentik selalu menemukan audiensnya.",
-      "Profil digital yang kami buatkan untuk Senja Kala mencakup dokumentasi perjalanan musik mereka, galeri foto profesional, diskografi lengkap, dan halaman merchandise. Semua dalam satu platform yang mencerminkan identitas visual band mereka.",
-    ],
-  },
-  "profil-dinas-pariwisata-kota-bandung": {
-    title: "Profil Dinas Pariwisata Kota Bandung: Inovasi Digital",
-    category: "instansi",
-    date: "5 Feb 2026",
-    readTime: "7 menit",
-    image: "from-navy to-electric/50",
-    content: [
-      "Di era digital, instansi pemerintah pun perlu hadir secara online dengan cara yang menarik dan informatif. Dinas Pariwisata Kota Bandung menjadi salah satu contoh terbaik transformasi digital di sektor pemerintahan.",
-      "Kami dipercaya untuk membangun profil digital mereka yang tidak hanya informatif, tetapi juga interaktif. Pengunjung bisa menjelajahi peta wisata interaktif, membaca cerita di balik setiap destinasi, dan bahkan memesan tiket langsung.",
-      "Hasilnya? Dalam 6 bulan pertama setelah peluncuran, traffic website meningkat 340% dan engagement di media sosial naik 200%. Yang lebih penting, kunjungan wisatawan ke destinasi-destinasi yang dipromosikan meningkat signifikan.",
-      "Profil digital ini juga mencakup dashboard analitik real-time yang membantu Dinas Pariwisata memahami tren kunjungan dan preferensi wisatawan, sehingga mereka bisa membuat keputusan berbasis data.",
-    ],
-  },
-};
+  article_type: string;
+  created_at: string;
+  read_time: string | null;
+  image_url: string | null;
+  content: string | null;
+  excerpt: string | null;
+  hashtags: string[] | null;
+  seo_title: string | null;
+  seo_description: string | null;
+}
 
 const ArticleDetail = () => {
   const { slug } = useParams();
-  const article = slug ? sampleArticles[slug] : null;
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    const fetch = async () => {
+      const { data } = await supabase
+        .from("articles")
+        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description")
+        .eq("slug", slug)
+        .eq("is_published", true)
+        .maybeSingle();
+      setArticle(data);
+      setLoading(false);
+      if (data?.seo_title) document.title = data.seo_title;
+      else if (data?.title) document.title = data.title;
+    };
+    fetch();
+  }, [slug]);
+
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+
+  const backPath = article?.article_type === "profiling" ? "/profiling" : "/";
+  const backLabel = article?.article_type === "profiling" ? "Kembali ke Profiling" : "Kembali";
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-24 pb-16 flex justify-center"><Loader2 className="animate-spin text-electric" size={24} /></main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -61,46 +74,64 @@ const ArticleDetail = () => {
     );
   }
 
+  // Split content into paragraphs for ad injection
+  const paragraphs = article.content?.split("\n").filter((p) => p.trim()) ?? [];
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
-            {/* Back */}
-            <Link to="/profiling" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-electric transition-colors mb-6">
-              <ArrowLeft size={16} /> Kembali ke Profiling
+            <Link to={backPath} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-electric transition-colors mb-6">
+              <ArrowLeft size={16} /> {backLabel}
             </Link>
 
             {/* Hero Image */}
-            <div className={`w-full h-48 sm:h-64 rounded-2xl bg-gradient-to-br ${article.image} mb-8 relative overflow-hidden`}>
-              <div className="absolute inset-0 bg-primary/10" />
-            </div>
+            {article.image_url?.startsWith("http") ? (
+              <img src={article.image_url} alt={article.title} className="w-full h-48 sm:h-64 rounded-2xl object-cover mb-8" />
+            ) : (
+              <div className={`w-full h-48 sm:h-64 rounded-2xl bg-gradient-to-br ${article.image_url || "from-electric/60 to-navy"} mb-8 relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-primary/10" />
+              </div>
+            )}
 
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="text-xs font-bold uppercase tracking-widest text-electric bg-electric/10 px-3 py-1 rounded-full">
                 {article.category}
               </span>
-              <span className="flex items-center gap-1 text-xs text-muted-foreground"><Calendar size={12} /> {article.date}</span>
-              <span className="flex items-center gap-1 text-xs text-muted-foreground"><Clock size={12} /> {article.readTime}</span>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground"><Calendar size={12} /> {formatDate(article.created_at)}</span>
+              {article.read_time && <span className="flex items-center gap-1 text-xs text-muted-foreground"><Clock size={12} /> {article.read_time}</span>}
             </div>
 
-            {/* Title */}
+            {/* Hashtags */}
+            {article.hashtags && article.hashtags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {article.hashtags.map((tag, i) => (
+                  <span key={i} className="text-xs text-electric">{tag.startsWith("#") ? tag : `#${tag}`}</span>
+                ))}
+              </div>
+            )}
+
             <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-6 leading-tight">{article.title}</h1>
 
-            {/* Content */}
-            <div className="space-y-4">
-              {article.content.map((paragraph, i) => (
-                <div key={i}>
-                  <p className="text-muted-foreground leading-relaxed">{paragraph}</p>
-                  {/* Inject ad after 2nd paragraph */}
-                  {i === 1 && <BannerAd />}
-                </div>
-              ))}
+            {/* Content with ad injection */}
+            <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
+              {paragraphs.length > 0 ? (
+                paragraphs.map((p, i) => (
+                  <div key={i}>
+                    <ReactMarkdown>{p}</ReactMarkdown>
+                    {i === 1 && <BannerAd />}
+                  </div>
+                ))
+              ) : article.excerpt ? (
+                <p className="leading-relaxed">{article.excerpt}</p>
+              ) : (
+                <p className="text-muted-foreground italic">Konten belum tersedia.</p>
+              )}
             </div>
 
-            {/* Share */}
             <div className="mt-10 pt-6 border-t border-border flex items-center gap-3">
               <Share2 size={16} className="text-muted-foreground" />
               <span className="text-sm text-muted-foreground">Bagikan artikel ini</span>
