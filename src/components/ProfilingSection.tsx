@@ -38,6 +38,7 @@ const banners = [
 const profilingArticles = [
   {
     id: 1,
+    slug: "perjalanan-musik-band-lokal",
     title: "Perjalanan Musik Band Lokal: Dari Garasi ke Panggung Besar",
     excerpt: "Kisah inspiratif sebuah band indie lokal yang berhasil menembus industri musik nasional.",
     category: "musik",
@@ -47,6 +48,7 @@ const profilingArticles = [
   },
   {
     id: 2,
+    slug: "profil-dinas-pariwisata-kota-bandung",
     title: "Profil Dinas Pariwisata Kota Bandung: Inovasi Digital",
     excerpt: "Bagaimana Dinas Pariwisata menggunakan profil digital untuk mempromosikan destinasi wisata.",
     category: "instansi",
@@ -56,6 +58,7 @@ const profilingArticles = [
   },
   {
     id: 3,
+    slug: "komunitas-fotografi-jakarta",
     title: "Komunitas Fotografi Jakarta: Cerita di Balik Lensa",
     excerpt: "Dokumentasi perjalanan komunitas fotografi terbesar di Jakarta selama 5 tahun terakhir.",
     category: "komunitas",
@@ -65,6 +68,7 @@ const profilingArticles = [
   },
   {
     id: 4,
+    slug: "personal-brand-kreator-konten",
     title: "Personal Brand: Bagaimana Kreator Konten Ini Membangun Audiensnya",
     excerpt: "Strategi dan perjalanan seorang kreator konten dalam membangun personal brand yang kuat.",
     category: "personal",
@@ -74,6 +78,7 @@ const profilingArticles = [
   },
   {
     id: 5,
+    slug: "sekolah-musik-yamaha",
     title: "Sekolah Musik Yamaha: Profil Institusi Pendidikan Musik",
     excerpt: "Melihat lebih dekat bagaimana institusi pendidikan musik membangun profil digitalnya.",
     category: "instansi",
@@ -151,6 +156,7 @@ const ProfilingSection = () => {
               {profilingArticles.map((post, i) => (
                 <div key={post.id}>
                   <ScrollReveal delay={i * 0.06} variant="fade-up">
+                    <Link to={`/artikel/${post.slug}`}>
                     <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
                       <div className={`w-24 h-24 sm:w-32 sm:h-24 shrink-0 rounded-xl bg-gradient-to-br ${post.image} relative overflow-hidden`}>
                         <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
@@ -171,6 +177,7 @@ const ProfilingSection = () => {
                         </div>
                       </div>
                     </article>
+                    </Link>
                   </ScrollReveal>
 
                   {/* Inject Banner Ad after configured index */}
