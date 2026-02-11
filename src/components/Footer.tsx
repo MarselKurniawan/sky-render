@@ -8,8 +8,8 @@ const Footer = () => {
         <ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
-              <h3 className="text-xl font-bold text-primary mb-3">
-                Saat<span className="text-electric">.</span>
+              <h3 className="text-xl font-extrabold mb-3" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                <span style={{ color: '#000000' }}>Sa</span><span style={{ color: '#003161' }}>at</span><span style={{ color: '#ef7722' }}>.</span>
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Creative digital agency yang membantu brand berkembang melalui strategi digital, eksekusi kreatif, dan teknologi yang scalable.
