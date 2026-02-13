@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import RichTextEditor from "@/components/RichTextEditor";
 
 interface Article {
   id: string;
@@ -25,6 +26,7 @@ interface Article {
   seo_title: string | null;
   seo_description: string | null;
   seo_keywords: string[] | null;
+  og_image_url: string | null;
   created_at: string;
 }
 
@@ -32,6 +34,7 @@ const emptyForm = {
   title: "", slug: "", excerpt: "", content: "", category: "digital-marketing",
   article_type: "blog", hashtags: "", image_url: "", read_time: "",
   is_published: false, seo_title: "", seo_description: "", seo_keywords: "",
+  og_image_url: "",
 };
 
 const AdminArticles = () => {
@@ -60,6 +63,7 @@ const AdminArticles = () => {
       read_time: a.read_time ?? "", is_published: a.is_published,
       seo_title: a.seo_title ?? "", seo_description: a.seo_description ?? "",
       seo_keywords: a.seo_keywords?.join(", ") ?? "",
+      og_image_url: a.og_image_url ?? "",
     });
     setEditing(a.id);
     setOpen(true);
@@ -78,6 +82,7 @@ const AdminArticles = () => {
       published_at: form.is_published ? new Date().toISOString() : null,
       seo_title: form.seo_title || null, seo_description: form.seo_description || null,
       seo_keywords: form.seo_keywords ? form.seo_keywords.split(",").map((k) => k.trim()).filter(Boolean) : null,
+      og_image_url: form.og_image_url || null,
     };
 
     const { error } = editing
@@ -133,7 +138,7 @@ const AdminArticles = () => {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "Edit Artikel" : "Tambah Artikel"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -157,9 +162,15 @@ const AdminArticles = () => {
               </div>
             </div>
             <div><Label>Excerpt</Label><Textarea value={form.excerpt} onChange={(e) => setField("excerpt", e.target.value)} rows={2} /></div>
-            <div><Label>Content</Label><Textarea value={form.content} onChange={(e) => setField("content", e.target.value)} rows={8} /></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div><Label>Image URL</Label><Input value={form.image_url} onChange={(e) => setField("image_url", e.target.value)} /></div>
+            
+            <div>
+              <Label>Content (Rich Editor)</Label>
+              <RichTextEditor content={form.content} onChange={(html) => setField("content", html)} />
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div><Label>Featured Image URL</Label><Input value={form.image_url} onChange={(e) => setField("image_url", e.target.value)} /></div>
+              <div><Label>OG Image URL</Label><Input value={form.og_image_url} onChange={(e) => setField("og_image_url", e.target.value)} placeholder="URL gambar untuk share link" /></div>
               <div><Label>Read Time</Label><Input value={form.read_time} onChange={(e) => setField("read_time", e.target.value)} placeholder="5 menit" /></div>
             </div>
             <div><Label>Hashtags (comma-separated)</Label><Input value={form.hashtags} onChange={(e) => setField("hashtags", e.target.value)} placeholder="#SaatnyaKamuTau, #SaatMusik" /></div>
