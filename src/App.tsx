@@ -15,7 +15,7 @@ import AdminArticles from "./pages/admin/AdminArticles";
 import AdminPortfolios from "./pages/admin/AdminPortfolios";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminSiteSettings from "./pages/admin/AdminSiteSettings";
-import AdminSeo from "./pages/admin/AdminSeo";
+import AdminMedia from "./pages/admin/AdminMedia";
 
 const queryClient = new QueryClient();
 
@@ -36,8 +36,8 @@ const App = () => (
               <Route path="articles" element={<AdminArticles />} />
               <Route path="portfolios" element={<AdminPortfolios />} />
               <Route path="services" element={<AdminServices />} />
+              <Route path="media" element={<AdminMedia />} />
               <Route path="site-settings" element={<AdminSiteSettings />} />
-              <Route path="seo" element={<AdminSeo />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

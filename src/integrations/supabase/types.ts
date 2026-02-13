@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      article_categories: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       articles: {
         Row: {
           article_type: string
@@ -23,6 +47,7 @@ export type Database = {
           created_at: string
           excerpt: string | null
           hashtags: string[] | null
+          hidden_keywords: string | null
           id: string
           image_url: string | null
           is_published: boolean
@@ -44,6 +69,7 @@ export type Database = {
           created_at?: string
           excerpt?: string | null
           hashtags?: string[] | null
+          hidden_keywords?: string | null
           id?: string
           image_url?: string | null
           is_published?: boolean
@@ -65,6 +91,7 @@ export type Database = {
           created_at?: string
           excerpt?: string | null
           hashtags?: string[] | null
+          hidden_keywords?: string | null
           id?: string
           image_url?: string | null
           is_published?: boolean
@@ -91,6 +118,7 @@ export type Database = {
           image_url: string | null
           is_published: boolean
           metric: string | null
+          price: string | null
           title: string
           updated_at: string
         }
@@ -104,6 +132,7 @@ export type Database = {
           image_url?: string | null
           is_published?: boolean
           metric?: string | null
+          price?: string | null
           title: string
           updated_at?: string
         }
@@ -117,6 +146,7 @@ export type Database = {
           image_url?: string | null
           is_published?: boolean
           metric?: string | null
+          price?: string | null
           title?: string
           updated_at?: string
         }
