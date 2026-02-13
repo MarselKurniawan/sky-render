@@ -21,6 +21,7 @@ interface Article {
   seo_title: string | null;
   seo_description: string | null;
   og_image_url: string | null;
+  hidden_keywords: string | null;
 }
 
 const ArticleDetail = () => {
@@ -33,7 +34,7 @@ const ArticleDetail = () => {
     const fetchArticle = async () => {
       const { data } = await supabase
         .from("articles")
-        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url")
+        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url, hidden_keywords")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();
@@ -220,6 +221,12 @@ const ArticleDetail = () => {
           </div>
         </div>
       </main>
+      {/* Hidden keywords per article */}
+      {article.hidden_keywords && (
+        <div aria-hidden="true" style={{ fontSize: "1px", lineHeight: "1px", color: "transparent", overflow: "hidden", height: "1px", width: "1px", position: "absolute", top: 0, left: 0, userSelect: "none", pointerEvents: "none" }}>
+          {article.hidden_keywords}
+        </div>
+      )}
       <Footer />
     </div>
   );

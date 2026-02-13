@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { FileText, Briefcase, Layers, Settings, Search, LogOut, LayoutDashboard, Image } from "lucide-react";
+import { FileText, Layers, Settings, LogOut, LayoutDashboard, Image, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -10,8 +10,8 @@ const navItems = [
   { to: "/admin/articles", icon: FileText, label: "Artikel" },
   { to: "/admin/portfolios", icon: Image, label: "Portfolio" },
   { to: "/admin/services", icon: Layers, label: "Layanan" },
+  { to: "/admin/media", icon: FolderOpen, label: "Media" },
   { to: "/admin/site-settings", icon: Settings, label: "Site Settings" },
-  { to: "/admin/seo", icon: Search, label: "SEO" },
 ];
 
 const AdminLayout = () => {
@@ -42,7 +42,6 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Sidebar */}
       <aside className="w-60 border-r border-border bg-card flex flex-col shrink-0">
         <div className="p-4 border-b border-border">
           <Link to="/" className="text-lg font-bold text-primary">
@@ -72,8 +71,6 @@ const AdminLayout = () => {
           </Button>
         </div>
       </aside>
-
-      {/* Main content */}
       <main className="flex-1 overflow-auto">
         <div className="p-6 max-w-6xl mx-auto">
           <Outlet />
