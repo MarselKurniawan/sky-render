@@ -1,14 +1,42 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logoSaat from "@/assets/logo-saat.png";
-import { supabase } from "@/integrations/supabase/client";
 
-interface ServiceItem {
-  title: string;
-  items: string[] | null;
-  icon_name: string | null;
-}
+const megaServices = [
+  {
+    title: "Website & System Development",
+    items: ["Company Profile", "Landing Page", "E-Commerce", "Sistem Manajemen Internal", "Dashboard & Admin Panel", "Aplikasi Web Custom"],
+  },
+  {
+    title: "Branding & Visual Identity",
+    items: ["Logo Design", "Color Palette & Typography", "Brand Guideline", "Visual System"],
+  },
+  {
+    title: "Digital Campaign Strategy",
+    items: ["Meta Ads (Facebook & Instagram)", "Google Ads", "TikTok Ads", "Influencer Marketing"],
+  },
+  {
+    title: "Social Media Management",
+    items: ["Content Planning", "Pembuatan Konten", "Scheduling & Posting", "Community Management"],
+  },
+  {
+    title: "SEO Optimization",
+    items: ["On-Page SEO", "Technical SEO", "Keyword Research", "Link Building"],
+  },
+  {
+    title: "Visual Content Production",
+    items: ["Poster & Banner", "Feeds Instagram", "Konten TikTok", "Foto Produk"],
+  },
+  {
+    title: "Company Profile Video",
+    items: ["Video Company Profile", "Brand Story Video", "Testimoni Video"],
+  },
+  {
+    title: "White Label Content",
+    items: ["Konten Social Media", "Template Desain", "Copywriting", "Konten Blog & Artikel"],
+  },
+];
 
 const navLinks = [
   { label: "Layanan", href: "#services", hasMega: true },
@@ -23,21 +51,8 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
-  const [services, setServices] = useState<ServiceItem[]>([]);
   const megaRef = useRef<HTMLDivElement>(null);
   const megaTimeout = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      const { data } = await supabase
-        .from("services")
-        .select("title, items, icon_name")
-        .eq("is_published", true)
-        .order("display_order");
-      if (data) setServices(data);
-    };
-    fetchServices();
-  }, []);
 
   const handleMegaEnter = () => {
     clearTimeout(megaTimeout.current);
@@ -73,30 +88,28 @@ const Navbar = () => {
                 </a>
 
                 <AnimatePresence>
-                  {megaOpen && services.length > 0 && (
+                  {megaOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[680px] rounded-2xl bg-card border border-border shadow-elevated p-6 z-50"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[720px] rounded-2xl bg-card border border-border shadow-elevated p-6 z-50"
                     >
-                      <div className="grid grid-cols-3 gap-5">
-                        {services.map((svc) => (
+                      <div className="grid grid-cols-4 gap-5">
+                        {megaServices.map((svc) => (
                           <div key={svc.title}>
                             <h4 className="text-xs font-bold text-primary uppercase tracking-wider mb-2">
                               {svc.title}
                             </h4>
-                            {svc.items && svc.items.length > 0 && (
-                              <ul className="space-y-1">
-                                {svc.items.map((item) => (
-                                  <li key={item} className="text-xs text-muted-foreground hover:text-electric transition-colors cursor-default flex items-start gap-1.5">
-                                    <span className="mt-1.5 w-1 h-1 rounded-full bg-electric shrink-0" />
-                                    {item}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
+                            <ul className="space-y-1">
+                              {svc.items.map((item) => (
+                                <li key={item} className="text-xs text-muted-foreground hover:text-electric transition-colors cursor-default flex items-start gap-1.5">
+                                  <span className="mt-1.5 w-1 h-1 rounded-full bg-electric shrink-0" />
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         ))}
                       </div>
