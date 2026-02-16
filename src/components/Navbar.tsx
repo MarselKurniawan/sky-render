@@ -99,9 +99,12 @@ const Navbar = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="mt-5 pt-4 border-t border-border">
+                      <div className="mt-5 pt-4 border-t border-border flex items-center justify-between">
                         <a href="#services" className="text-xs font-semibold text-electric hover:underline">
                           Lihat Semua Layanan →
+                        </a>
+                        <a href="/pricelist" className="text-xs font-semibold text-electric hover:underline">
+                          Lihat Pricelist →
                         </a>
                       </div>
                     </motion.div>
