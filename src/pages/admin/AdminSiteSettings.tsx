@@ -63,10 +63,16 @@ const AdminSiteSettings = () => {
 
   const handleSaveAll = async () => {
     setSaving(true);
-    // Save site settings
+    // Save site settings - upsert by key
     for (const s of settings) {
       if (s.id.startsWith("new-")) {
-        await supabase.from("site_settings").insert({ key: s.key, value: s.value });
+        // Check if key already exists
+        const { data: existing } = await supabase.from("site_settings").select("id").eq("key", s.key).maybeSingle();
+        if (existing) {
+          await supabase.from("site_settings").update({ value: s.value }).eq("id", existing.id);
+        } else {
+          await supabase.from("site_settings").insert({ key: s.key, value: s.value });
+        }
       } else {
         await supabase.from("site_settings").update({ value: s.value }).eq("id", s.id);
       }

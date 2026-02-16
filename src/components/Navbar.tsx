@@ -12,6 +12,7 @@ interface ServiceItem {
 
 const navLinks = [
   { label: "Layanan", href: "#services", hasMega: true },
+  { label: "Pricelist", href: "/pricelist" },
   { label: "Kenapa Kami", href: "#why-us" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Proses", href: "#process" },
@@ -99,12 +100,9 @@ const Navbar = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="mt-5 pt-4 border-t border-border flex items-center justify-between">
+                      <div className="mt-5 pt-4 border-t border-border">
                         <a href="#services" className="text-xs font-semibold text-electric hover:underline">
                           Lihat Semua Layanan →
-                        </a>
-                        <a href="/pricelist" className="text-xs font-semibold text-electric hover:underline">
-                          Lihat Pricelist →
                         </a>
                       </div>
                     </motion.div>

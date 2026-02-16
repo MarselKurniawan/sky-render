@@ -78,17 +78,20 @@ const ArticleDetail = () => {
   const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str);
 
   const handleShare = async () => {
-    // Use edge function URL for proper OG meta when shared
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const origin = window.location.origin;
     const shareUrl = `${supabaseUrl}/functions/v1/og-share?slug=${slug}&origin=${encodeURIComponent(origin)}`;
     const title = article?.seo_title || article?.title || "Saat.";
 
-    if (navigator.share) {
-      await navigator.share({ title, url: shareUrl });
-    } else {
-      await navigator.clipboard.writeText(shareUrl);
-      alert("Link berhasil disalin!");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url: shareUrl });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Link berhasil disalin!");
+      }
+    } catch (e) {
+      // user cancelled share
     }
   };
 
