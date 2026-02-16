@@ -15,7 +15,7 @@ interface SeoSetting {
   og_image_url: string | null; canonical_url: string | null;
 }
 
-const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords"];
+const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords", "whatsapp_number"];
 
 const AdminSiteSettings = () => {
   const [settings, setSettings] = useState<Setting[]>([]);
@@ -162,6 +162,11 @@ const AdminSiteSettings = () => {
           </TabsContent>
 
           <TabsContent value="tracking" className="space-y-6 mt-4">
+            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+              <h3 className="text-sm font-semibold text-primary">📱 WhatsApp CTA</h3>
+              <p className="text-xs text-muted-foreground">Nomor WhatsApp untuk semua tombol CTA di website (format: 6285117688118)</p>
+              <div><Label className="text-xs">Nomor WhatsApp</Label><Input value={getVal("whatsapp_number")} onChange={e => updateByKey("whatsapp_number", e.target.value)} placeholder="6285117688118" /></div>
+            </div>
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">📊 Google Analytics & Search Console</h3>
               <div><Label className="text-xs">Google Analytics ID</Label><Input value={getVal("google_analytics_id")} onChange={e => updateByKey("google_analytics_id", e.target.value)} placeholder="G-XXXXXXXXXX" /></div>

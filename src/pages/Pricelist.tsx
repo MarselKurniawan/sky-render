@@ -29,14 +29,16 @@ const Pricelist = () => {
   const [services, setServices] = useState<ServiceWithPrices[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("");
+  const [waNumber, setWaNumber] = useState("6285117688118");
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data: svcData } = await supabase
-        .from("services")
-        .select("id, title, slug, description")
-        .eq("is_published", true)
-        .order("display_order");
+    const fetchData = async () => {
+      const [{ data: svcData }, { data: waData }] = await Promise.all([
+        supabase.from("services").select("id, title, slug, description").eq("is_published", true).order("display_order"),
+        supabase.from("site_settings").select("value").eq("key", "whatsapp_number").maybeSingle(),
+      ]);
+
+      if (waData?.value) setWaNumber(waData.value);
 
       if (!svcData) return;
 
@@ -59,7 +61,7 @@ const Pricelist = () => {
       }
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, []);
 
   const activeService = services.find((s) => s.id === activeTab);
@@ -201,7 +203,7 @@ const Pricelist = () => {
 
                           {/* CTA */}
                           <a
-                            href={`https://wa.me/6285117688118?text=${encodeURIComponent(`Halo, saya tertarik dengan paket ${pkg.name} (${activeService?.title}). Bisa info lebih lanjut?`)}`}
+                            href={`https://wa.me/${waNumber}?text=${encodeURIComponent(`Halo, saya tertarik dengan paket ${pkg.name} (${activeService?.title}). Bisa info lebih lanjut?`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`block text-center py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${
@@ -231,7 +233,7 @@ const Pricelist = () => {
                       Konsultasikan kebutuhan spesifik bisnis Anda. Kami siap membantu dengan solusi terbaik.
                     </p>
                     <a
-                      href="https://wa.me/6285117688118?text=Halo%20saya%20ingin%20konsultasi%20paket%20custom"
+                      href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Halo saya ingin konsultasi paket custom")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block bg-electric text-accent-foreground px-8 py-3 rounded-xl font-semibold text-sm hover:bg-electric-light transition-colors"
