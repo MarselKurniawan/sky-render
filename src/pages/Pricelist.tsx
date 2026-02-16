@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -24,6 +25,7 @@ interface ServiceWithPrices {
 
 const Pricelist = () => {
   useSeo("/pricelist");
+  const [searchParams] = useSearchParams();
   const [services, setServices] = useState<ServiceWithPrices[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("");
@@ -49,7 +51,12 @@ const Pricelist = () => {
       })).filter(s => s.prices.length > 0);
 
       setServices(grouped);
-      if (grouped.length > 0) setActiveTab(grouped[0].id);
+      const tabFromUrl = searchParams.get("tab");
+      if (tabFromUrl && grouped.some(s => s.id === tabFromUrl)) {
+        setActiveTab(tabFromUrl);
+      } else if (grouped.length > 0) {
+        setActiveTab(grouped[0].id);
+      }
       setLoading(false);
     };
     fetch();
@@ -194,7 +201,7 @@ const Pricelist = () => {
 
                           {/* CTA */}
                           <a
-                            href="https://wa.me/6281234567890?text=Halo%20saya%20tertarik%20dengan%20paket%20" 
+                            href={`https://wa.me/6285117688118?text=${encodeURIComponent(`Halo, saya tertarik dengan paket ${pkg.name} (${activeService?.title}). Bisa info lebih lanjut?`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`block text-center py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${
@@ -224,7 +231,7 @@ const Pricelist = () => {
                       Konsultasikan kebutuhan spesifik bisnis Anda. Kami siap membantu dengan solusi terbaik.
                     </p>
                     <a
-                      href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20konsultasi%20paket%20custom"
+                      href="https://wa.me/6285117688118?text=Halo%20saya%20ingin%20konsultasi%20paket%20custom"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block bg-electric text-accent-foreground px-8 py-3 rounded-xl font-semibold text-sm hover:bg-electric-light transition-colors"
