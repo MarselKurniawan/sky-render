@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import logoSaat from "@/assets/logo-saat.png";
 
 const megaServices = [
@@ -39,11 +38,7 @@ const megaServices = [
   },
 ];
 
-interface PricelistCategory {
-  id: string;
-  title: string;
-  slug: string;
-}
+const pricelistCategories = megaServices.map(s => s.title);
 
 const navLinks = [
   { label: "Layanan", href: "#services", hasMega: true },
@@ -59,34 +54,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [priceDropOpen, setPriceDropOpen] = useState(false);
-  const [priceCategories, setPriceCategories] = useState<PricelistCategory[]>([]);
   const megaRef = useRef<HTMLDivElement>(null);
   const priceRef = useRef<HTMLDivElement>(null);
   const megaTimeout = useRef<ReturnType<typeof setTimeout>>();
   const priceTimeout = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data: svcData } = await supabase
-        .from("services")
-        .select("id, title, slug")
-        .eq("is_published", true)
-        .order("display_order");
-
-      const { data: priceData } = await supabase
-        .from("service_prices")
-        .select("service_id")
-        .limit(100);
-
-      if (svcData) {
-        const withPrices = svcData.filter(s =>
-          (priceData ?? []).some(p => p.service_id === s.id)
-        );
-        setPriceCategories(withPrices);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const handleMegaEnter = () => {
     clearTimeout(megaTimeout.current);
@@ -187,19 +158,15 @@ const Navbar = () => {
                       transition={{ duration: 0.2 }}
                       className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 rounded-xl bg-card border border-border shadow-elevated py-2 z-50"
                     >
-                      {priceCategories.length > 0 ? (
-                        priceCategories.map((cat) => (
+                      {pricelistCategories.map((cat, i) => (
                           <a
-                            key={cat.id}
-                            href={`/pricelist?tab=${cat.id}`}
+                            key={i}
+                            href={`/pricelist`}
                             className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
                           >
-                            {cat.title}
+                            {cat}
                           </a>
-                        ))
-                      ) : (
-                        <span className="block px-4 py-2 text-xs text-muted-foreground italic">Belum ada data</span>
-                      )}
+                        ))}
                       <div className="border-t border-border mt-1 pt-1">
                         <a href="/pricelist" className="block px-4 py-2 text-xs font-semibold text-electric hover:underline">
                           Lihat Semua Pricelist →
