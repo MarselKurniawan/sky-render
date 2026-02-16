@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import logoSaat from "@/assets/logo-saat.png";
 
 const megaServices = [
@@ -38,9 +39,15 @@ const megaServices = [
   },
 ];
 
+interface PricelistCategory {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 const navLinks = [
   { label: "Layanan", href: "#services", hasMega: true },
-  { label: "Pricelist", href: "/pricelist" },
+  { label: "Pricelist", href: "/pricelist", hasDropdown: true },
   { label: "Kenapa Kami", href: "#why-us" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Proses", href: "#process" },
