@@ -32,6 +32,7 @@ const App = () => (
             <Route path="/profiling" element={<Profiling />} />
             <Route path="/pricelist" element={<Pricelist />} />
             <Route path="/artikel/:slug" element={<ArticleDetail />} />
+            <Route path="/:slug" element={<ArticleDetail />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />

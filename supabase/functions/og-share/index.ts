@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 Deno.serve(async (req) => {
@@ -34,7 +34,8 @@ Deno.serve(async (req) => {
   const title = escapeHtml(data?.seo_title || data?.title || "Saat.");
   const description = escapeHtml(data?.seo_description || data?.excerpt || "Saat. — Creative Digital Agency");
   const image = data?.og_image_url || data?.image_url || `${origin}/favicon.png`;
-  const articleUrl = `${origin}/artikel/${slug}`;
+  // Clean URL: domain.com/slug
+  const articleUrl = `${origin}/${slug}`;
 
   const html = `<!DOCTYPE html>
 <html lang="id">
