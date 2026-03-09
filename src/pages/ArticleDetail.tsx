@@ -118,14 +118,22 @@ const ArticleDetail = () => {
     }
   };
 
+  // Build banner props
+  const bannerProps = banner ? {
+    title: banner.title,
+    description: banner.description ?? undefined,
+    ctaText: banner.cta_text ?? undefined,
+    ctaUrl: banner.cta_url ?? undefined,
+    badgeText: banner.badge_text ?? undefined,
+  } : undefined;
+
   // Split HTML content into chunks for ad injection
   const renderContentWithAds = (content: string) => {
     if (isHtml(content)) {
-      // Parse HTML, split by block elements, inject ads
       const parser = new DOMParser();
       const doc = parser.parseFromString(content, "text/html");
       const children = Array.from(doc.body.children);
-      const adPositions = [2, 5]; // inject ads after element 2 and 5
+      const adPositions = [2, 5];
 
       const chunks: { html: string; adAfter: boolean }[] = [];
       children.forEach((child, i) => {
@@ -140,7 +148,7 @@ const ArticleDetail = () => {
           {chunks.map((chunk, i) => (
             <div key={i}>
               <div dangerouslySetInnerHTML={{ __html: chunk.html }} />
-              {chunk.adAfter && <InArticleAd />}
+              {chunk.adAfter && bannerProps && <InArticleAd {...bannerProps} />}
             </div>
           ))}
         </div>
@@ -154,7 +162,7 @@ const ArticleDetail = () => {
         {paragraphs.map((p, i) => (
           <div key={i}>
             <ReactMarkdown>{p}</ReactMarkdown>
-            {i === 2 && <InArticleAd />}
+            {i === 2 && bannerProps && <InArticleAd {...bannerProps} />}
           </div>
         ))}
       </div>
