@@ -49,12 +49,14 @@ const AdminArticles = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [{ data: arts }, { data: cats }] = await Promise.all([
+    const [{ data: arts }, { data: cats }, { data: bans }] = await Promise.all([
       supabase.from("articles").select("*").order("created_at", { ascending: false }),
       supabase.from("article_categories").select("*").order("display_order"),
+      supabase.from("promo_banners").select("id, title, is_active").order("display_order"),
     ]);
     setArticles(arts ?? []);
     setCategories(cats ?? []);
+    setBanners(bans ?? []);
     setLoading(false);
   };
 
