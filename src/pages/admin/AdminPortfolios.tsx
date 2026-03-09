@@ -87,7 +87,7 @@ const AdminPortfolios = () => {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-sm text-primary truncate">{p.title}</h3>
-                <p className="text-xs text-muted-foreground">{p.category} {(p as any).price ? `· ${(p as any).price}` : ""}</p>
+                <p className="text-xs text-muted-foreground">{p.category} {p.price ? `· ${p.price}` : ""}</p>
               </div>
               <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Pencil size={16} /></Button>
               <Button variant="ghost" size="icon" onClick={() => handleDelete(p.id)} className="text-destructive"><Trash2 size={16} /></Button>
