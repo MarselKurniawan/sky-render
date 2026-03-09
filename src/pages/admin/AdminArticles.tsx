@@ -71,7 +71,7 @@ const AdminArticles = () => {
       read_time: a.read_time ?? "", is_published: a.is_published,
       seo_title: a.seo_title ?? "", seo_description: a.seo_description ?? "",
       seo_keywords: a.seo_keywords?.join(", ") ?? "", og_image_url: a.og_image_url ?? "",
-      hidden_keywords: (a as any).hidden_keywords ?? "",
+      hidden_keywords: a.hidden_keywords ?? "", banner_id: a.banner_id ?? "",
     });
     setEditing(a.id); setOpen(true);
   };
