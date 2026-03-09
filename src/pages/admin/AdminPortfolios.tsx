@@ -55,6 +55,7 @@ const AdminPortfolios = () => {
     const payload: any = {
       title: form.title, category: form.category, price: form.price || null,
       image_url: form.image_url || null, display_order: form.display_order, is_published: form.is_published,
+      description: form.description || null, metric: form.metric || null,
     };
     const { error } = editing ? await supabase.from("portfolios").update(payload).eq("id", editing) : await supabase.from("portfolios").insert(payload);
     setSaving(false);
