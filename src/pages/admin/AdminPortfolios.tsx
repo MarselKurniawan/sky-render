@@ -13,11 +13,12 @@ import MediaPickerModal from "@/components/MediaPickerModal";
 interface Portfolio {
   id: string; title: string; category: string; price: string | null;
   image_url: string | null; display_order: number; is_published: boolean;
+  description: string | null; metric: string | null;
 }
 
 interface ServiceOption { id: string; title: string; }
 
-const emptyForm = { title: "", category: "", price: "", image_url: "", display_order: 0, is_published: true };
+const emptyForm = { title: "", category: "", price: "", image_url: "", display_order: 0, is_published: true, description: "", metric: "" };
 
 const AdminPortfolios = () => {
   const [items, setItems] = useState<Portfolio[]>([]);
