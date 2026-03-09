@@ -18,16 +18,17 @@ interface Article {
   category: string; article_type: string; hashtags: string[] | null; image_url: string | null;
   read_time: string | null; is_published: boolean; seo_title: string | null;
   seo_description: string | null; seo_keywords: string[] | null; og_image_url: string | null;
-  hidden_keywords: string | null; created_at: string;
+  hidden_keywords: string | null; created_at: string; banner_id: string | null;
 }
 
 interface Category { id: string; name: string; slug: string; display_order: number; }
+interface BannerOption { id: string; title: string; is_active: boolean; }
 
 const emptyForm = {
   title: "", slug: "", excerpt: "", content: "", category: "",
   article_type: "blog", hashtags: "", image_url: "", read_time: "",
   is_published: false, seo_title: "", seo_description: "", seo_keywords: "",
-  og_image_url: "", hidden_keywords: "",
+  og_image_url: "", hidden_keywords: "", banner_id: "",
 };
 
 const AdminArticles = () => {
