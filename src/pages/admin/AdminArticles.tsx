@@ -90,6 +90,7 @@ const AdminArticles = () => {
       seo_title: form.seo_title || null, seo_description: form.seo_description || null,
       seo_keywords: form.seo_keywords ? form.seo_keywords.split(",").map(k => k.trim()).filter(Boolean) : null,
       og_image_url: form.og_image_url || null, hidden_keywords: form.hidden_keywords || null,
+      banner_id: form.banner_id || null,
     };
     const { error } = editing
       ? await supabase.from("articles").update(payload).eq("id", editing)
