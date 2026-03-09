@@ -236,6 +236,22 @@ const AdminArticles = () => {
             </div>
 
             <div className="border-t border-border pt-4">
+              <h4 className="font-semibold text-sm text-primary mb-3">📢 Banner Promo di Artikel</h4>
+              <Select value={form.banner_id} onValueChange={v => setField("banner_id", v === "none" ? "" : v)}>
+                <SelectTrigger><SelectValue placeholder="Pilih banner (opsional)" /></SelectTrigger>
+                <SelectContent className="bg-card">
+                  <SelectItem value="none">Tanpa Banner</SelectItem>
+                  {banners.map(b => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.title} {!b.is_active ? "(Hidden)" : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground mt-1">Banner akan ditampilkan di dalam konten artikel</p>
+            </div>
+
+            <div className="border-t border-border pt-4">
               <h4 className="font-semibold text-sm text-primary mb-3">SEO & Hidden Keywords</h4>
               <div className="space-y-3">
                 <div><Label>SEO Title</Label><Input value={form.seo_title} onChange={e => setField("seo_title", e.target.value)} /></div>
