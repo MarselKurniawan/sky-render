@@ -45,11 +45,23 @@ const ArticleDetail = () => {
     const fetchArticle = async () => {
       const { data } = await supabase
         .from("articles")
-        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url, hidden_keywords")
+        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url, hidden_keywords, banner_id")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();
       setArticle(data);
+
+      // Fetch banner if article has one
+      if (data?.banner_id) {
+        const { data: bannerData } = await supabase
+          .from("promo_banners")
+          .select("id, title, description, cta_text, cta_url, badge_text")
+          .eq("id", data.banner_id)
+          .eq("is_active", true)
+          .maybeSingle();
+        setBanner(bannerData);
+      }
+
       setLoading(false);
 
       if (data) {
