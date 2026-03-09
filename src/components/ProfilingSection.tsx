@@ -105,7 +105,7 @@ const ProfilingSection = () => {
             <div className="mt-6 text-center lg:text-left">
               <Link
                 to="/profiling"
-                className="inline-flex items-center gap-2 rounded-xl bg-electric px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-electric-light transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-navy-light transition-colors"
               >
                 Lihat Semua Profiling <ArrowRight size={16} />
               </Link>
