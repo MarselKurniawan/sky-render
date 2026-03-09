@@ -34,6 +34,7 @@ const emptyForm = {
 const AdminArticles = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [banners, setBanners] = useState<BannerOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
