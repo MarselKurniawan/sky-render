@@ -44,6 +44,7 @@ const App = () => (
               <Route path="articles" element={<AdminArticles />} />
               <Route path="portfolios" element={<AdminPortfolios />} />
               <Route path="services" element={<AdminServices />} />
+              <Route path="banners" element={<AdminBanners />} />
               <Route path="media" element={<AdminMedia />} />
               <Route path="site-settings" element={<AdminSiteSettings />} />
             </Route>

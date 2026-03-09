@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { FileText, Layers, Settings, LogOut, LayoutDashboard, Image, FolderOpen } from "lucide-react";
+import { FileText, Layers, Settings, LogOut, LayoutDashboard, Image, FolderOpen, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -10,6 +10,7 @@ const navItems = [
   { to: "/admin/articles", icon: FileText, label: "Artikel" },
   { to: "/admin/portfolios", icon: Image, label: "Portfolio" },
   { to: "/admin/services", icon: Layers, label: "Layanan" },
+  { to: "/admin/banners", icon: Megaphone, label: "Banner Promo" },
   { to: "/admin/media", icon: FolderOpen, label: "Media" },
   { to: "/admin/site-settings", icon: Settings, label: "Site Settings" },
 ];
