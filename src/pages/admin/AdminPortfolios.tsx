@@ -45,7 +45,7 @@ const AdminPortfolios = () => {
 
   const openNew = () => { setForm(emptyForm); setEditing(null); setOpen(true); };
   const openEdit = (p: Portfolio) => {
-    setForm({ title: p.title, category: p.category, price: (p as any).price ?? "", image_url: p.image_url ?? "", display_order: p.display_order, is_published: p.is_published });
+    setForm({ title: p.title, category: p.category, price: p.price ?? "", image_url: p.image_url ?? "", display_order: p.display_order, is_published: p.is_published, description: p.description ?? "", metric: p.metric ?? "" });
     setEditing(p.id); setOpen(true);
   };
 
