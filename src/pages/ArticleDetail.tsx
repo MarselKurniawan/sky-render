@@ -101,9 +101,7 @@ const ArticleDetail = () => {
   const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str);
 
   const handleShare = async () => {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const origin = window.location.origin;
-    const shareUrl = `${supabaseUrl}/functions/v1/og-share?slug=${slug}&origin=${encodeURIComponent(origin)}`;
+    const shareUrl = `${window.location.origin}/${slug}`;
     const title = article?.seo_title || article?.title || "Saat.";
 
     try {
