@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
   const title = escapeHtml(data?.seo_title || data?.title || "Saat.");
   const description = escapeHtml(data?.seo_description || data?.excerpt || "Saat. — Creative Digital Agency");
   const image = data?.og_image_url || data?.image_url || `${origin}/favicon.png`;
-  // Clean URL: domain.com/slug
+  // Clean URL: domain.com/slug (no /artikel/ path)
   const articleUrl = `${origin}/${slug}`;
 
   const html = `<!DOCTYPE html>
