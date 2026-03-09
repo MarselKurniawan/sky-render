@@ -8,6 +8,15 @@ import { ArrowLeft, Calendar, Clock, Share2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
 
+interface Banner {
+  id: string;
+  title: string;
+  description: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
+  badge_text: string | null;
+}
+
 interface Article {
   title: string;
   category: string;
@@ -22,6 +31,7 @@ interface Article {
   seo_description: string | null;
   og_image_url: string | null;
   hidden_keywords: string | null;
+  banner_id: string | null;
 }
 
 const ArticleDetail = () => {
