@@ -75,10 +75,10 @@ const HeroSection = () => {
             <div className="relative">
               <img
                 src={heroOrb}
-                alt="Abstract 3D gradient orb"
+                alt="Abstract 3D glass cube"
                 className="w-[350px] sm:w-[450px] lg:w-[500px] animate-float drop-shadow-2xl"
               />
-              <div className="absolute inset-0 rounded-full bg-electric/10 blur-[80px] animate-pulse-glow" />
+              <div className="absolute inset-0 bg-electric/8 blur-[100px]" />
             </div>
           </motion.div>
         </div>
