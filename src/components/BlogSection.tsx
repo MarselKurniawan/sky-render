@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import { ArrowRight, Calendar, Clock, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import BannerAd from "@/components/BannerAd";
