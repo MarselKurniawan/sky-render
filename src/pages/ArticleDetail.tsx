@@ -37,6 +37,7 @@ interface Article {
 const ArticleDetail = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState<Article | null>(null);
+  const [banner, setBanner] = useState<Banner | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
