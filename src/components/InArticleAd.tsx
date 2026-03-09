@@ -5,8 +5,7 @@ interface InArticleAdProps {
   description?: string;
   ctaText?: string;
   ctaUrl?: string;
-  bgColor?: string;
-  textColor?: string;
+  badgeText?: string;
 }
 
 const InArticleAd = ({
@@ -14,15 +13,10 @@ const InArticleAd = ({
   description = "Berlaku hingga akhir Februari 2026 · Konsultasi GRATIS!",
   ctaText = "Klaim Sekarang",
   ctaUrl = "https://wa.me/6285117688118?text=Halo%20Saat.%20Saya%20tertarik%20dengan%20promo%20website.",
-  bgColor = "hsl(var(--navy))",
-  textColor = "hsl(var(--primary-foreground))",
+  badgeText = "🔥 Promo",
 }: InArticleAdProps) => {
   return (
-    <div
-      className="relative rounded-2xl overflow-hidden my-8 border border-border"
-      style={{ backgroundColor: bgColor }}
-    >
-      {/* Subtle pattern dots */}
+    <div className="relative rounded-2xl overflow-hidden my-8 border border-border bg-navy">
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
         backgroundSize: "20px 20px",
@@ -30,26 +24,30 @@ const InArticleAd = ({
 
       <div className="relative z-10 px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left">
-          <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2"
-            style={{ color: bgColor, backgroundColor: textColor }}>
-            🔥 Promo
-          </span>
-          <h3 className="text-lg font-extrabold mb-1 leading-tight" style={{ color: textColor }}>
+          {badgeText && (
+            <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2 bg-primary-foreground text-navy">
+              {badgeText}
+            </span>
+          )}
+          <h3 className="text-lg font-extrabold mb-1 leading-tight text-primary-foreground">
             {title}
           </h3>
-          <p className="text-sm opacity-70" style={{ color: textColor }}>
-            {description}
-          </p>
+          {description && (
+            <p className="text-sm text-primary-foreground/60">
+              {description}
+            </p>
+          )}
         </div>
-        <a
-          href={ctaUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-100 whitespace-nowrap"
-          style={{ backgroundColor: "hsl(var(--electric))", color: "white" }}
-        >
-          {ctaText} <ArrowRight size={14} />
-        </a>
+        {ctaUrl && ctaText && (
+          <a
+            href={ctaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-100 whitespace-nowrap bg-electric text-accent-foreground"
+          >
+            {ctaText} <ArrowRight size={14} />
+          </a>
+        )}
       </div>
     </div>
   );

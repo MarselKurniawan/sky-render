@@ -8,6 +8,15 @@ import { ArrowLeft, Calendar, Clock, Share2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
 
+interface Banner {
+  id: string;
+  title: string;
+  description: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
+  badge_text: string | null;
+}
+
 interface Article {
   title: string;
   category: string;
@@ -22,11 +31,13 @@ interface Article {
   seo_description: string | null;
   og_image_url: string | null;
   hidden_keywords: string | null;
+  banner_id: string | null;
 }
 
 const ArticleDetail = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState<Article | null>(null);
+  const [banner, setBanner] = useState<Banner | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,11 +45,23 @@ const ArticleDetail = () => {
     const fetchArticle = async () => {
       const { data } = await supabase
         .from("articles")
-        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url, hidden_keywords")
+        .select("title, category, article_type, created_at, read_time, image_url, content, excerpt, hashtags, seo_title, seo_description, og_image_url, hidden_keywords, banner_id")
         .eq("slug", slug)
         .eq("is_published", true)
         .maybeSingle();
       setArticle(data);
+
+      // Fetch banner if article has one
+      if (data?.banner_id) {
+        const { data: bannerData } = await supabase
+          .from("promo_banners")
+          .select("id, title, description, cta_text, cta_url, badge_text")
+          .eq("id", data.banner_id)
+          .eq("is_active", true)
+          .maybeSingle();
+        setBanner(bannerData);
+      }
+
       setLoading(false);
 
       if (data) {
@@ -95,14 +118,22 @@ const ArticleDetail = () => {
     }
   };
 
+  // Build banner props
+  const bannerProps = banner ? {
+    title: banner.title,
+    description: banner.description ?? undefined,
+    ctaText: banner.cta_text ?? undefined,
+    ctaUrl: banner.cta_url ?? undefined,
+    badgeText: banner.badge_text ?? undefined,
+  } : undefined;
+
   // Split HTML content into chunks for ad injection
   const renderContentWithAds = (content: string) => {
     if (isHtml(content)) {
-      // Parse HTML, split by block elements, inject ads
       const parser = new DOMParser();
       const doc = parser.parseFromString(content, "text/html");
       const children = Array.from(doc.body.children);
-      const adPositions = [2, 5]; // inject ads after element 2 and 5
+      const adPositions = [2, 5];
 
       const chunks: { html: string; adAfter: boolean }[] = [];
       children.forEach((child, i) => {
@@ -117,7 +148,7 @@ const ArticleDetail = () => {
           {chunks.map((chunk, i) => (
             <div key={i}>
               <div dangerouslySetInnerHTML={{ __html: chunk.html }} />
-              {chunk.adAfter && <InArticleAd />}
+              {chunk.adAfter && bannerProps && <InArticleAd {...bannerProps} />}
             </div>
           ))}
         </div>
@@ -131,7 +162,7 @@ const ArticleDetail = () => {
         {paragraphs.map((p, i) => (
           <div key={i}>
             <ReactMarkdown>{p}</ReactMarkdown>
-            {i === 2 && <InArticleAd />}
+            {i === 2 && bannerProps && <InArticleAd {...bannerProps} />}
           </div>
         ))}
       </div>

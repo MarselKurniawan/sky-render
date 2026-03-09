@@ -18,21 +18,23 @@ interface Article {
   category: string; article_type: string; hashtags: string[] | null; image_url: string | null;
   read_time: string | null; is_published: boolean; seo_title: string | null;
   seo_description: string | null; seo_keywords: string[] | null; og_image_url: string | null;
-  hidden_keywords: string | null; created_at: string;
+  hidden_keywords: string | null; created_at: string; banner_id: string | null;
 }
 
 interface Category { id: string; name: string; slug: string; display_order: number; }
+interface BannerOption { id: string; title: string; is_active: boolean; }
 
 const emptyForm = {
   title: "", slug: "", excerpt: "", content: "", category: "",
   article_type: "blog", hashtags: "", image_url: "", read_time: "",
   is_published: false, seo_title: "", seo_description: "", seo_keywords: "",
-  og_image_url: "", hidden_keywords: "",
+  og_image_url: "", hidden_keywords: "", banner_id: "",
 };
 
 const AdminArticles = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [banners, setBanners] = useState<BannerOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -47,12 +49,14 @@ const AdminArticles = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [{ data: arts }, { data: cats }] = await Promise.all([
+    const [{ data: arts }, { data: cats }, { data: bans }] = await Promise.all([
       supabase.from("articles").select("*").order("created_at", { ascending: false }),
       supabase.from("article_categories").select("*").order("display_order"),
+      supabase.from("promo_banners").select("id, title, is_active").order("display_order"),
     ]);
     setArticles(arts ?? []);
     setCategories(cats ?? []);
+    setBanners(bans ?? []);
     setLoading(false);
   };
 
@@ -67,7 +71,7 @@ const AdminArticles = () => {
       read_time: a.read_time ?? "", is_published: a.is_published,
       seo_title: a.seo_title ?? "", seo_description: a.seo_description ?? "",
       seo_keywords: a.seo_keywords?.join(", ") ?? "", og_image_url: a.og_image_url ?? "",
-      hidden_keywords: (a as any).hidden_keywords ?? "",
+      hidden_keywords: a.hidden_keywords ?? "", banner_id: a.banner_id ?? "",
     });
     setEditing(a.id); setOpen(true);
   };
@@ -86,6 +90,7 @@ const AdminArticles = () => {
       seo_title: form.seo_title || null, seo_description: form.seo_description || null,
       seo_keywords: form.seo_keywords ? form.seo_keywords.split(",").map(k => k.trim()).filter(Boolean) : null,
       og_image_url: form.og_image_url || null, hidden_keywords: form.hidden_keywords || null,
+      banner_id: form.banner_id || null,
     };
     const { error } = editing
       ? await supabase.from("articles").update(payload).eq("id", editing)
@@ -228,6 +233,22 @@ const AdminArticles = () => {
             <div className="grid grid-cols-2 gap-4">
               <div><Label>Read Time</Label><Input value={form.read_time} onChange={e => setField("read_time", e.target.value)} placeholder="5 menit" /></div>
               <div><Label>Hashtags (comma)</Label><Input value={form.hashtags} onChange={e => setField("hashtags", e.target.value)} /></div>
+            </div>
+
+            <div className="border-t border-border pt-4">
+              <h4 className="font-semibold text-sm text-primary mb-3">📢 Banner Promo di Artikel</h4>
+              <Select value={form.banner_id} onValueChange={v => setField("banner_id", v === "none" ? "" : v)}>
+                <SelectTrigger><SelectValue placeholder="Pilih banner (opsional)" /></SelectTrigger>
+                <SelectContent className="bg-card">
+                  <SelectItem value="none">Tanpa Banner</SelectItem>
+                  {banners.map(b => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.title} {!b.is_active ? "(Hidden)" : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground mt-1">Banner akan ditampilkan di dalam konten artikel</p>
             </div>
 
             <div className="border-t border-border pt-4">

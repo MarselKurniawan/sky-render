@@ -42,6 +42,7 @@ export type Database = {
         Row: {
           article_type: string
           author_id: string | null
+          banner_id: string | null
           category: string
           content: string | null
           created_at: string
@@ -64,6 +65,7 @@ export type Database = {
         Insert: {
           article_type?: string
           author_id?: string | null
+          banner_id?: string | null
           category?: string
           content?: string | null
           created_at?: string
@@ -86,6 +88,7 @@ export type Database = {
         Update: {
           article_type?: string
           author_id?: string | null
+          banner_id?: string | null
           category?: string
           content?: string | null
           created_at?: string
@@ -105,7 +108,15 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "articles_banner_id_fkey"
+            columns: ["banner_id"]
+            isOneToOne: false
+            referencedRelation: "promo_banners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       portfolios: {
         Row: {
@@ -176,6 +187,45 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      promo_banners: {
+        Row: {
+          badge_text: string | null
+          created_at: string
+          cta_text: string | null
+          cta_url: string | null
+          description: string | null
+          display_order: number
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          badge_text?: string | null
+          created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          badge_text?: string | null
+          created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
