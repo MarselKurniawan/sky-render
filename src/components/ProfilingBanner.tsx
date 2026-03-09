@@ -89,6 +89,7 @@ const ProfilingBanner = () => {
               <button
                 key={i}
                 onClick={() => setActive(i)}
+                aria-label={`Slide ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all ${i === active ? "w-6 bg-electric" : "w-1.5 bg-primary-foreground/30"}`}
               />
             ))}
