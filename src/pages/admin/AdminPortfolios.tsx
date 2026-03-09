@@ -13,11 +13,12 @@ import MediaPickerModal from "@/components/MediaPickerModal";
 interface Portfolio {
   id: string; title: string; category: string; price: string | null;
   image_url: string | null; display_order: number; is_published: boolean;
+  description: string | null; metric: string | null;
 }
 
 interface ServiceOption { id: string; title: string; }
 
-const emptyForm = { title: "", category: "", price: "", image_url: "", display_order: 0, is_published: true };
+const emptyForm = { title: "", category: "", price: "", image_url: "", display_order: 0, is_published: true, description: "", metric: "" };
 
 const AdminPortfolios = () => {
   const [items, setItems] = useState<Portfolio[]>([]);
@@ -44,7 +45,7 @@ const AdminPortfolios = () => {
 
   const openNew = () => { setForm(emptyForm); setEditing(null); setOpen(true); };
   const openEdit = (p: Portfolio) => {
-    setForm({ title: p.title, category: p.category, price: (p as any).price ?? "", image_url: p.image_url ?? "", display_order: p.display_order, is_published: p.is_published });
+    setForm({ title: p.title, category: p.category, price: p.price ?? "", image_url: p.image_url ?? "", display_order: p.display_order, is_published: p.is_published, description: p.description ?? "", metric: p.metric ?? "" });
     setEditing(p.id); setOpen(true);
   };
 
@@ -54,6 +55,7 @@ const AdminPortfolios = () => {
     const payload: any = {
       title: form.title, category: form.category, price: form.price || null,
       image_url: form.image_url || null, display_order: form.display_order, is_published: form.is_published,
+      description: form.description || null, metric: form.metric || null,
     };
     const { error } = editing ? await supabase.from("portfolios").update(payload).eq("id", editing) : await supabase.from("portfolios").insert(payload);
     setSaving(false);
@@ -85,7 +87,7 @@ const AdminPortfolios = () => {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-sm text-primary truncate">{p.title}</h3>
-                <p className="text-xs text-muted-foreground">{p.category} {(p as any).price ? `· ${(p as any).price}` : ""}</p>
+                <p className="text-xs text-muted-foreground">{p.category} {p.price ? `· ${p.price}` : ""}</p>
               </div>
               <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Pencil size={16} /></Button>
               <Button variant="ghost" size="icon" onClick={() => handleDelete(p.id)} className="text-destructive"><Trash2 size={16} /></Button>
@@ -109,6 +111,8 @@ const AdminPortfolios = () => {
               </Select>
             </div>
             <div><Label>Harga</Label><Input value={form.price} onChange={(e) => setForm(f => ({ ...f, price: e.target.value }))} placeholder="Rp 5.000.000" /></div>
+            <div><Label>Deskripsi</Label><Input value={form.description} onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Deskripsi singkat portfolio" /></div>
+            <div><Label>Metrik / Hasil</Label><Input value={form.metric} onChange={(e) => setForm(f => ({ ...f, metric: e.target.value }))} placeholder="+180% User Engagement" /></div>
             <div>
               <Label>Foto</Label>
               <div className="flex gap-2 items-center">
