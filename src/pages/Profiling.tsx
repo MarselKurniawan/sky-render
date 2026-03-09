@@ -66,7 +66,7 @@ const Profiling = () => {
               articles.map((post, i) => (
                 <div key={post.id}>
                   <ScrollReveal delay={i * 0.06} variant="fade-up">
-                    <Link to={`/artikel/${post.slug}`}>
+                    <Link to={`/${post.slug}`}>
                       <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
                         <div className={`w-28 h-28 sm:w-36 sm:h-28 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url?.startsWith("http") ? "" : (post.image_url || "from-electric/60 to-navy")} relative overflow-hidden`}>
                           {post.image_url?.startsWith("http") ? (
