@@ -1,15 +1,56 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import ScrollReveal from "@/components/ScrollReveal";
+import { Loader2 } from "lucide-react";
 
-const projects = [
-  { title: "Dashboard Keuangan", category: "Pengembangan Web", metric: "+180% User Engagement", gradient: "from-electric/80 to-navy" },
-  { title: "Branding NeoVerse", category: "Branding & Identitas", metric: "50K+ Impresi Sosial", gradient: "from-navy to-electric/60" },
-  { title: "Kampanye CryptoLaunch", category: "Kampanye Digital", metric: "3x Tingkat Konversi", gradient: "from-electric/60 to-navy/90" },
-  { title: "Platform MetaStudio", category: "Pengembangan Sistem", metric: "99.9% Uptime", gradient: "from-navy/80 to-electric" },
-  { title: "Konten BlockBrand", category: "Produksi Konten", metric: "1M+ Tayangan Video", gradient: "from-electric to-navy/70" },
-  { title: "Pertumbuhan ChainSocial", category: "Media Sosial", metric: "+400% Followers", gradient: "from-navy to-electric/70" },
+interface Portfolio {
+  id: string;
+  title: string;
+  category: string;
+  metric: string | null;
+  gradient: string | null;
+  image_url: string | null;
+  description: string | null;
+}
+
+const fallbackGradients = [
+  "from-electric/80 to-navy",
+  "from-navy to-electric/60",
+  "from-electric/60 to-navy/90",
+  "from-navy/80 to-electric",
+  "from-electric to-navy/70",
+  "from-navy to-electric/70",
 ];
 
 const PortfolioSection = () => {
+  const [projects, setProjects] = useState<Portfolio[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await supabase
+        .from("portfolios")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order");
+      setProjects(data ?? []);
+      setLoading(false);
+    };
+    fetch();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="portfolio" className="py-24">
+        <div className="container mx-auto px-6 flex justify-center">
+          <Loader2 className="animate-spin text-electric" size={24} />
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) return null;
+
   return (
     <section id="portfolio" className="py-24">
       <div className="container mx-auto px-6">
@@ -20,17 +61,22 @@ const PortfolioSection = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
-            <ScrollReveal key={project.title} delay={i * 0.08} variant="scale">
+            <ScrollReveal key={project.id} delay={i * 0.08} variant="scale">
               <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient}`} />
+                {project.image_url ? (
+                  <img src={project.image_url} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient || fallbackGradients[i % fallbackGradients.length]}`} />
+                )}
                 <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/60 transition-colors duration-500" />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 text-primary-foreground opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                   <span className="text-xs font-semibold uppercase tracking-wider text-electric-light mb-1">{project.category}</span>
                   <h3 className="text-xl font-bold mb-1">{project.title}</h3>
-                  <p className="text-sm text-primary-foreground/80">{project.metric}</p>
+                  {project.metric && <p className="text-sm text-primary-foreground/80">{project.metric}</p>}
+                  {project.description && <p className="text-sm text-primary-foreground/70 mt-1">{project.description}</p>}
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300">
-                  <h3 className="text-xl font-bold text-primary-foreground">{project.title}</h3>
+                  <h3 className="text-xl font-bold text-primary-foreground drop-shadow-lg">{project.title}</h3>
                 </div>
               </div>
             </ScrollReveal>

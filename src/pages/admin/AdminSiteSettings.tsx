@@ -172,6 +172,22 @@ const AdminSiteSettings = () => {
               <div><Label className="text-xs">Google Analytics ID</Label><Input value={getVal("google_analytics_id")} onChange={e => updateByKey("google_analytics_id", e.target.value)} placeholder="G-XXXXXXXXXX" /></div>
               <div><Label className="text-xs">Google Search Console Verification</Label><Input value={getVal("google_search_console_verification")} onChange={e => updateByKey("google_search_console_verification", e.target.value)} /></div>
             </div>
+            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+              <h3 className="text-sm font-semibold text-primary">🔗 Footer Social Links & Kontak</h3>
+              <p className="text-xs text-muted-foreground">Isi URL lengkap untuk sosmed yang ingin ditampilkan di footer. Kosongkan jika tidak dipakai.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div><Label className="text-xs">Instagram</Label><Input value={getVal("footer_instagram")} onChange={e => updateByKey("footer_instagram", e.target.value)} placeholder="https://instagram.com/saat.creative" /></div>
+                <div><Label className="text-xs">Twitter / X</Label><Input value={getVal("footer_twitter")} onChange={e => updateByKey("footer_twitter", e.target.value)} placeholder="https://x.com/saat" /></div>
+                <div><Label className="text-xs">LinkedIn</Label><Input value={getVal("footer_linkedin")} onChange={e => updateByKey("footer_linkedin", e.target.value)} placeholder="https://linkedin.com/company/saat" /></div>
+                <div><Label className="text-xs">GitHub</Label><Input value={getVal("footer_github")} onChange={e => updateByKey("footer_github", e.target.value)} placeholder="https://github.com/saat" /></div>
+                <div><Label className="text-xs">YouTube</Label><Input value={getVal("footer_youtube")} onChange={e => updateByKey("footer_youtube", e.target.value)} placeholder="https://youtube.com/@saat" /></div>
+                <div><Label className="text-xs">Facebook</Label><Input value={getVal("footer_facebook")} onChange={e => updateByKey("footer_facebook", e.target.value)} placeholder="https://facebook.com/saat" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><Label className="text-xs">Email</Label><Input value={getVal("footer_email")} onChange={e => updateByKey("footer_email", e.target.value)} placeholder="hello@saat.agency" /></div>
+                <div><Label className="text-xs">WhatsApp Footer</Label><Input value={getVal("footer_whatsapp")} onChange={e => updateByKey("footer_whatsapp", e.target.value)} placeholder="6285117688118" /></div>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="other" className="space-y-4 mt-4">
