@@ -111,6 +111,8 @@ const AdminPortfolios = () => {
               </Select>
             </div>
             <div><Label>Harga</Label><Input value={form.price} onChange={(e) => setForm(f => ({ ...f, price: e.target.value }))} placeholder="Rp 5.000.000" /></div>
+            <div><Label>Deskripsi</Label><Input value={form.description} onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Deskripsi singkat portfolio" /></div>
+            <div><Label>Metrik / Hasil</Label><Input value={form.metric} onChange={(e) => setForm(f => ({ ...f, metric: e.target.value }))} placeholder="+180% User Engagement" /></div>
             <div>
               <Label>Foto</Label>
               <div className="flex gap-2 items-center">

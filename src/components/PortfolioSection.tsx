@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import ScrollReveal from "@/components/ScrollReveal";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 
 interface Portfolio {
   id: string;
   title: string;
   category: string;
   metric: string | null;
-  gradient: string | null;
   image_url: string | null;
+  gradient: string | null;
   description: string | null;
 }
 
@@ -32,7 +33,8 @@ const PortfolioSection = () => {
         .from("portfolios")
         .select("*")
         .eq("is_published", true)
-        .order("display_order");
+        .order("display_order")
+        .limit(6);
       setProjects(data ?? []);
       setLoading(false);
     };
@@ -62,26 +64,39 @@ const PortfolioSection = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
             <ScrollReveal key={project.id} delay={i * 0.08} variant="scale">
-              <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
-                {project.image_url ? (
-                  <img src={project.image_url} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
-                ) : (
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient || fallbackGradients[i % fallbackGradients.length]}`} />
-                )}
-                <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/60 transition-colors duration-500" />
-                <div className="absolute inset-0 flex flex-col justify-end p-6 text-primary-foreground opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-electric-light mb-1">{project.category}</span>
-                  <h3 className="text-xl font-bold mb-1">{project.title}</h3>
-                  {project.metric && <p className="text-sm text-primary-foreground/80">{project.metric}</p>}
-                  {project.description && <p className="text-sm text-primary-foreground/70 mt-1">{project.description}</p>}
+              <Link to={`/portfolio/${project.id}`} className="group block">
+                <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
+                  <div className="aspect-[16/10] overflow-hidden relative">
+                    {project.image_url ? (
+                      <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className={`w-full h-full bg-gradient-to-br ${project.gradient || fallbackGradients[i % fallbackGradients.length]} flex items-center justify-center`}>
+                        <span className="text-primary-foreground/60 text-lg font-bold">{project.title}</span>
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <span className="rounded-full bg-primary/80 backdrop-blur-sm text-primary-foreground text-xs font-semibold px-3 py-1">{project.category}</span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-bold text-primary group-hover:text-electric transition-colors">{project.title}</h3>
+                    {project.metric && <p className="text-xs text-electric font-semibold mt-1">{project.metric}</p>}
+                  </div>
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300">
-                  <h3 className="text-xl font-bold text-primary-foreground drop-shadow-lg">{project.title}</h3>
-                </div>
-              </div>
+              </Link>
             </ScrollReveal>
           ))}
         </div>
+
+        <ScrollReveal className="text-center mt-10">
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center gap-2 rounded-xl border-2 border-primary/20 bg-card px-7 py-3 text-sm font-semibold text-primary hover:border-electric hover:text-electric transition-all group"
+          >
+            Lihat Semua Portfolio
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </ScrollReveal>
       </div>
     </section>
   );
