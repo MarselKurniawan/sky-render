@@ -189,9 +189,9 @@ const BlogSection = () => {
 
         {/* Show More */}
         <div className="text-center mt-8">
-          <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-electric hover:gap-3 transition-all">
+          <Link to="/artikel" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-electric hover:gap-3 transition-all">
             Lihat Semua Artikel <ArrowRight size={16} />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

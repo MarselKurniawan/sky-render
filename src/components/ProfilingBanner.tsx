@@ -89,15 +89,16 @@ const ProfilingBanner = () => {
               <button
                 key={i}
                 onClick={() => setActive(i)}
+                aria-label={`Slide ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all ${i === active ? "w-6 bg-electric" : "w-1.5 bg-primary-foreground/30"}`}
               />
             ))}
           </div>
           <div className="flex gap-2">
-            <button onClick={prev} className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
+            <button onClick={prev} aria-label="Slide sebelumnya" className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
               <ChevronLeft size={16} />
             </button>
-            <button onClick={next} className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
+            <button onClick={next} aria-label="Slide selanjutnya" className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
               <ChevronRight size={16} />
             </button>
           </div>
