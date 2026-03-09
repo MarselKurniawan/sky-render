@@ -18,6 +18,7 @@ import AdminArticles from "./pages/admin/AdminArticles";
 import AdminPortfolios from "./pages/admin/AdminPortfolios";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminSiteSettings from "./pages/admin/AdminSiteSettings";
+import AdminBanners from "./pages/admin/AdminBanners";
 import AdminMedia from "./pages/admin/AdminMedia";
 
 const queryClient = new QueryClient();
