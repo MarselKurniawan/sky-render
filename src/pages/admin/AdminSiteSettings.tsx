@@ -168,6 +168,11 @@ const AdminSiteSettings = () => {
               <div><Label className="text-xs">Nomor WhatsApp</Label><Input value={getVal("whatsapp_number")} onChange={e => updateByKey("whatsapp_number", e.target.value)} placeholder="6285117688118" /></div>
             </div>
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+              <h3 className="text-sm font-semibold text-primary">🖼️ CTA Section Image</h3>
+              <p className="text-xs text-muted-foreground">URL gambar yang tampil di sisi kanan CTA section di landing page. Kosongkan untuk tampilkan fallback default.</p>
+              <div><Label className="text-xs">CTA Image URL</Label><Input value={getVal("cta_image_url")} onChange={e => updateByKey("cta_image_url", e.target.value)} placeholder="https://example.com/image.jpg" /></div>
+            </div>
+            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">📊 Google Analytics & Search Console</h3>
               <div><Label className="text-xs">Google Analytics ID</Label><Input value={getVal("google_analytics_id")} onChange={e => updateByKey("google_analytics_id", e.target.value)} placeholder="G-XXXXXXXXXX" /></div>
               <div><Label className="text-xs">Google Search Console Verification</Label><Input value={getVal("google_search_console_verification")} onChange={e => updateByKey("google_search_console_verification", e.target.value)} /></div>
