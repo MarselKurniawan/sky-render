@@ -5,15 +5,18 @@ import { ArrowRight } from "lucide-react";
 
 const CtaSection = () => {
   const [waNumber, setWaNumber] = useState("6285117688118");
+  const [ctaImage, setCtaImage] = useState<string | null>(null);
 
   useEffect(() => {
     supabase
       .from("site_settings")
-      .select("value")
-      .eq("key", "whatsapp_number")
-      .maybeSingle()
+      .select("key, value")
+      .in("key", ["whatsapp_number", "cta_image_url"])
       .then(({ data }) => {
-        if (data?.value) setWaNumber(data.value);
+        data?.forEach((row) => {
+          if (row.key === "whatsapp_number" && row.value) setWaNumber(row.value);
+          if (row.key === "cta_image_url" && row.value) setCtaImage(row.value);
+        });
       });
   }, []);
 
@@ -48,16 +51,26 @@ const CtaSection = () => {
                 </a>
               </div>
 
-              {/* Right side image/card mockup */}
-              <div className="hidden md:flex items-center gap-3">
-                <div className="w-48 h-32 rounded-xl bg-accent-foreground/10 backdrop-blur-sm border border-accent-foreground/20 flex items-center justify-center overflow-hidden">
-                  <div className="text-center p-4">
-                    <div className="w-10 h-10 rounded-full bg-accent-foreground/20 mx-auto mb-2 flex items-center justify-center">
-                      <span className="text-accent-foreground text-lg font-bold">S</span>
-                    </div>
-                    <span className="text-accent-foreground/80 text-xs font-medium">Saat. Creative</span>
+              {/* Right side - dynamic image or fallback */}
+              <div className="hidden md:flex items-center shrink-0">
+                {ctaImage ? (
+                  <div className="w-52 h-36 rounded-xl overflow-hidden border border-accent-foreground/20">
+                    <img
+                      src={ctaImage}
+                      alt="CTA visual"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
+                ) : (
+                  <div className="w-48 h-32 rounded-xl bg-accent-foreground/10 backdrop-blur-sm border border-accent-foreground/20 flex items-center justify-center overflow-hidden">
+                    <div className="text-center p-4">
+                      <div className="w-10 h-10 rounded-full bg-accent-foreground/20 mx-auto mb-2 flex items-center justify-center">
+                        <span className="text-accent-foreground text-lg font-bold">S</span>
+                      </div>
+                      <span className="text-accent-foreground/80 text-xs font-medium">Saat. Creative</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

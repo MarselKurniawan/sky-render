@@ -15,7 +15,7 @@ interface SeoSetting {
   og_image_url: string | null; canonical_url: string | null;
 }
 
-const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords", "whatsapp_number", "footer_instagram", "footer_twitter", "footer_linkedin", "footer_github", "footer_youtube", "footer_facebook", "footer_email", "footer_whatsapp"];
+const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords", "whatsapp_number", "cta_image_url", "footer_instagram", "footer_twitter", "footer_linkedin", "footer_github", "footer_youtube", "footer_facebook", "footer_email", "footer_whatsapp"];
 
 const AdminSiteSettings = () => {
   const [settings, setSettings] = useState<Setting[]>([]);
@@ -166,6 +166,11 @@ const AdminSiteSettings = () => {
               <h3 className="text-sm font-semibold text-primary">📱 WhatsApp CTA</h3>
               <p className="text-xs text-muted-foreground">Nomor WhatsApp untuk semua tombol CTA di website (format: 6285117688118)</p>
               <div><Label className="text-xs">Nomor WhatsApp</Label><Input value={getVal("whatsapp_number")} onChange={e => updateByKey("whatsapp_number", e.target.value)} placeholder="6285117688118" /></div>
+            </div>
+            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+              <h3 className="text-sm font-semibold text-primary">🖼️ CTA Section Image</h3>
+              <p className="text-xs text-muted-foreground">URL gambar yang tampil di sisi kanan CTA section di landing page. Kosongkan untuk tampilkan fallback default.</p>
+              <div><Label className="text-xs">CTA Image URL</Label><Input value={getVal("cta_image_url")} onChange={e => updateByKey("cta_image_url", e.target.value)} placeholder="https://example.com/image.jpg" /></div>
             </div>
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">📊 Google Analytics & Search Console</h3>
