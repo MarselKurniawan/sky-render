@@ -3,19 +3,27 @@ import { supabase } from "@/integrations/supabase/client";
 import ScrollReveal from "@/components/ScrollReveal";
 import { ArrowRight } from "lucide-react";
 
+const CTA_KEYS = ["whatsapp_number", "cta_image_url", "cta_image_alt", "cta_headline", "cta_description"];
+
 const CtaSection = () => {
   const [waNumber, setWaNumber] = useState("6285117688118");
   const [ctaImage, setCtaImage] = useState<string | null>(null);
+  const [ctaImageAlt, setCtaImageAlt] = useState("CTA visual");
+  const [headline, setHeadline] = useState("Siap Wujudkan Ide Digitalmu?");
+  const [description, setDescription] = useState("Konsultasi gratis untuk brand, bisnis, dan project kreatifmu bersama tim kami.");
 
   useEffect(() => {
     supabase
       .from("site_settings")
       .select("key, value")
-      .in("key", ["whatsapp_number", "cta_image_url"])
+      .in("key", CTA_KEYS)
       .then(({ data }) => {
         data?.forEach((row) => {
           if (row.key === "whatsapp_number" && row.value) setWaNumber(row.value);
           if (row.key === "cta_image_url" && row.value) setCtaImage(row.value);
+          if (row.key === "cta_image_alt" && row.value) setCtaImageAlt(row.value);
+          if (row.key === "cta_headline" && row.value) setHeadline(row.value);
+          if (row.key === "cta_description" && row.value) setDescription(row.value);
         });
       });
   }, []);
@@ -25,20 +33,18 @@ const CtaSection = () => {
       <div className="container mx-auto px-6">
         <ScrollReveal variant="scale">
           <div className="relative rounded-2xl overflow-hidden bg-electric">
-            {/* Dot pattern */}
             <div className="absolute inset-0 opacity-[0.06]" style={{
               backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
               backgroundSize: "20px 20px",
             }} />
 
             <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 px-8 py-8 sm:px-12 sm:py-10">
-              {/* Text content */}
               <div className="flex-1 min-w-0">
                 <h3 className="text-xl sm:text-2xl font-extrabold text-accent-foreground mb-2">
-                  Siap Wujudkan Ide Digitalmu?
+                  {headline}
                 </h3>
                 <p className="text-accent-foreground/80 text-sm sm:text-base leading-relaxed mb-4">
-                  Konsultasi gratis untuk brand, bisnis, dan project kreatifmu bersama tim kami.
+                  {description}
                 </p>
                 <a
                   href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Halo Saat. Saya tertarik untuk memulai project bersama.")}`}
@@ -51,13 +57,12 @@ const CtaSection = () => {
                 </a>
               </div>
 
-              {/* Right side - dynamic image or fallback */}
               <div className="hidden md:flex items-center shrink-0">
                 {ctaImage ? (
                   <div className="w-52 h-36 rounded-xl overflow-hidden border border-accent-foreground/20">
                     <img
                       src={ctaImage}
-                      alt="CTA visual"
+                      alt={ctaImageAlt}
                       className="w-full h-full object-cover"
                     />
                   </div>

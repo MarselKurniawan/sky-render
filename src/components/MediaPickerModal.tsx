@@ -3,18 +3,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Search, Upload } from "lucide-react";
+import { Loader2, Search, Upload, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
 interface MediaPickerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (url: string) => void;
+  onSelect: (url: string, alt?: string) => void;
 }
 
 interface MediaFile {
   name: string;
   url: string;
+  alt_text: string;
 }
 
 const MediaPickerModal = ({ open, onOpenChange, onSelect }: MediaPickerModalProps) => {
@@ -22,18 +23,24 @@ const MediaPickerModal = ({ open, onOpenChange, onSelect }: MediaPickerModalProp
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadAlt, setUploadAlt] = useState("");
 
   const fetchFiles = async () => {
     setLoading(true);
-    const { data } = await supabase.storage.from("media").list("", {
-      limit: 500,
-      sortBy: { column: "created_at", order: "desc" },
-    });
+    const [{ data }, { data: metaData }] = await Promise.all([
+      supabase.storage.from("media").list("", {
+        limit: 500,
+        sortBy: { column: "created_at", order: "desc" },
+      }),
+      supabase.from("media_metadata").select("file_name, alt_text"),
+    ]);
+    const altMap = new Map((metaData ?? []).map(m => [m.file_name, m.alt_text ?? ""]));
     const mapped = (data ?? [])
       .filter((f) => f.name !== ".emptyFolderPlaceholder")
       .map((f) => ({
         name: f.name,
         url: supabase.storage.from("media").getPublicUrl(f.name).data.publicUrl,
+        alt_text: altMap.get(f.name) ?? "",
       }));
     setFiles(mapped);
     setLoading(false);
@@ -51,13 +58,20 @@ const MediaPickerModal = ({ open, onOpenChange, onSelect }: MediaPickerModalProp
       const ext = file.name.split(".").pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error } = await supabase.storage.from("media").upload(fileName, file);
-      if (error) toast.error(error.message);
+      if (error) { toast.error(error.message); continue; }
+      if (uploadAlt.trim()) {
+        await supabase.from("media_metadata").upsert({ file_name: fileName, alt_text: uploadAlt.trim() }, { onConflict: "file_name" });
+      }
     }
     setUploading(false);
+    setUploadAlt("");
     fetchFiles();
   };
 
-  const filtered = files.filter((f) => f.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = files.filter((f) =>
+    f.name.toLowerCase().includes(search.toLowerCase()) ||
+    f.alt_text.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -65,12 +79,21 @@ const MediaPickerModal = ({ open, onOpenChange, onSelect }: MediaPickerModalProp
         <DialogHeader>
           <DialogTitle>Pilih Media</DialogTitle>
         </DialogHeader>
-        <div className="flex gap-2 mb-3">
+        <div className="flex gap-2 mb-2">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari..." className="pl-9" />
           </div>
-          <label className="cursor-pointer">
+        </div>
+        {/* Upload with ALT */}
+        <div className="flex gap-2 mb-3">
+          <Input
+            value={uploadAlt}
+            onChange={(e) => setUploadAlt(e.target.value)}
+            placeholder="ALT text (opsional)"
+            className="flex-1"
+          />
+          <label className="cursor-pointer shrink-0">
             <input type="file" multiple accept="image/*" className="hidden" onChange={handleUpload} />
             <Button asChild variant="outline" disabled={uploading}>
               <span>{uploading ? <Loader2 className="animate-spin mr-1" size={14} /> : <Upload size={14} className="mr-1" />} Upload</span>
@@ -88,10 +111,18 @@ const MediaPickerModal = ({ open, onOpenChange, onSelect }: MediaPickerModalProp
                 <button
                   key={f.name}
                   type="button"
-                  className="aspect-square rounded-lg border-2 border-transparent hover:border-electric overflow-hidden bg-muted transition-all focus:border-electric focus:outline-none"
-                  onClick={() => { onSelect(f.url); onOpenChange(false); }}
+                  className="rounded-lg border-2 border-transparent hover:border-electric overflow-hidden bg-muted transition-all focus:border-electric focus:outline-none"
+                  onClick={() => { onSelect(f.url, f.alt_text); onOpenChange(false); }}
                 >
-                  <img src={f.url} alt={f.name} className="w-full h-full object-cover" />
+                  <div className="aspect-square overflow-hidden">
+                    <img src={f.url} alt={f.alt_text || f.name} className="w-full h-full object-cover" />
+                  </div>
+                  {f.alt_text && (
+                    <div className="px-1.5 py-1 flex items-center gap-1">
+                      <ImageIcon size={9} className="text-muted-foreground shrink-0" />
+                      <span className="text-[9px] text-muted-foreground truncate">{f.alt_text}</span>
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
