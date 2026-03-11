@@ -25,6 +25,7 @@ const AdminSiteSettings = () => {
   const [saving, setSaving] = useState(false);
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState("");
+  const [mediaOpen, setMediaOpen] = useState(false);
 
   // SEO form for landing page
   const [seoForm, setSeoForm] = useState({
