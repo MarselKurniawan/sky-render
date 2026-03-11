@@ -170,10 +170,34 @@ const AdminSiteSettings = () => {
               <div><Label className="text-xs">Nomor WhatsApp</Label><Input value={getVal("whatsapp_number")} onChange={e => updateByKey("whatsapp_number", e.target.value)} placeholder="6285117688118" /></div>
             </div>
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
-              <h3 className="text-sm font-semibold text-primary">🖼️ CTA Section Image</h3>
-              <p className="text-xs text-muted-foreground">URL gambar yang tampil di sisi kanan CTA section di landing page. Kosongkan untuk tampilkan fallback default.</p>
-              <div><Label className="text-xs">CTA Image URL</Label><Input value={getVal("cta_image_url")} onChange={e => updateByKey("cta_image_url", e.target.value)} placeholder="https://example.com/image.jpg" /></div>
+              <h3 className="text-sm font-semibold text-primary">🎯 CTA Section</h3>
+              <p className="text-xs text-muted-foreground">Kustomisasi headline, deskripsi, dan gambar di section CTA landing page.</p>
+              <div><Label className="text-xs">Headline</Label><Input value={getVal("cta_headline")} onChange={e => updateByKey("cta_headline", e.target.value)} placeholder="Siap Wujudkan Ide Digitalmu?" /></div>
+              <div><Label className="text-xs">Deskripsi</Label><Textarea value={getVal("cta_description")} onChange={e => updateByKey("cta_description", e.target.value)} placeholder="Konsultasi gratis untuk brand, bisnis, dan project kreatifmu bersama tim kami." rows={2} /></div>
+              <div>
+                <Label className="text-xs">Gambar CTA</Label>
+                <div className="flex gap-3 mt-1 items-start">
+                  {getVal("cta_image_url") ? (
+                    <div className="relative w-32 h-24 rounded-lg overflow-hidden border border-border shrink-0">
+                      <img src={getVal("cta_image_url")} alt={getVal("cta_image_alt") || "CTA"} className="w-full h-full object-cover" />
+                      <button onClick={() => { updateByKey("cta_image_url", ""); updateByKey("cta_image_alt", ""); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5"><X size={12} /></button>
+                    </div>
+                  ) : null}
+                  <Button type="button" variant="outline" size="sm" onClick={() => setMediaOpen(true)} className="gap-1.5">
+                    <ImageIcon size={14} /> Pilih dari Media
+                  </Button>
+                </div>
+              </div>
+              <div><Label className="text-xs">ALT Text Gambar</Label><Input value={getVal("cta_image_alt")} onChange={e => updateByKey("cta_image_alt", e.target.value)} placeholder="Deskripsi gambar untuk SEO" /></div>
             </div>
+            <MediaPickerModal
+              open={mediaOpen}
+              onOpenChange={setMediaOpen}
+              onSelect={(url, alt) => {
+                updateByKey("cta_image_url", url);
+                if (alt) updateByKey("cta_image_alt", alt);
+              }}
+            />
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">📊 Google Analytics & Search Console</h3>
               <div><Label className="text-xs">Google Analytics ID</Label><Input value={getVal("google_analytics_id")} onChange={e => updateByKey("google_analytics_id", e.target.value)} placeholder="G-XXXXXXXXXX" /></div>
