@@ -16,7 +16,7 @@ interface SeoSetting {
   og_image_url: string | null; canonical_url: string | null;
 }
 
-const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords", "whatsapp_number", "cta_image_url", "cta_image_alt", "cta_headline", "cta_description", "footer_instagram", "footer_twitter", "footer_linkedin", "footer_github", "footer_youtube", "footer_facebook", "footer_email", "footer_whatsapp"];
+const SPECIAL_KEYS = ["google_analytics_id", "google_search_console_verification", "hidden_keywords", "whatsapp_number", "cta_image_url", "cta_image_alt", "cta_headline", "cta_description", "footer_instagram", "footer_instagram_2", "footer_tiktok", "footer_twitter", "footer_linkedin", "footer_github", "footer_youtube", "footer_facebook", "footer_email", "footer_whatsapp"];
 
 const AdminSiteSettings = () => {
   const [settings, setSettings] = useState<Setting[]>([]);
