@@ -131,12 +131,12 @@ const AdminSiteSettings = () => {
 
           <TabsContent value="landing" className="space-y-6 mt-4">
             {/* Landing page SEO */}
-            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+            <div className="p-4 sm:p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">🔍 SEO Landing Page</h3>
               <div><Label className="text-xs">Title (max 60)</Label><Input value={seoForm.title} onChange={e => setSeoForm(f => ({ ...f, title: e.target.value }))} maxLength={60} /><span className="text-[10px] text-muted-foreground">{seoForm.title.length}/60</span></div>
               <div><Label className="text-xs">Description (max 160)</Label><Textarea value={seoForm.description} onChange={e => setSeoForm(f => ({ ...f, description: e.target.value }))} rows={2} maxLength={160} /><span className="text-[10px] text-muted-foreground">{seoForm.description.length}/160</span></div>
               <div><Label className="text-xs">Keywords (comma)</Label><Input value={seoForm.keywords} onChange={e => setSeoForm(f => ({ ...f, keywords: e.target.value }))} /></div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label className="text-xs">OG Title</Label><Input value={seoForm.og_title} onChange={e => setSeoForm(f => ({ ...f, og_title: e.target.value }))} /></div>
                 <div><Label className="text-xs">OG Image URL</Label><Input value={seoForm.og_image_url} onChange={e => setSeoForm(f => ({ ...f, og_image_url: e.target.value }))} /></div>
               </div>
