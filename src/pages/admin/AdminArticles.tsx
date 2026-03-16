@@ -228,7 +228,7 @@ const AdminArticles = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Read Time</Label><Input value={form.read_time} onChange={e => setField("read_time", e.target.value)} placeholder="5 menit" /></div>
               <div><Label>Hashtags (comma)</Label><Input value={form.hashtags} onChange={e => setField("hashtags", e.target.value)} /></div>
             </div>

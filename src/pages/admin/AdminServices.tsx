@@ -224,7 +224,7 @@ const AdminServices = () => {
             <div><Label>Harga</Label><Input value={priceForm.price} onChange={(e) => setPField("price", e.target.value)} placeholder="Mulai dari Rp 2.500.000" /></div>
             <div><Label>Description</Label><Input value={priceForm.description} onChange={(e) => setPField("description", e.target.value)} /></div>
             <div><Label>Features (comma-separated)</Label><Input value={priceForm.features} onChange={(e) => setPField("features", e.target.value)} /></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Display Order</Label><Input type="number" value={priceForm.display_order} onChange={(e) => setPField("display_order", parseInt(e.target.value) || 0)} /></div>
               <div className="flex items-center gap-2 pt-6"><Switch checked={priceForm.is_popular} onCheckedChange={(v) => setPField("is_popular", v)} /><Label>Popular</Label></div>
             </div>

@@ -151,7 +151,7 @@ const AdminBanners = () => {
               <Label>Deskripsi</Label>
               <Input value={form.description} onChange={e => setField("description", e.target.value)} placeholder="Berlaku hingga akhir bulan" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Badge Text</Label>
                 <Input value={form.badge_text} onChange={e => setField("badge_text", e.target.value)} placeholder="🔥 Promo" />

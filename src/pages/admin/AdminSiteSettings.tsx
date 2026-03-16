@@ -225,18 +225,18 @@ const AdminSiteSettings = () => {
 
           <TabsContent value="other" className="space-y-4 mt-4">
             {otherSettings.filter(s => !s.key.startsWith("hero_") && !s.key.startsWith("header_")).map(s => (
-              <div key={s.id} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
-                <span className="text-xs font-mono text-muted-foreground w-48 shrink-0">{s.key}</span>
+              <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 rounded-xl bg-card border border-border">
+                <span className="text-xs font-mono text-muted-foreground sm:w-48 shrink-0 truncate">{s.key}</span>
                 <Input value={s.value ?? ""} onChange={e => updateLocal(s.id, e.target.value)} className="flex-1" />
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0"><Trash2 size={16} /></Button>
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0 self-end sm:self-auto"><Trash2 size={16} /></Button>
               </div>
             ))}
             <div className="border-t border-border pt-4">
               <h3 className="text-sm font-semibold text-primary mb-3">Tambah Setting Baru</h3>
-              <div className="flex gap-3">
-                <Input value={newKey} onChange={e => setNewKey(e.target.value)} placeholder="key" className="w-48" />
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input value={newKey} onChange={e => setNewKey(e.target.value)} placeholder="key" className="sm:w-48" />
                 <Input value={newValue} onChange={e => setNewValue(e.target.value)} placeholder="value" className="flex-1" />
-                <Button onClick={handleAdd} variant="outline"><Plus size={16} /></Button>
+                <Button onClick={handleAdd} variant="outline" className="w-full sm:w-auto"><Plus size={16} /></Button>
               </div>
             </div>
           </TabsContent>
