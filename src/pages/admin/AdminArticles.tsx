@@ -126,11 +126,9 @@ const AdminArticles = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Artikel</h1>
-        <div className="flex gap-2">
-          <Button onClick={openNew} className="bg-electric hover:bg-electric/90"><Plus size={16} className="mr-1" /> Tambah Artikel</Button>
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Artikel</h1>
+        <Button onClick={openNew} className="bg-electric hover:bg-electric/90 w-full sm:w-auto"><Plus size={16} className="mr-1" /> Tambah Artikel</Button>
       </div>
 
       <Tabs value={tab} onValueChange={setTab} className="mb-6">
@@ -184,14 +182,14 @@ const AdminArticles = () => {
       </Tabs>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-auto">
           <DialogHeader><DialogTitle>{editing ? "Edit Artikel" : "Tambah Artikel"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Title</Label><Input value={form.title} onChange={e => setField("title", e.target.value)} /></div>
               <div><Label>Slug</Label><Input value={form.slug} onChange={e => setField("slug", e.target.value)} placeholder="judul-artikel" /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Type</Label>
                 <Select value={form.article_type} onValueChange={v => setField("article_type", v)}>
@@ -214,7 +212,7 @@ const AdminArticles = () => {
               <Label>Content (Rich Editor)</Label>
               <RichTextEditor content={form.content} onChange={html => setField("content", html)} />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Featured Image</Label>
                 <div className="flex gap-2 items-center mt-1">
@@ -230,7 +228,7 @@ const AdminArticles = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Read Time</Label><Input value={form.read_time} onChange={e => setField("read_time", e.target.value)} placeholder="5 menit" /></div>
               <div><Label>Hashtags (comma)</Label><Input value={form.hashtags} onChange={e => setField("hashtags", e.target.value)} /></div>
             </div>

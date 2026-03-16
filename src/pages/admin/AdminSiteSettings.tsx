@@ -114,29 +114,29 @@ const AdminSiteSettings = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Site Settings</h1>
-        <Button onClick={handleSaveAll} disabled={saving} className="bg-electric hover:bg-electric/90">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Site Settings</h1>
+        <Button onClick={handleSaveAll} disabled={saving} className="bg-electric hover:bg-electric/90 w-full sm:w-auto">
           {saving ? <Loader2 className="animate-spin mr-2" size={16} /> : <Save size={16} className="mr-1" />} Simpan Semua
         </Button>
       </div>
 
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : (
         <Tabs defaultValue="landing">
-          <TabsList>
-            <TabsTrigger value="landing">Landing Page & SEO</TabsTrigger>
-            <TabsTrigger value="tracking">Tracking</TabsTrigger>
-            <TabsTrigger value="other">Lainnya</TabsTrigger>
+          <TabsList className="flex flex-wrap h-auto gap-1">
+            <TabsTrigger value="landing" className="text-xs sm:text-sm">Landing & SEO</TabsTrigger>
+            <TabsTrigger value="tracking" className="text-xs sm:text-sm">Tracking</TabsTrigger>
+            <TabsTrigger value="other" className="text-xs sm:text-sm">Lainnya</TabsTrigger>
           </TabsList>
 
           <TabsContent value="landing" className="space-y-6 mt-4">
             {/* Landing page SEO */}
-            <div className="p-5 rounded-xl bg-card border border-border space-y-4">
+            <div className="p-4 sm:p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">🔍 SEO Landing Page</h3>
               <div><Label className="text-xs">Title (max 60)</Label><Input value={seoForm.title} onChange={e => setSeoForm(f => ({ ...f, title: e.target.value }))} maxLength={60} /><span className="text-[10px] text-muted-foreground">{seoForm.title.length}/60</span></div>
               <div><Label className="text-xs">Description (max 160)</Label><Textarea value={seoForm.description} onChange={e => setSeoForm(f => ({ ...f, description: e.target.value }))} rows={2} maxLength={160} /><span className="text-[10px] text-muted-foreground">{seoForm.description.length}/160</span></div>
               <div><Label className="text-xs">Keywords (comma)</Label><Input value={seoForm.keywords} onChange={e => setSeoForm(f => ({ ...f, keywords: e.target.value }))} /></div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label className="text-xs">OG Title</Label><Input value={seoForm.og_title} onChange={e => setSeoForm(f => ({ ...f, og_title: e.target.value }))} /></div>
                 <div><Label className="text-xs">OG Image URL</Label><Input value={seoForm.og_image_url} onChange={e => setSeoForm(f => ({ ...f, og_image_url: e.target.value }))} /></div>
               </div>
@@ -152,11 +152,11 @@ const AdminSiteSettings = () => {
             </div>
 
             {/* Landing page headers */}
-            <div className="p-5 rounded-xl bg-card border border-border space-y-3">
+            <div className="p-4 sm:p-5 rounded-xl bg-card border border-border space-y-3">
               <h3 className="text-sm font-semibold text-primary">📝 Header Landing Page</h3>
               {otherSettings.filter(s => s.key.startsWith("hero_") || s.key.startsWith("header_")).map(s => (
-                <div key={s.id} className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-muted-foreground w-40 shrink-0">{s.key}</span>
+                <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                  <span className="text-xs font-mono text-muted-foreground sm:w-40 shrink-0">{s.key}</span>
                   <Input value={s.value ?? ""} onChange={e => updateLocal(s.id, e.target.value)} className="flex-1" />
                 </div>
               ))}
@@ -206,7 +206,7 @@ const AdminSiteSettings = () => {
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">🔗 Footer Social Links & Kontak</h3>
               <p className="text-xs text-muted-foreground">Isi URL lengkap untuk sosmed yang ingin ditampilkan di footer. Instagram kedua dan TikTok sekarang sudah didukung.</p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label className="text-xs">Instagram 1</Label><Input value={getVal("footer_instagram")} onChange={e => updateByKey("footer_instagram", e.target.value)} placeholder="https://instagram.com/saat.creative" /></div>
                 <div><Label className="text-xs">Instagram 2</Label><Input value={getVal("footer_instagram_2")} onChange={e => updateByKey("footer_instagram_2", e.target.value)} placeholder="https://instagram.com/saat.digital" /></div>
                 <div><Label className="text-xs">TikTok</Label><Input value={getVal("footer_tiktok")} onChange={e => updateByKey("footer_tiktok", e.target.value)} placeholder="https://tiktok.com/@saat.digital" /></div>
@@ -216,7 +216,7 @@ const AdminSiteSettings = () => {
                 <div><Label className="text-xs">YouTube</Label><Input value={getVal("footer_youtube")} onChange={e => updateByKey("footer_youtube", e.target.value)} placeholder="https://youtube.com/@saat" /></div>
                 <div><Label className="text-xs">Facebook</Label><Input value={getVal("footer_facebook")} onChange={e => updateByKey("footer_facebook", e.target.value)} placeholder="https://facebook.com/saat" /></div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label className="text-xs">Email</Label><Input value={getVal("footer_email")} onChange={e => updateByKey("footer_email", e.target.value)} placeholder="hello@saat.agency" /></div>
                 <div><Label className="text-xs">WhatsApp Footer</Label><Input value={getVal("footer_whatsapp")} onChange={e => updateByKey("footer_whatsapp", e.target.value)} placeholder="6285117688118" /></div>
               </div>
@@ -225,18 +225,18 @@ const AdminSiteSettings = () => {
 
           <TabsContent value="other" className="space-y-4 mt-4">
             {otherSettings.filter(s => !s.key.startsWith("hero_") && !s.key.startsWith("header_")).map(s => (
-              <div key={s.id} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
-                <span className="text-xs font-mono text-muted-foreground w-48 shrink-0">{s.key}</span>
+              <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 rounded-xl bg-card border border-border">
+                <span className="text-xs font-mono text-muted-foreground sm:w-48 shrink-0 truncate">{s.key}</span>
                 <Input value={s.value ?? ""} onChange={e => updateLocal(s.id, e.target.value)} className="flex-1" />
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0"><Trash2 size={16} /></Button>
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive shrink-0 self-end sm:self-auto"><Trash2 size={16} /></Button>
               </div>
             ))}
             <div className="border-t border-border pt-4">
               <h3 className="text-sm font-semibold text-primary mb-3">Tambah Setting Baru</h3>
-              <div className="flex gap-3">
-                <Input value={newKey} onChange={e => setNewKey(e.target.value)} placeholder="key" className="w-48" />
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input value={newKey} onChange={e => setNewKey(e.target.value)} placeholder="key" className="sm:w-48" />
                 <Input value={newValue} onChange={e => setNewValue(e.target.value)} placeholder="value" className="flex-1" />
-                <Button onClick={handleAdd} variant="outline"><Plus size={16} /></Button>
+                <Button onClick={handleAdd} variant="outline" className="w-full sm:w-auto"><Plus size={16} /></Button>
               </div>
             </div>
           </TabsContent>

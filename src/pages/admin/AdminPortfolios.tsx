@@ -72,9 +72,9 @@ const AdminPortfolios = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Portfolio</h1>
-        <Button onClick={openNew} className="bg-electric hover:bg-electric/90"><Plus size={16} className="mr-1" /> Tambah</Button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Portfolio</h1>
+        <Button onClick={openNew} className="bg-electric hover:bg-electric/90 w-full sm:w-auto"><Plus size={16} className="mr-1" /> Tambah</Button>
       </div>
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : items.length === 0 ? <p className="text-muted-foreground text-center py-12">Belum ada portfolio.</p> : (
         <div className="space-y-3">

@@ -122,35 +122,37 @@ const AdminServices = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Layanan</h1>
-        <Button onClick={openNew} className="bg-electric hover:bg-electric/90"><Plus size={16} className="mr-1" /> Tambah</Button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Layanan</h1>
+        <Button onClick={openNew} className="bg-electric hover:bg-electric/90 w-full sm:w-auto"><Plus size={16} className="mr-1" /> Tambah</Button>
       </div>
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : services.length === 0 ? <p className="text-muted-foreground text-center py-12">Belum ada layanan.</p> : (
         <div className="space-y-3">
           {services.map((s) => (
-            <div key={s.id} className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border">
+            <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl bg-card border border-border">
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-sm text-primary truncate">{s.title}</h3>
                 <p className="text-xs text-muted-foreground">{s.icon_name} · Order: {s.display_order} · {s.items?.length ?? 0} detail</p>
               </div>
-              <Button variant="outline" size="sm" onClick={() => openPrices(s.id)}><DollarSign size={14} className="mr-1" /> Pricelist</Button>
-              <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil size={16} /></Button>
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive"><Trash2 size={16} /></Button>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button variant="outline" size="sm" onClick={() => openPrices(s.id)} className="text-xs"><DollarSign size={14} className="mr-1" /> Pricelist</Button>
+                <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil size={16} /></Button>
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive"><Trash2 size={16} /></Button>
+              </div>
             </div>
           ))}
         </div>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-auto">
           <DialogHeader><DialogTitle>{editing ? "Edit Layanan" : "Tambah Layanan"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Title</Label><Input value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} /></div>
               <div><Label>Slug</Label><Input value={form.slug} onChange={(e) => setForm(f => ({ ...f, slug: e.target.value }))} placeholder="web-development" /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Icon</Label>
                 <Select value={form.icon_name} onValueChange={(v) => setForm(f => ({ ...f, icon_name: v }))}>
@@ -222,7 +224,7 @@ const AdminServices = () => {
             <div><Label>Harga</Label><Input value={priceForm.price} onChange={(e) => setPField("price", e.target.value)} placeholder="Mulai dari Rp 2.500.000" /></div>
             <div><Label>Description</Label><Input value={priceForm.description} onChange={(e) => setPField("description", e.target.value)} /></div>
             <div><Label>Features (comma-separated)</Label><Input value={priceForm.features} onChange={(e) => setPField("features", e.target.value)} /></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Display Order</Label><Input type="number" value={priceForm.display_order} onChange={(e) => setPField("display_order", parseInt(e.target.value) || 0)} /></div>
               <div className="flex items-center gap-2 pt-6"><Switch checked={priceForm.is_popular} onCheckedChange={(v) => setPField("is_popular", v)} /><Label>Popular</Label></div>
             </div>

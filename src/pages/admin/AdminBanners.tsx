@@ -97,9 +97,9 @@ const AdminBanners = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Banner Promo</h1>
-        <Button onClick={openNew} className="bg-electric hover:bg-electric/90">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Banner Promo</h1>
+        <Button onClick={openNew} className="bg-electric hover:bg-electric/90 w-full sm:w-auto">
           <Plus size={16} className="mr-1" /> Tambah Banner
         </Button>
       </div>
@@ -151,7 +151,7 @@ const AdminBanners = () => {
               <Label>Deskripsi</Label>
               <Input value={form.description} onChange={e => setField("description", e.target.value)} placeholder="Berlaku hingga akhir bulan" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Badge Text</Label>
                 <Input value={form.badge_text} onChange={e => setField("badge_text", e.target.value)} placeholder="🔥 Promo" />
