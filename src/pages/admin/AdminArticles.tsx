@@ -212,7 +212,7 @@ const AdminArticles = () => {
               <Label>Content (Rich Editor)</Label>
               <RichTextEditor content={form.content} onChange={html => setField("content", html)} />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Featured Image</Label>
                 <div className="flex gap-2 items-center mt-1">
