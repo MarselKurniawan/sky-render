@@ -205,9 +205,11 @@ const AdminSiteSettings = () => {
             </div>
             <div className="p-5 rounded-xl bg-card border border-border space-y-4">
               <h3 className="text-sm font-semibold text-primary">🔗 Footer Social Links & Kontak</h3>
-              <p className="text-xs text-muted-foreground">Isi URL lengkap untuk sosmed yang ingin ditampilkan di footer. Kosongkan jika tidak dipakai.</p>
+              <p className="text-xs text-muted-foreground">Isi URL lengkap untuk sosmed yang ingin ditampilkan di footer. Instagram kedua dan TikTok sekarang sudah didukung.</p>
               <div className="grid grid-cols-2 gap-4">
-                <div><Label className="text-xs">Instagram</Label><Input value={getVal("footer_instagram")} onChange={e => updateByKey("footer_instagram", e.target.value)} placeholder="https://instagram.com/saat.creative" /></div>
+                <div><Label className="text-xs">Instagram 1</Label><Input value={getVal("footer_instagram")} onChange={e => updateByKey("footer_instagram", e.target.value)} placeholder="https://instagram.com/saat.creative" /></div>
+                <div><Label className="text-xs">Instagram 2</Label><Input value={getVal("footer_instagram_2")} onChange={e => updateByKey("footer_instagram_2", e.target.value)} placeholder="https://instagram.com/saat.digital" /></div>
+                <div><Label className="text-xs">TikTok</Label><Input value={getVal("footer_tiktok")} onChange={e => updateByKey("footer_tiktok", e.target.value)} placeholder="https://tiktok.com/@saat.digital" /></div>
                 <div><Label className="text-xs">Twitter / X</Label><Input value={getVal("footer_twitter")} onChange={e => updateByKey("footer_twitter", e.target.value)} placeholder="https://x.com/saat" /></div>
                 <div><Label className="text-xs">LinkedIn</Label><Input value={getVal("footer_linkedin")} onChange={e => updateByKey("footer_linkedin", e.target.value)} placeholder="https://linkedin.com/company/saat" /></div>
                 <div><Label className="text-xs">GitHub</Label><Input value={getVal("footer_github")} onChange={e => updateByKey("footer_github", e.target.value)} placeholder="https://github.com/saat" /></div>
