@@ -216,7 +216,7 @@ const AdminSiteSettings = () => {
                 <div><Label className="text-xs">YouTube</Label><Input value={getVal("footer_youtube")} onChange={e => updateByKey("footer_youtube", e.target.value)} placeholder="https://youtube.com/@saat" /></div>
                 <div><Label className="text-xs">Facebook</Label><Input value={getVal("footer_facebook")} onChange={e => updateByKey("footer_facebook", e.target.value)} placeholder="https://facebook.com/saat" /></div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label className="text-xs">Email</Label><Input value={getVal("footer_email")} onChange={e => updateByKey("footer_email", e.target.value)} placeholder="hello@saat.agency" /></div>
                 <div><Label className="text-xs">WhatsApp Footer</Label><Input value={getVal("footer_whatsapp")} onChange={e => updateByKey("footer_whatsapp", e.target.value)} placeholder="6285117688118" /></div>
               </div>
