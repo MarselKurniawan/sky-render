@@ -126,11 +126,9 @@ const AdminArticles = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Artikel</h1>
-        <div className="flex gap-2">
-          <Button onClick={openNew} className="bg-electric hover:bg-electric/90"><Plus size={16} className="mr-1" /> Tambah Artikel</Button>
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Artikel</h1>
+        <Button onClick={openNew} className="bg-electric hover:bg-electric/90 w-full sm:w-auto"><Plus size={16} className="mr-1" /> Tambah Artikel</Button>
       </div>
 
       <Tabs value={tab} onValueChange={setTab} className="mb-6">
