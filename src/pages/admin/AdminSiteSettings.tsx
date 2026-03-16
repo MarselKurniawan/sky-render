@@ -114,9 +114,9 @@ const AdminSiteSettings = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-primary">Site Settings</h1>
-        <Button onClick={handleSaveAll} disabled={saving} className="bg-electric hover:bg-electric/90">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-primary">Site Settings</h1>
+        <Button onClick={handleSaveAll} disabled={saving} className="bg-electric hover:bg-electric/90 w-full sm:w-auto">
           {saving ? <Loader2 className="animate-spin mr-2" size={16} /> : <Save size={16} className="mr-1" />} Simpan Semua
         </Button>
       </div>
