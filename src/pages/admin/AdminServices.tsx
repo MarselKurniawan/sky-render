@@ -129,14 +129,16 @@ const AdminServices = () => {
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : services.length === 0 ? <p className="text-muted-foreground text-center py-12">Belum ada layanan.</p> : (
         <div className="space-y-3">
           {services.map((s) => (
-            <div key={s.id} className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border">
+            <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl bg-card border border-border">
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-sm text-primary truncate">{s.title}</h3>
                 <p className="text-xs text-muted-foreground">{s.icon_name} · Order: {s.display_order} · {s.items?.length ?? 0} detail</p>
               </div>
-              <Button variant="outline" size="sm" onClick={() => openPrices(s.id)}><DollarSign size={14} className="mr-1" /> Pricelist</Button>
-              <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil size={16} /></Button>
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive"><Trash2 size={16} /></Button>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button variant="outline" size="sm" onClick={() => openPrices(s.id)} className="text-xs"><DollarSign size={14} className="mr-1" /> Pricelist</Button>
+                <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil size={16} /></Button>
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-destructive"><Trash2 size={16} /></Button>
+              </div>
             </div>
           ))}
         </div>
