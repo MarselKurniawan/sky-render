@@ -152,7 +152,7 @@ const AdminServices = () => {
               <div><Label>Title</Label><Input value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} /></div>
               <div><Label>Slug</Label><Input value={form.slug} onChange={(e) => setForm(f => ({ ...f, slug: e.target.value }))} placeholder="web-development" /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Icon</Label>
                 <Select value={form.icon_name} onValueChange={(v) => setForm(f => ({ ...f, icon_name: v }))}>
