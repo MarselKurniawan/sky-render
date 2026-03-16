@@ -126,28 +126,20 @@ const ArticleDetail = () => {
     badgeText: banner.badge_text ?? undefined,
   } : undefined;
 
-  // Split HTML content into chunks for ad injection
+  // Split content into chunks for a single in-article ad insertion
   const renderContentWithAds = (content: string) => {
     if (isHtml(content)) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(content, "text/html");
       const children = Array.from(doc.body.children);
-      const adPositions = [2, 5];
-
-      const chunks: { html: string; adAfter: boolean }[] = [];
-      children.forEach((child, i) => {
-        chunks.push({
-          html: child.outerHTML,
-          adAfter: adPositions.includes(i),
-        });
-      });
+      const adInsertIndex = Math.min(2, Math.max(children.length - 1, 0));
 
       return (
         <div data-article-content>
-          {chunks.map((chunk, i) => (
+          {children.map((child, i) => (
             <div key={i}>
-              <div dangerouslySetInnerHTML={{ __html: chunk.html }} />
-              {chunk.adAfter && bannerProps && <InArticleAd {...bannerProps} />}
+              <div dangerouslySetInnerHTML={{ __html: child.outerHTML }} />
+              {i === adInsertIndex && bannerProps && <InArticleAd {...bannerProps} />}
             </div>
           ))}
         </div>
@@ -156,12 +148,14 @@ const ArticleDetail = () => {
 
     // Markdown content
     const paragraphs = content.split("\n").filter((p) => p.trim());
+    const adInsertIndex = Math.min(2, Math.max(paragraphs.length - 1, 0));
+
     return (
       <div data-article-content>
         {paragraphs.map((p, i) => (
           <div key={i}>
             <ReactMarkdown>{p}</ReactMarkdown>
-            {i === 2 && bannerProps && <InArticleAd {...bannerProps} />}
+            {i === adInsertIndex && bannerProps && <InArticleAd {...bannerProps} />}
           </div>
         ))}
       </div>
