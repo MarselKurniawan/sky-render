@@ -123,10 +123,10 @@ const AdminSiteSettings = () => {
 
       {loading ? <div className="flex justify-center py-12"><Loader2 className="animate-spin text-electric" size={24} /></div> : (
         <Tabs defaultValue="landing">
-          <TabsList>
-            <TabsTrigger value="landing">Landing Page & SEO</TabsTrigger>
-            <TabsTrigger value="tracking">Tracking</TabsTrigger>
-            <TabsTrigger value="other">Lainnya</TabsTrigger>
+          <TabsList className="flex flex-wrap h-auto gap-1">
+            <TabsTrigger value="landing" className="text-xs sm:text-sm">Landing & SEO</TabsTrigger>
+            <TabsTrigger value="tracking" className="text-xs sm:text-sm">Tracking</TabsTrigger>
+            <TabsTrigger value="other" className="text-xs sm:text-sm">Lainnya</TabsTrigger>
           </TabsList>
 
           <TabsContent value="landing" className="space-y-6 mt-4">
