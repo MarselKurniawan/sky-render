@@ -182,10 +182,10 @@ const AdminArticles = () => {
       </Tabs>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-auto">
           <DialogHeader><DialogTitle>{editing ? "Edit Artikel" : "Tambah Artikel"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>Title</Label><Input value={form.title} onChange={e => setField("title", e.target.value)} /></div>
               <div><Label>Slug</Label><Input value={form.slug} onChange={e => setField("slug", e.target.value)} placeholder="judul-artikel" /></div>
             </div>
