@@ -152,11 +152,11 @@ const AdminSiteSettings = () => {
             </div>
 
             {/* Landing page headers */}
-            <div className="p-5 rounded-xl bg-card border border-border space-y-3">
+            <div className="p-4 sm:p-5 rounded-xl bg-card border border-border space-y-3">
               <h3 className="text-sm font-semibold text-primary">📝 Header Landing Page</h3>
               {otherSettings.filter(s => s.key.startsWith("hero_") || s.key.startsWith("header_")).map(s => (
-                <div key={s.id} className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-muted-foreground w-40 shrink-0">{s.key}</span>
+                <div key={s.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                  <span className="text-xs font-mono text-muted-foreground sm:w-40 shrink-0">{s.key}</span>
                   <Input value={s.value ?? ""} onChange={e => updateLocal(s.id, e.target.value)} className="flex-1" />
                 </div>
               ))}
