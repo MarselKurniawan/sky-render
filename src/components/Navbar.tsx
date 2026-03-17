@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logoSaat from "@/assets/logo-saat.png";
+// Logo dimensions: 1188x360 → displayed at ~106x32
 
 const megaServices = [
   {

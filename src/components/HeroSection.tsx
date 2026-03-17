@@ -73,9 +73,12 @@ const HeroSection = () => {
             className="flex justify-center lg:justify-end"
           >
             <div className="relative">
-              <img
+            <img
                 src={heroOrb}
                 alt="Abstract 3D glass cube"
+                width={500}
+                height={500}
+                fetchPriority="high"
                 className="w-[350px] sm:w-[450px] lg:w-[500px] animate-float drop-shadow-2xl"
               />
               <div className="absolute inset-0 bg-electric/8 blur-[100px]" />
