@@ -117,7 +117,7 @@ const Footer = () => {
         <ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
-              <img src={logoSaat} alt="Saat." className="h-8 mb-3" />
+              <img src={logoSaat} alt="Saat." className="h-8 mb-3" width={106} height={32} loading="lazy" />
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Creative digital agency yang membantu brand berkembang melalui strategi digital, eksekusi kreatif, dan teknologi yang scalable.
               </p>

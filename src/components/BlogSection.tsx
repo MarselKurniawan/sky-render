@@ -112,7 +112,7 @@ const BlogSection = () => {
                     <article className="group flex gap-4 rounded-xl bg-card shadow-soft hover:shadow-elevated transition-all duration-300 overflow-hidden cursor-pointer p-4">
                       <div className={`w-28 h-28 sm:w-36 sm:h-28 shrink-0 rounded-xl bg-gradient-to-br ${post.image_url ? "" : gradients[i % gradients.length]} relative overflow-hidden`}>
                         {post.image_url ? (
-                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" loading="lazy" width={144} height={112} />
                         ) : (
                           <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
                         )}
