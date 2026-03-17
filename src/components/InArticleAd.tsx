@@ -29,11 +29,11 @@ const InArticleAd = ({
               {badgeText}
             </span>
           )}
-          <h3 className="text-lg font-extrabold mb-1 leading-tight text-primary-foreground">
+          <h3 className="text-lg font-extrabold mb-1 leading-tight text-white">
             {title}
           </h3>
           {description && (
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-white/60">
               {description}
             </p>
           )}
