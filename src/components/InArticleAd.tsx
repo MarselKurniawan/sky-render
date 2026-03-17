@@ -25,15 +25,15 @@ const InArticleAd = ({
       <div className="relative z-10 px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left">
           {badgeText && (
-            <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2 bg-primary-foreground text-navy">
+            <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2 bg-white text-navy">
               {badgeText}
             </span>
           )}
-          <h3 className="text-lg font-extrabold mb-1 leading-tight text-primary-foreground">
+          <h3 className="text-lg font-extrabold mb-1 leading-tight text-white">
             {title}
           </h3>
           {description && (
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-white/60">
               {description}
             </p>
           )}
