@@ -25,7 +25,7 @@ const InArticleAd = ({
       <div className="relative z-10 px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left">
           {badgeText && (
-            <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2 bg-primary-foreground text-navy">
+            <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-2 bg-white text-navy">
               {badgeText}
             </span>
           )}
