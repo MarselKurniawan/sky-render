@@ -68,7 +68,7 @@ const PortfolioSection = () => {
                 <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-soft hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
                   <div className="aspect-[16/10] overflow-hidden relative">
                     {project.image_url ? (
-                      <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
                     ) : (
                       <div className={`w-full h-full bg-gradient-to-br ${project.gradient || fallbackGradients[i % fallbackGradients.length]} flex items-center justify-center`}>
                         <span className="text-primary-foreground/60 text-lg font-bold">{project.title}</span>

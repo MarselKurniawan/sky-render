@@ -79,7 +79,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="/">
-          <img src={logoSaat} alt="Saat." className="h-8" />
+          <img src={logoSaat} alt="Saat." className="h-8" width={106} height={32} />
         </a>
 
         <div className="hidden md:flex items-center gap-8">
