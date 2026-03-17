@@ -2,11 +2,16 @@ import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
 import {
   Bold, Italic, Heading1, Heading2, Heading3, List, ListOrdered,
-  Quote, ImageIcon, Minus, Undo, Redo, Code,
+  Quote, ImageIcon, Minus, Undo, Redo, Code, Link2, Unlink, Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import MediaPickerModal from "@/components/MediaPickerModal";
 
 interface RichTextEditorProps {
@@ -14,7 +19,12 @@ interface RichTextEditorProps {
   onChange: (html: string) => void;
 }
 
-const MenuBar = ({ editor, onImageClick }: { editor: any; onImageClick: () => void }) => {
+const MenuBar = ({ editor, onImageClick, onLinkClick, onHtmlClick }: {
+  editor: any;
+  onImageClick: () => void;
+  onLinkClick: () => void;
+  onHtmlClick: () => void;
+}) => {
   if (!editor) return null;
 
   const btnClass = (active: boolean) =>
@@ -30,12 +40,18 @@ const MenuBar = ({ editor, onImageClick }: { editor: any; onImageClick: () => vo
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("italic"))} onClick={() => editor.chain().focus().toggleItalic().run()} type="button"><Italic size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("code"))} onClick={() => editor.chain().focus().toggleCode().run()} type="button"><Code size={16} /></Button>
       <div className="w-px h-8 bg-border mx-1" />
+      <Button variant="ghost" size="icon" className={btnClass(editor.isActive("link"))} onClick={onLinkClick} type="button" title="Insert Link"><Link2 size={16} /></Button>
+      {editor.isActive("link") && (
+        <Button variant="ghost" size="icon" className={btnClass(false)} onClick={() => editor.chain().focus().unsetLink().run()} type="button" title="Remove Link"><Unlink size={16} /></Button>
+      )}
+      <div className="w-px h-8 bg-border mx-1" />
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("bulletList"))} onClick={() => editor.chain().focus().toggleBulletList().run()} type="button"><List size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("orderedList"))} onClick={() => editor.chain().focus().toggleOrderedList().run()} type="button"><ListOrdered size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("blockquote"))} onClick={() => editor.chain().focus().toggleBlockquote().run()} type="button"><Quote size={16} /></Button>
       <div className="w-px h-8 bg-border mx-1" />
       <Button variant="ghost" size="icon" className={btnClass(false)} onClick={onImageClick} type="button"><ImageIcon size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(false)} onClick={() => editor.chain().focus().setHorizontalRule().run()} type="button"><Minus size={16} /></Button>
+      <Button variant="ghost" size="icon" className={btnClass(false)} onClick={onHtmlClick} type="button" title="Inject HTML"><Code2 size={16} /></Button>
       <div className="w-px h-8 bg-border mx-1" />
       <Button variant="ghost" size="icon" className={btnClass(false)} onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} type="button"><Undo size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(false)} onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} type="button"><Redo size={16} /></Button>
@@ -45,25 +61,65 @@ const MenuBar = ({ editor, onImageClick }: { editor: any; onImageClick: () => vo
 
 const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   const [mediaPicker, setMediaPicker] = useState(false);
+  const [linkDialog, setLinkDialog] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [htmlDialog, setHtmlDialog] = useState(false);
+  const [htmlCode, setHtmlCode] = useState("");
 
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Image.configure({ inline: false, allowBase64: false }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: { class: "text-electric underline", target: "_blank", rel: "noopener noreferrer" },
+      }),
     ],
     content,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: "prose prose-sm max-w-none min-h-[300px] p-4 focus:outline-none text-foreground [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mb-2 [&_p]:mb-2 [&_img]:rounded-lg [&_img]:max-w-full [&_blockquote]:border-l-4 [&_blockquote]:border-electric [&_blockquote]:pl-4 [&_blockquote]:italic [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5",
+        class: "prose prose-sm max-w-none min-h-[300px] p-4 focus:outline-none text-foreground [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mb-2 [&_p]:mb-2 [&_img]:rounded-lg [&_img]:max-w-full [&_blockquote]:border-l-4 [&_blockquote]:border-electric [&_blockquote]:pl-4 [&_blockquote]:italic [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:text-electric [&_a]:underline",
       },
     },
   });
 
+  const handleLinkOpen = () => {
+    if (editor) {
+      const existing = editor.getAttributes("link").href || "";
+      setLinkUrl(existing);
+    }
+    setLinkDialog(true);
+  };
+
+  const handleLinkSave = () => {
+    if (!editor) return;
+    if (!linkUrl) {
+      editor.chain().focus().unsetLink().run();
+    } else {
+      editor.chain().focus().extendMarkRange("link").setLink({ href: linkUrl }).run();
+    }
+    setLinkDialog(false);
+    setLinkUrl("");
+  };
+
+  const handleHtmlInject = () => {
+    if (!editor || !htmlCode.trim()) return;
+    editor.chain().focus().insertContent(htmlCode).run();
+    setHtmlDialog(false);
+    setHtmlCode("");
+  };
+
   return (
     <div className="border border-input rounded-lg overflow-hidden bg-background">
-      <MenuBar editor={editor} onImageClick={() => setMediaPicker(true)} />
+      <MenuBar
+        editor={editor}
+        onImageClick={() => setMediaPicker(true)}
+        onLinkClick={handleLinkOpen}
+        onHtmlClick={() => setHtmlDialog(true)}
+      />
       <EditorContent editor={editor} />
+
       <MediaPickerModal
         open={mediaPicker}
         onOpenChange={setMediaPicker}
@@ -71,6 +127,51 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
           if (editor) editor.chain().focus().setImage({ src: url }).run();
         }}
       />
+
+      {/* Link Dialog */}
+      <Dialog open={linkDialog} onOpenChange={setLinkDialog}>
+        <DialogContent className="max-w-md w-[95vw]">
+          <DialogHeader><DialogTitle>Insert Link</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>URL</Label>
+              <Input
+                value={linkUrl}
+                onChange={e => setLinkUrl(e.target.value)}
+                placeholder="https://example.com"
+                onKeyDown={e => e.key === "Enter" && handleLinkSave()}
+              />
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button variant="outline" onClick={() => setLinkDialog(false)} type="button">Batal</Button>
+              <Button onClick={handleLinkSave} className="bg-electric hover:bg-electric/90" type="button">Simpan</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* HTML Inject Dialog */}
+      <Dialog open={htmlDialog} onOpenChange={setHtmlDialog}>
+        <DialogContent className="max-w-lg w-[95vw]">
+          <DialogHeader><DialogTitle>Inject HTML</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>HTML Code</Label>
+              <Textarea
+                value={htmlCode}
+                onChange={e => setHtmlCode(e.target.value)}
+                rows={8}
+                placeholder="<div>Your HTML here...</div>"
+                className="font-mono text-xs"
+              />
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button variant="outline" onClick={() => setHtmlDialog(false)} type="button">Batal</Button>
+              <Button onClick={handleHtmlInject} className="bg-electric hover:bg-electric/90" type="button">Inject</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
