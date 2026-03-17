@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
 import {
   Bold, Italic, Heading1, Heading2, Heading3, List, ListOrdered,
-  Quote, ImageIcon, Minus, Undo, Redo, Code, Link2, Unlink, Code2,
+  Quote, ImageIcon, Minus, Undo, Redo, Code, Link2, Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +17,23 @@ interface RichTextEditorProps {
   content: string;
   onChange: (html: string) => void;
 }
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const normalizeUrl = (value: string) => {
+  const trimmed = value.trim();
+
+  if (!trimmed) return "";
+  if (/^(https?:|mailto:|tel:|\/)/i.test(trimmed)) return trimmed;
+
+  return `https://${trimmed}`;
+};
 
 const MenuBar = ({ editor, onImageClick, onLinkClick, onHtmlClick }: {
   editor: any;
@@ -40,10 +56,7 @@ const MenuBar = ({ editor, onImageClick, onLinkClick, onHtmlClick }: {
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("italic"))} onClick={() => editor.chain().focus().toggleItalic().run()} type="button"><Italic size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("code"))} onClick={() => editor.chain().focus().toggleCode().run()} type="button"><Code size={16} /></Button>
       <div className="w-px h-8 bg-border mx-1" />
-      <Button variant="ghost" size="icon" className={btnClass(editor.isActive("link"))} onClick={onLinkClick} type="button" title="Insert Link"><Link2 size={16} /></Button>
-      {editor.isActive("link") && (
-        <Button variant="ghost" size="icon" className={btnClass(false)} onClick={() => editor.chain().focus().unsetLink().run()} type="button" title="Remove Link"><Unlink size={16} /></Button>
-      )}
+      <Button variant="ghost" size="icon" className={btnClass(false)} onClick={onLinkClick} type="button" title="Insert Link"><Link2 size={16} /></Button>
       <div className="w-px h-8 bg-border mx-1" />
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("bulletList"))} onClick={() => editor.chain().focus().toggleBulletList().run()} type="button"><List size={16} /></Button>
       <Button variant="ghost" size="icon" className={btnClass(editor.isActive("orderedList"))} onClick={() => editor.chain().focus().toggleOrderedList().run()} type="button"><ListOrdered size={16} /></Button>
@@ -63,6 +76,7 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   const [mediaPicker, setMediaPicker] = useState(false);
   const [linkDialog, setLinkDialog] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
+  const [linkText, setLinkText] = useState("");
   const [htmlDialog, setHtmlDialog] = useState(false);
   const [htmlCode, setHtmlCode] = useState("");
 
@@ -70,10 +84,6 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Image.configure({ inline: false, allowBase64: false }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: { class: "text-electric underline", target: "_blank", rel: "noopener noreferrer" },
-      }),
     ],
     content,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
@@ -85,22 +95,33 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   });
 
   const handleLinkOpen = () => {
-    if (editor) {
-      const existing = editor.getAttributes("link").href || "";
-      setLinkUrl(existing);
-    }
+    if (!editor) return;
+
+    const { from, to } = editor.state.selection;
+    const selectedText = editor.state.doc.textBetween(from, to, " ").trim();
+
+    setLinkText(selectedText);
+    setLinkUrl("");
     setLinkDialog(true);
   };
 
   const handleLinkSave = () => {
     if (!editor) return;
-    if (!linkUrl) {
-      editor.chain().focus().unsetLink().run();
-    } else {
-      editor.chain().focus().extendMarkRange("link").setLink({ href: linkUrl }).run();
-    }
+
+    const safeUrl = normalizeUrl(linkUrl);
+    const safeText = escapeHtml(linkText.trim() || safeUrl);
+
+    if (!safeUrl) return;
+
+    editor
+      .chain()
+      .focus()
+      .insertContent(`<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeText}</a>`)
+      .run();
+
     setLinkDialog(false);
     setLinkUrl("");
+    setLinkText("");
   };
 
   const handleHtmlInject = () => {
@@ -128,11 +149,18 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
         }}
       />
 
-      {/* Link Dialog */}
       <Dialog open={linkDialog} onOpenChange={setLinkDialog}>
         <DialogContent className="max-w-md w-[95vw]">
-          <DialogHeader><DialogTitle>Insert Link</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Sisipkan Link</DialogTitle></DialogHeader>
           <div className="space-y-3">
+            <div>
+              <Label>Teks Link</Label>
+              <Input
+                value={linkText}
+                onChange={e => setLinkText(e.target.value)}
+                placeholder="Teks yang akan diklik"
+              />
+            </div>
             <div>
               <Label>URL</Label>
               <Input
@@ -150,7 +178,6 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
         </DialogContent>
       </Dialog>
 
-      {/* HTML Inject Dialog */}
       <Dialog open={htmlDialog} onOpenChange={setHtmlDialog}>
         <DialogContent className="max-w-lg w-[95vw]">
           <DialogHeader><DialogTitle>Inject HTML</DialogTitle></DialogHeader>
@@ -161,7 +188,7 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
                 value={htmlCode}
                 onChange={e => setHtmlCode(e.target.value)}
                 rows={8}
-                placeholder="<div>Your HTML here...</div>"
+                placeholder="<marquee>Promo berjalan</marquee>"
                 className="font-mono text-xs"
               />
             </div>
