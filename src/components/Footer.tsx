@@ -62,18 +62,8 @@ const Footer = () => {
   const [socials, setSocials] = useState<SocialLink[]>([]);
   const [email, setEmail] = useState("hello@saat.agency");
   const [waNumber, setWaNumber] = useState("6285117688118");
-  const [services, setServices] = useState<{ title: string; slug: string }[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("services")
-      .select("title, slug")
-      .eq("is_published", true)
-      .order("display_order")
-      .then(({ data }) => {
-        if (data) setServices(data);
-      });
-
     const fetch = async () => {
       const { data } = await supabase
         .from("site_settings")
@@ -135,11 +125,14 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-primary mb-4 text-sm">Layanan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                {services.map((s) => (
-                  <li key={s.slug}>
-                    <a href={`/pricelist?tab=${s.slug}`} className="hover:text-electric transition-colors">{s.title}</a>
-                  </li>
-                ))}
+                <li><a href="#services" className="hover:text-electric transition-colors">Website &amp; System Development</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Branding &amp; Visual Identity</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Digital Campaign Strategy</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Social Media Management</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">SEO Optimization</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Visual Content Production</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Company Profile Video</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">White Label Content</a></li>
               </ul>
             </div>
             <div>
