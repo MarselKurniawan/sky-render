@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
 
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug");
-  const origin = url.searchParams.get("origin") || "https://sky-render.lovable.app";
+  const origin = url.searchParams.get("origin") || "https://saatdigital.com";
 
   if (!slug) {
     return new Response("Missing slug", { status: 400, headers: corsHeaders });
@@ -34,8 +34,7 @@ Deno.serve(async (req) => {
   const title = escapeHtml(data?.seo_title || data?.title || "Saat.");
   const description = escapeHtml(data?.seo_description || data?.excerpt || "Saat. — Creative Digital Agency");
   const image = data?.og_image_url || data?.image_url || `${origin}/favicon.png`;
-  // Clean URL: domain.com/slug (no /artikel/ path)
-  const articleUrl = `${origin}/${slug}`;
+  const canonicalUrl = `${origin}/${slug}`;
 
   const html = `<!DOCTYPE html>
 <html lang="id">
@@ -46,24 +45,29 @@ Deno.serve(async (req) => {
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${image}">
-  <meta property="og:url" content="${articleUrl}">
+  <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Saat.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${image}">
+  <link rel="canonical" href="${canonicalUrl}">
   <link rel="icon" href="${origin}/favicon.png" type="image/png">
-  <meta http-equiv="refresh" content="0;url=${articleUrl}">
+  <meta http-equiv="refresh" content="0;url=${canonicalUrl}">
 </head>
 <body>
-  <script>window.location.href="${articleUrl}";</script>
-  <p>Redirecting to <a href="${articleUrl}">${title}</a>...</p>
+  <script>window.location.replace("${canonicalUrl}");</script>
+  <p>Redirecting to <a href="${canonicalUrl}">${title}</a>...</p>
 </body>
 </html>`;
 
   return new Response(html, {
-    headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" },
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
+    },
   });
 });
 
