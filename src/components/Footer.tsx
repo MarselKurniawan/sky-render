@@ -63,6 +63,7 @@ const Footer = () => {
   const [email, setEmail] = useState("hello@saat.agency");
   const [waNumber, setWaNumber] = useState("6285117688118");
 
+  useEffect(() => {
     const fetch = async () => {
       const { data } = await supabase
         .from("site_settings")
