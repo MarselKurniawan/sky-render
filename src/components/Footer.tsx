@@ -62,8 +62,18 @@ const Footer = () => {
   const [socials, setSocials] = useState<SocialLink[]>([]);
   const [email, setEmail] = useState("hello@saat.agency");
   const [waNumber, setWaNumber] = useState("6285117688118");
+  const [services, setServices] = useState<{ title: string; slug: string }[]>([]);
 
   useEffect(() => {
+    supabase
+      .from("services")
+      .select("title, slug")
+      .eq("is_published", true)
+      .order("display_order")
+      .then(({ data }) => {
+        if (data) setServices(data);
+      });
+
     const fetch = async () => {
       const { data } = await supabase
         .from("site_settings")
@@ -125,10 +135,11 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-primary mb-4 text-sm">Layanan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#services" className="hover:text-electric transition-colors">Pengembangan Web</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Branding</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Kampanye Digital</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Optimasi SEO</a></li>
+                {services.map((s) => (
+                  <li key={s.slug}>
+                    <a href={`/pricelist?tab=${s.slug}`} className="hover:text-electric transition-colors">{s.title}</a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
