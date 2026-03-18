@@ -135,10 +135,11 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-primary mb-4 text-sm">Layanan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#services" className="hover:text-electric transition-colors">Pengembangan Web</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Branding</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Kampanye Digital</a></li>
-                <li><a href="#services" className="hover:text-electric transition-colors">Optimasi SEO</a></li>
+                {services.map((s) => (
+                  <li key={s.slug}>
+                    <a href={`/pricelist?tab=${s.slug}`} className="hover:text-electric transition-colors">{s.title}</a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
