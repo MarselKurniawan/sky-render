@@ -62,8 +62,18 @@ const Footer = () => {
   const [socials, setSocials] = useState<SocialLink[]>([]);
   const [email, setEmail] = useState("hello@saat.agency");
   const [waNumber, setWaNumber] = useState("6285117688118");
+  const [services, setServices] = useState<{ title: string; slug: string }[]>([]);
 
   useEffect(() => {
+    supabase
+      .from("services")
+      .select("title, slug")
+      .eq("is_published", true)
+      .order("display_order")
+      .then(({ data }) => {
+        if (data) setServices(data);
+      });
+
     const fetch = async () => {
       const { data } = await supabase
         .from("site_settings")
