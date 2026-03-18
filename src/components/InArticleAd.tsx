@@ -16,7 +16,7 @@ const InArticleAd = ({
   badgeText = "🔥 Promo",
 }: InArticleAdProps) => {
   return (
-    <div className="relative rounded-2xl overflow-hidden my-8 border border-border bg-navy">
+    <div className="relative rounded-2xl overflow-hidden my-8 border border-border bg-navy not-prose">
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
         backgroundSize: "20px 20px",

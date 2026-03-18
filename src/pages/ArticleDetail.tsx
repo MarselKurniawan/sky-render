@@ -101,15 +101,14 @@ const ArticleDetail = () => {
   const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str);
 
   const handleShare = async () => {
-    // Use og-share edge function URL so crawlers (WhatsApp, Telegram, etc.) get proper OG meta tags
-    const ogShareUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/og-share?slug=${encodeURIComponent(slug || "")}&origin=${encodeURIComponent(window.location.origin)}`;
+    const shareUrl = `${window.location.origin}/${slug}`;
     const title = article?.seo_title || article?.title || "Saat.";
 
     try {
       if (navigator.share) {
-        await navigator.share({ title, url: ogShareUrl });
+        await navigator.share({ title, url: shareUrl });
       } else {
-        await navigator.clipboard.writeText(ogShareUrl);
+        await navigator.clipboard.writeText(shareUrl);
         alert("Link berhasil disalin!");
       }
     } catch (e) {
