@@ -124,11 +124,14 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-primary mb-4 text-sm">Layanan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                {services.map((s) => (
-                  <li key={s.slug}>
-                    <a href={`/pricelist?tab=${s.slug}`} className="hover:text-electric transition-colors">{s.title}</a>
-                  </li>
-                ))}
+                <li><a href="#services" className="hover:text-electric transition-colors">Website &amp; System Development</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Branding &amp; Visual Identity</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Digital Campaign Strategy</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Social Media Management</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">SEO Optimization</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Visual Content Production</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">Company Profile Video</a></li>
+                <li><a href="#services" className="hover:text-electric transition-colors">White Label Content</a></li>
               </ul>
             </div>
             <div>
