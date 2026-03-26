@@ -118,6 +118,33 @@ export type Database = {
           },
         ]
       }
+      client_logos: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       media_metadata: {
         Row: {
           alt_text: string | null
