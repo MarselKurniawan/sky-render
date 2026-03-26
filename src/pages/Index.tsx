@@ -7,6 +7,7 @@ import PortfolioSection from "@/components/PortfolioSection";
 import ProcessSection from "@/components/ProcessSection";
 import BlogSection from "@/components/BlogSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import ClientLogosSection from "@/components/ClientLogosSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import HiddenKeywords from "@/components/HiddenKeywords";
@@ -29,6 +30,7 @@ const Index = () => {
       <ProcessSection />
       <BlogSection />
       <TestimonialsSection />
+      <ClientLogosSection />
       <CtaSection />
       <Footer />
     </div>

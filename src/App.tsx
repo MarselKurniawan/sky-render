@@ -20,6 +20,7 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminSiteSettings from "./pages/admin/AdminSiteSettings";
 import AdminBanners from "./pages/admin/AdminBanners";
 import AdminMedia from "./pages/admin/AdminMedia";
+import AdminClientLogos from "./pages/admin/AdminClientLogos";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="services" element={<AdminServices />} />
               <Route path="banners" element={<AdminBanners />} />
               <Route path="media" element={<AdminMedia />} />
+              <Route path="client-logos" element={<AdminClientLogos />} />
               <Route path="site-settings" element={<AdminSiteSettings />} />
             </Route>
             <Route path="*" element={<NotFound />} />
