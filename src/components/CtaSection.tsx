@@ -32,52 +32,36 @@ const CtaSection = () => {
     <section id="cta" className="py-16">
       <div className="container mx-auto px-6">
         <ScrollReveal variant="scale">
-          <div className="relative rounded-2xl overflow-hidden bg-electric">
-            <div className="absolute inset-0 opacity-[0.06]" style={{
-              backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-            }} />
-
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 px-8 py-8 sm:px-12 sm:py-10">
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl sm:text-2xl font-extrabold text-accent-foreground mb-2">
+          <div className="relative rounded-3xl overflow-hidden block-lime p-10 sm:p-14">
+            <div className="grid md:grid-cols-12 gap-8 items-end">
+              <div className="md:col-span-8">
+                <span className="text-xs font-bold uppercase tracking-widest text-primary/60">/ Mulai Project</span>
+                <h3 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary mt-3 leading-[1]">
                   {headline}
                 </h3>
-                <p className="text-accent-foreground/80 text-sm sm:text-base leading-relaxed mb-4">
+                <p className="text-primary/70 text-base sm:text-lg leading-relaxed mt-4 max-w-xl">
                   {description}
                 </p>
+              </div>
+              <div className="md:col-span-4 flex md:justify-end">
                 <a
                   href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Halo Saat. Saya tertarik untuk memulai project bersama.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:bg-navy-light transition-all hover:shadow-elevated group"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground hover:bg-accent transition-colors group"
                 >
                   Mulai Sekarang
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
-
-              <div className="hidden md:flex items-center shrink-0">
-                {ctaImage ? (
-                  <div className="w-52 h-36 rounded-xl overflow-hidden border border-accent-foreground/20">
-                    <img
-                      src={ctaImage}
-                      alt={ctaImageAlt}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-48 h-32 rounded-xl bg-accent-foreground/10 backdrop-blur-sm border border-accent-foreground/20 flex items-center justify-center overflow-hidden">
-                    <div className="text-center p-4">
-                      <div className="w-10 h-10 rounded-full bg-accent-foreground/20 mx-auto mb-2 flex items-center justify-center">
-                        <span className="text-accent-foreground text-lg font-bold">S</span>
-                      </div>
-                      <span className="text-accent-foreground/80 text-xs font-medium">Saat. Creative</span>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
+            {ctaImage && (
+              <img
+                src={ctaImage}
+                alt={ctaImageAlt}
+                className="hidden lg:block absolute -right-8 -bottom-8 w-48 h-48 rounded-2xl object-cover border-4 border-primary rotate-6"
+              />
+            )}
           </div>
         </ScrollReveal>
       </div>
