@@ -30,6 +30,8 @@ export default {
           DEFAULT: "hsl(var(--electric))",
           light: "hsl(var(--electric-light))",
         },
+        lime: "hsl(var(--lime))",
+        cream: "hsl(var(--cream))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
