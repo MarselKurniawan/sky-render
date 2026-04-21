@@ -1,88 +1,152 @@
 import ScrollReveal from "@/components/ScrollReveal";
-import { Globe, Palette, Megaphone, Share2, Search, Camera, Film, FileText } from "lucide-react";
+import { Globe, Palette, Megaphone, Share2, Search, Camera, Film, FileText, ArrowUpRight } from "lucide-react";
 
 const services = [
   {
     icon: Globe,
     title: "Website & System Development",
     description: "Pembuatan website dan sistem digital custom sesuai kebutuhan bisnis kamu.",
-    items: ["Company Profile", "Landing Page", "E-Commerce", "Sistem Manajemen Internal", "Dashboard & Admin Panel", "Aplikasi Web Custom"],
+    items: ["Company Profile", "Landing Page", "E-Commerce", "Sistem Internal", "Dashboard", "Aplikasi Web Custom"],
+    span: "lg:col-span-2 lg:row-span-2",
+    variant: "navy",
+    featured: true,
   },
   {
     icon: Palette,
     title: "Branding & Visual Identity",
-    description: "Membangun identitas brand yang kuat dan konsisten di semua platform.",
-    items: ["Logo Design", "Color Palette & Typography", "Brand Guideline", "Visual System", "Konsistensi Brand"],
+    description: "Membangun identitas brand yang kuat dan konsisten.",
+    items: ["Logo Design", "Color & Typography", "Brand Guideline", "Visual System"],
+    span: "lg:col-span-2",
+    variant: "lime",
   },
   {
     icon: Megaphone,
     title: "Digital Campaign Strategy",
-    description: "Merancang strategi campaign digital untuk meningkatkan reach dan konversi.",
-    items: ["Meta Ads (Facebook & Instagram)", "Google Ads", "TikTok Ads", "Influencer Marketing", "Campaign Analytics"],
+    description: "Strategi campaign digital untuk meningkatkan reach & konversi.",
+    items: ["Meta Ads", "Google Ads", "TikTok Ads", "Influencer Marketing"],
+    span: "",
+    variant: "card",
   },
   {
     icon: Share2,
     title: "Social Media Management",
-    description: "Mengelola akun social media brand kamu secara menyeluruh.",
-    items: ["Content Planning", "Pembuatan Konten", "Scheduling & Posting", "Community Management", "Analisis Performa Bulanan"],
+    description: "Pengelolaan akun social media brand kamu secara menyeluruh.",
+    items: ["Content Planning", "Pembuatan Konten", "Scheduling", "Community Management"],
+    span: "",
+    variant: "card",
   },
   {
     icon: Search,
     title: "SEO Optimization",
-    description: "Meningkatkan visibilitas website di Google untuk mendatangkan traffic organik.",
-    items: ["On-Page SEO", "Technical SEO", "Keyword Research", "Link Building", "SEO Audit"],
+    description: "Tingkatkan visibilitas website di Google untuk traffic organik.",
+    items: ["On-Page SEO", "Technical SEO", "Keyword Research", "SEO Audit"],
+    span: "lg:col-span-2",
+    variant: "electric",
   },
   {
     icon: Camera,
     title: "Visual Content Production",
-    description: "Pembuatan berbagai visual kreatif untuk kebutuhan branding & campaign.",
-    items: ["Desain Logo", "Poster & Banner", "Feeds Instagram", "Konten TikTok", "Foto Produk", "Thumbnail YouTube"],
+    description: "Pembuatan visual kreatif untuk branding & campaign.",
+    items: ["Desain Logo", "Poster & Banner", "Feeds Instagram", "Foto Produk"],
+    span: "",
+    variant: "card",
   },
   {
     icon: Film,
     title: "Company Profile Video",
-    description: "Produksi video profesional untuk mengkomunikasikan cerita dan value brand.",
-    items: ["Video Company Profile", "Brand Story Video", "Testimoni Video", "Event Documentation"],
+    description: "Produksi video profesional untuk mengkomunikasikan cerita brand.",
+    items: ["Video Company Profile", "Brand Story", "Testimoni", "Event Documentation"],
+    span: "",
+    variant: "card",
   },
   {
     icon: FileText,
     title: "White Label Content",
-    description: "Solusi konten digital siap pakai untuk agency dan bisnis tanpa ribet produksi.",
-    items: ["Konten Social Media", "Template Desain", "Copywriting", "Konten Blog & Artikel"],
+    description: "Solusi konten digital siap pakai untuk agency dan bisnis.",
+    items: ["Konten Social Media", "Template Desain", "Copywriting", "Konten Blog"],
+    span: "lg:col-span-2",
+    variant: "navy",
   },
 ];
 
+const variantClass = (v: string) => {
+  switch (v) {
+    case "navy":
+      return "block-navy";
+    case "electric":
+      return "block-electric";
+    case "lime":
+      return "block-lime";
+    default:
+      return "bg-card text-card-foreground border-2 border-primary";
+  }
+};
+
 const ServicesSection = () => {
   return (
-    <section id="services" className="py-24 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-electric/[0.02] to-transparent" />
-      <div className="container mx-auto px-6 relative z-10">
-        <ScrollReveal className="text-center mb-16">
-          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Layanan Kami</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Apa yang Bisa Kami Bantu?</h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">Dari website hingga campaign digital, kami siap bantu brand kamu tumbuh di era digital.</p>
+    <section id="services" className="py-24 bg-background" aria-labelledby="services-heading">
+      <div className="container mx-auto px-6">
+        <ScrollReveal className="mb-12 max-w-4xl">
+          <span className="text-xs font-bold text-accent uppercase tracking-widest">/ Layanan Kami</span>
+          <h2
+            id="services-heading"
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary mt-3 leading-[1]"
+          >
+            Solusi digital lengkap untuk
+            <span className="italic font-serif"> bisnismu</span>.
+          </h2>
         </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.08} variant="scale">
-              <div className="group rounded-2xl bg-card p-6 shadow-soft hover:shadow-elevated hover:glow-blue transition-all duration-300 cursor-default h-full flex flex-col">
-                <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-electric/10 text-electric group-hover:bg-electric group-hover:text-accent-foreground transition-colors duration-300">
-                  <service.icon size={22} />
-                </div>
-                <h3 className="font-bold text-primary mb-1.5 text-sm">{service.title}</h3>
-                <p className="text-xs leading-relaxed text-muted-foreground mb-3">{service.description}</p>
-                <ul className="mt-auto space-y-1">
-                  {service.items.map((item) => (
-                    <li key={item} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                      <span className="mt-1.5 w-1 h-1 rounded-full bg-electric shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </ScrollReveal>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr gap-4">
+          {services.map((service, i) => {
+            const Icon = service.icon;
+            const isFeatured = service.featured;
+            return (
+              <ScrollReveal key={service.title} delay={i * 0.05} variant="fade-up" className={service.span}>
+                <article
+                  className={`group relative rounded-3xl p-7 h-full flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 ${variantClass(service.variant)}`}
+                >
+                  <div className="flex items-start justify-between mb-6">
+                    <div
+                      className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${
+                        service.variant === "card" ? "bg-primary text-primary-foreground" : "bg-background/15 backdrop-blur-sm"
+                      }`}
+                    >
+                      <Icon size={26} strokeWidth={2} />
+                    </div>
+                    <ArrowUpRight
+                      size={22}
+                      className="opacity-40 group-hover:opacity-100 group-hover:rotate-45 transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className={`font-extrabold mb-2 ${isFeatured ? "text-2xl sm:text-3xl" : "text-lg"}`}>
+                      {service.title}
+                    </h3>
+                    <p className={`${isFeatured ? "text-base" : "text-sm"} opacity-80 leading-relaxed mb-5`}>
+                      {service.description}
+                    </p>
+
+                    <ul className="flex flex-wrap gap-1.5">
+                      {service.items.map((item) => (
+                        <li
+                          key={item}
+                          className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
+                            service.variant === "card"
+                              ? "bg-muted text-muted-foreground"
+                              : "bg-background/15 backdrop-blur-sm"
+                          }`}
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
     </section>

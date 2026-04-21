@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["'Plus Jakarta Sans'", "sans-serif"],
+        serif: ["'Instrument Serif'", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -30,6 +31,8 @@ export default {
           DEFAULT: "hsl(var(--electric))",
           light: "hsl(var(--electric-light))",
         },
+        lime: "hsl(var(--lime))",
+        cream: "hsl(var(--cream))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

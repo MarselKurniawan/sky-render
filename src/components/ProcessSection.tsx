@@ -2,41 +2,48 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { SearchCheck, Target, Rocket, BarChart3 } from "lucide-react";
 
 const steps = [
-  { icon: SearchCheck, number: "01", title: "Riset & Analisis", description: "Memahami brand, pasar, dan tujuan kamu melalui analisis mendalam." },
-  { icon: Target, number: "02", title: "Strategi & Perencanaan", description: "Menyusun roadmap yang disesuaikan dengan tujuan bisnis kamu." },
-  { icon: Rocket, number: "03", title: "Eksekusi Kreatif", description: "Mewujudkan strategi menjadi desain dan pengembangan berkualitas tinggi." },
-  { icon: BarChart3, number: "04", title: "Optimasi & Pertumbuhan", description: "Peningkatan berkelanjutan berdasarkan data dan insight performa." },
+  { icon: SearchCheck, number: "01", title: "Riset & Analisis", description: "Memahami brand, pasar, dan tujuanmu lewat analisis mendalam." },
+  { icon: Target, number: "02", title: "Strategi & Perencanaan", description: "Menyusun roadmap yang sesuai dengan tujuan bisnismu." },
+  { icon: Rocket, number: "03", title: "Eksekusi Kreatif", description: "Mewujudkan strategi jadi desain dan pengembangan berkualitas." },
+  { icon: BarChart3, number: "04", title: "Optimasi & Pertumbuhan", description: "Peningkatan berkelanjutan berbasis data dan insight performa." },
 ];
 
 const ProcessSection = () => {
   return (
-    <section id="process" className="py-24 bg-muted/50">
+    <section id="process" className="py-24 bg-background" aria-labelledby="process-heading">
       <div className="container mx-auto px-6">
-        <ScrollReveal className="text-center mb-16">
-          <span className="text-sm font-semibold text-electric uppercase tracking-wider">Cara Kerja Kami</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mt-3">Proses Kami</h2>
+        <ScrollReveal className="mb-14 max-w-3xl">
+          <span className="text-xs font-bold text-accent uppercase tracking-widest">/ Cara Kerja Kami</span>
+          <h2
+            id="process-heading"
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary mt-3 leading-[1]"
+          >
+            Empat langkah <span className="italic font-serif">presisi</span>.
+          </h2>
         </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, i) => (
-            <ScrollReveal key={step.title} delay={i * 0.15} variant="fade-up">
-              <div className="relative">
-                {i < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-[calc(50%+32px)] w-[calc(100%-64px)] h-px bg-border" />
-                )}
-                <div className="text-center">
-                  <div className="relative mx-auto mb-4 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card shadow-soft">
-                    <step.icon size={24} className="text-electric" />
-                    <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
-                      {step.number}
-                    </span>
+        <div className="divide-y-2 divide-primary border-y-2 border-primary">
+          {steps.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <ScrollReveal key={step.title} delay={i * 0.08} variant="fade-up">
+                <div className="grid grid-cols-12 gap-4 items-center py-8 px-2 group hover:bg-muted/50 transition-colors">
+                  <div className="col-span-2 sm:col-span-1 text-3xl sm:text-5xl font-extrabold text-primary/30 group-hover:text-accent transition-colors">
+                    {step.number}
                   </div>
-                  <h3 className="font-bold text-primary mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                  <div className="col-span-10 sm:col-span-4">
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-primary">{step.title}</h3>
+                  </div>
+                  <div className="col-span-12 sm:col-span-6 text-muted-foreground text-sm sm:text-base leading-relaxed">
+                    {step.description}
+                  </div>
+                  <div className="hidden sm:flex col-span-1 justify-end">
+                    <Icon size={28} className="text-primary/40 group-hover:text-accent transition-colors" />
+                  </div>
                 </div>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
     </section>
