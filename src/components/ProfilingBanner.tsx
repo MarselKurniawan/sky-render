@@ -1,33 +1,50 @@
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
-import { ChevronLeft, ChevronRight, Send, Music, Building2, Users, Mic2, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send, Music, Building2, Users, Mic2 } from "lucide-react";
 
 const slides = [
   {
     icon: Music,
     tag: "#SaatMusik",
-    title: "Punya Band atau Proyek Musik?",
-    description: "Ceritakan perjalanan musikmu ke dunia lewat profil digital yang autentik. Gratis konsultasi!",
+    title: "Punya band atau proyek musik?",
+    description: "Ceritakan perjalanan musikmu ke dunia lewat profil digital yang autentik.",
+    variant: "navy",
   },
   {
     icon: Building2,
     tag: "#SaatnyaKamuTau",
-    title: "Instansi atau Organisasi?",
-    description: "Bangun citra profesional instansi, yayasan, atau lembaga kamu dengan profil digital yang informatif.",
+    title: "Instansi atau organisasi?",
+    description: "Bangun citra profesional instansi, yayasan, atau lembaga dengan profil informatif.",
+    variant: "lime",
   },
   {
     icon: Mic2,
     tag: "#Saat",
-    title: "Personal Brand Kamu?",
-    description: "Kreator, influencer, public figure — tampilkan siapa kamu ke dunia dengan cara yang memorable.",
+    title: "Personal brand kamu?",
+    description: "Kreator, influencer, public figure — tampilkan siapa kamu dengan cara memorable.",
+    variant: "electric",
   },
   {
     icon: Users,
     tag: "#SaatnyaKamuTau",
-    title: "Komunitas Kamu?",
+    title: "Komunitas kamu?",
     description: "Dokumentasikan perjalanan, pencapaian, dan cerita komunitasmu secara digital.",
+    variant: "navy",
   },
 ];
+
+const variantClass = (v: string) => {
+  switch (v) {
+    case "navy":
+      return "block-navy";
+    case "electric":
+      return "block-electric";
+    case "lime":
+      return "block-lime";
+    default:
+      return "block-navy";
+  }
+};
 
 const ProfilingBanner = () => {
   const [active, setActive] = useState(0);
@@ -43,46 +60,36 @@ const ProfilingBanner = () => {
 
   return (
     <ScrollReveal className="lg:w-[380px] shrink-0" variant="fade">
-      <div className="relative rounded-2xl overflow-hidden bg-navy p-7 h-full min-h-[400px] flex flex-col justify-between transition-all duration-500">
-        {/* Dot pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }} />
-
-        {/* Geometric accents */}
-        <div className="absolute top-4 right-4 w-14 h-14 border border-electric/15 rounded-xl rotate-12" />
-        <div className="absolute bottom-8 left-4 w-10 h-10 border border-electric/10 rounded-full" />
-
+      <div
+        className={`relative rounded-3xl overflow-hidden p-7 h-full min-h-[420px] flex flex-col justify-between transition-all duration-500 ${variantClass(current.variant)}`}
+      >
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="w-11 h-11 rounded-xl bg-electric/15 flex items-center justify-center border border-electric/20">
-              <Icon size={22} className="text-electric" />
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-background/15 backdrop-blur-sm flex items-center justify-center">
+              <Icon size={22} />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-electric bg-electric/10 px-3 py-1 rounded-full">
+            <span className="text-[10px] font-bold uppercase tracking-widest bg-background/15 backdrop-blur-sm px-3 py-1.5 rounded-full">
               {current.tag}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 mb-2">
-            <Sparkles size={14} className="text-electric" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-electric">Submit Profil Kamu</span>
-          </div>
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-70 block mb-3">
+            / Submit Profil Kamu
+          </span>
 
-          <h3 className="text-xl font-extrabold text-primary-foreground mb-2 leading-tight">{current.title}</h3>
-          <p className="text-primary-foreground/60 text-sm leading-relaxed mb-5">{current.description}</p>
+          <h3 className="text-3xl font-extrabold mb-3 leading-[1.05]">{current.title}</h3>
+          <p className="text-sm leading-relaxed opacity-80 mb-6">{current.description}</p>
 
           <a
             href={`https://wa.me/6285117688118?text=${waText}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-electric px-5 py-2.5 text-sm font-bold text-white hover:bg-electric-light transition-all hover:shadow-[0_0_25px_hsl(217_91%_60%/0.35)] hover:scale-105 active:scale-100"
+            className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-3 text-sm font-bold hover:bg-foreground hover:text-background transition-colors"
           >
             <Send size={14} /> Hubungi Kami
           </a>
         </div>
 
-        {/* Navigation */}
         <div className="relative z-10 flex items-center justify-between mt-5">
           <div className="flex gap-1.5">
             {slides.map((_, i) => (
@@ -90,15 +97,23 @@ const ProfilingBanner = () => {
                 key={i}
                 onClick={() => setActive(i)}
                 aria-label={`Slide ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${i === active ? "w-6 bg-electric" : "w-1.5 bg-primary-foreground/30"}`}
+                className={`h-1.5 rounded-full transition-all ${i === active ? "w-6 bg-current opacity-100" : "w-1.5 bg-current opacity-30"}`}
               />
             ))}
           </div>
           <div className="flex gap-2">
-            <button onClick={prev} aria-label="Slide sebelumnya" className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
+            <button
+              onClick={prev}
+              aria-label="Slide sebelumnya"
+              className="w-9 h-9 rounded-full bg-background/15 backdrop-blur-sm flex items-center justify-center hover:bg-background/25 transition-colors"
+            >
               <ChevronLeft size={16} />
             </button>
-            <button onClick={next} aria-label="Slide selanjutnya" className="w-8 h-8 rounded-full bg-electric/15 flex items-center justify-center text-primary-foreground hover:bg-electric/25 transition-colors border border-electric/10">
+            <button
+              onClick={next}
+              aria-label="Slide selanjutnya"
+              className="w-9 h-9 rounded-full bg-background/15 backdrop-blur-sm flex items-center justify-center hover:bg-background/25 transition-colors"
+            >
               <ChevronRight size={16} />
             </button>
           </div>
