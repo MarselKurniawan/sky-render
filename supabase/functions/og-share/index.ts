@@ -6,51 +6,82 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   const url = new URL(req.url);
+  const type = url.searchParams.get("type") || "article";
   const slug = url.searchParams.get("slug");
+  const id = url.searchParams.get("id");
   const origin = url.searchParams.get("origin") || "https://saatdigital.com";
-
-  if (!slug) {
-    return new Response("Missing slug", { status: 400, headers: corsHeaders });
-  }
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
-  const { data } = await supabase
-    .from("articles")
-    .select("title, excerpt, seo_title, seo_description, og_image_url, image_url, article_type")
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .maybeSingle();
+  let title = "Saat.";
+  let description = "Saat. — Creative Digital Agency";
+  let image = `${origin}/favicon.png`;
+  let canonicalUrl = origin;
+  let ogType = "website";
 
-  const title = escapeHtml(data?.seo_title || data?.title || "Saat.");
-  const description = escapeHtml(data?.seo_description || data?.excerpt || "Saat. — Creative Digital Agency");
-  const image = data?.og_image_url || data?.image_url || `${origin}/favicon.png`;
-  const canonicalUrl = `${origin}/${slug}`;
+  if (type === "portfolio" && id) {
+    const { data } = await supabase
+      .from("portfolios")
+      .select("title, description, image_url, category")
+      .eq("id", id)
+      .eq("is_published", true)
+      .maybeSingle();
+    if (data) {
+      title = data.title;
+      description = data.description || `${data.category} — Portfolio Saat.`;
+      image = data.image_url || image;
+      canonicalUrl = `${origin}/portfolio/${id}`;
+      ogType = "article";
+    }
+  } else if (slug) {
+    const { data } = await supabase
+      .from("articles")
+      .select("title, excerpt, seo_title, seo_description, og_image_url, image_url")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .maybeSingle();
+    if (data) {
+      title = data.seo_title || data.title;
+      description = data.seo_description || data.excerpt || description;
+      image = data.og_image_url || data.image_url || image;
+      canonicalUrl = `${origin}/${slug}`;
+      ogType = "article";
+    }
+  } else {
+    return new Response("Missing slug or id", { status: 400, headers: corsHeaders });
+  }
+
+  const t = escapeHtml(title);
+  const d = escapeHtml(description);
 
   const html = `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>${title}</title>
-  <meta name="description" content="${description}">
-  <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${description}">
+  <title>${t}</title>
+  <meta name="description" content="${d}">
+  <meta property="og:title" content="${t}">
+  <meta property="og:description" content="${d}">
   <meta property="og:image" content="${image}">
   <meta property="og:url" content="${canonicalUrl}">
-  <meta property="og:type" content="article">
+  <meta property="og:type" content="${ogType}">
   <meta property="og:site_name" content="Saat.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${title}">
-  <meta name="twitter:description" content="${description}">
+  <meta name="twitter:title" content="${t}">
+  <meta name="twitter:description" content="${d}">
   <meta name="twitter:image" content="${image}">
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="icon" href="${origin}/favicon.png" type="image/png">
@@ -58,7 +89,7 @@ Deno.serve(async (req) => {
 </head>
 <body>
   <script>window.location.replace("${canonicalUrl}");</script>
-  <p>Redirecting to <a href="${canonicalUrl}">${title}</a>...</p>
+  <p>Redirecting to <a href="${canonicalUrl}">${t}</a>...</p>
 </body>
 </html>`;
 
@@ -70,7 +101,3 @@ Deno.serve(async (req) => {
     },
   });
 });
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}

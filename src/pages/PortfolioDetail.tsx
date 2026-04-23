@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Portfolio {
@@ -50,9 +50,43 @@ const PortfolioDetail = () => {
       }
 
       setLoading(false);
+
+      if (data) {
+        document.title = `${data.title} — Portfolio Saat.`;
+        const setMeta = (attr: string, name: string, content: string | null) => {
+          if (!content) return;
+          let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+          if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+          el.content = content;
+        };
+        setMeta("name", "description", data.description);
+        setMeta("property", "og:title", data.title);
+        setMeta("property", "og:description", data.description);
+        setMeta("property", "og:image", data.image_url);
+        setMeta("property", "og:type", "article");
+        setMeta("property", "og:url", window.location.href);
+        setMeta("name", "twitter:card", "summary_large_image");
+        setMeta("name", "twitter:title", data.title);
+        setMeta("name", "twitter:description", data.description);
+        setMeta("name", "twitter:image", data.image_url);
+      }
     };
     fetch();
   }, [id]);
+
+  const handleShare = async () => {
+    if (!portfolio || !id) return;
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "wvclhtvetdqhskpzxmbf";
+    const ogUrl = `https://${projectId}.supabase.co/functions/v1/og-share?type=portfolio&id=${id}&origin=${encodeURIComponent(window.location.origin)}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: portfolio.title, url: ogUrl });
+      } else {
+        await navigator.clipboard.writeText(ogUrl);
+        alert("Link berhasil disalin!");
+      }
+    } catch {}
+  };
 
   if (loading) {
     return (
@@ -156,6 +190,11 @@ const PortfolioDetail = () => {
               >
                 Hubungi Kami
               </a>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-border flex items-center gap-3 cursor-pointer" onClick={handleShare}>
+              <Share2 size={16} className="text-muted-foreground" />
+              <span className="text-sm text-muted-foreground hover:text-electric transition-colors">Bagikan portfolio ini</span>
             </div>
           </motion.div>
 
