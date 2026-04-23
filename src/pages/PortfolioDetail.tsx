@@ -76,7 +76,8 @@ const PortfolioDetail = () => {
 
   const handleShare = async () => {
     if (!portfolio) return;
-    const url = window.location.href;
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    const url = `https://${projectId}.supabase.co/functions/v1/og-share?type=portfolio&id=${portfolio.id}&origin=${encodeURIComponent(window.location.origin)}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: portfolio.title, text: portfolio.description ?? "", url });
