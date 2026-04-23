@@ -48,6 +48,10 @@ export const useSeo = (pagePath: string) => {
     setMeta("og:title", seo.og_title || seo.title, true);
     setMeta("og:description", seo.og_description || seo.description, true);
     setMeta("og:image", seo.og_image_url, true);
+    setMeta("og:url", seo.canonical_url || window.location.href, true);
+    setMeta("og:type", "website", true);
+    setMeta("og:site_name", "Saat.", true);
+    setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", seo.og_title || seo.title);
     setMeta("twitter:description", seo.og_description || seo.description);
     setMeta("twitter:image", seo.og_image_url);

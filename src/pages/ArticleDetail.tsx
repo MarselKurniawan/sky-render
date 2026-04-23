@@ -101,15 +101,14 @@ const ArticleDetail = () => {
   const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str);
 
   const handleShare = async () => {
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "wvclhtvetdqhskpzxmbf";
-    const ogUrl = `https://${projectId}.supabase.co/functions/v1/og-share?slug=${slug}&origin=${encodeURIComponent(window.location.origin)}`;
+    const url = window.location.href;
     const title = article?.seo_title || article?.title || "Saat.";
-
+    const text = article?.seo_description || article?.excerpt || "";
     try {
       if (navigator.share) {
-        await navigator.share({ title, url: ogUrl });
+        await navigator.share({ title, text, url });
       } else {
-        await navigator.clipboard.writeText(ogUrl);
+        await navigator.clipboard.writeText(url);
         alert("Link berhasil disalin!");
       }
     } catch (e) {
