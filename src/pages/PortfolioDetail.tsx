@@ -75,14 +75,13 @@ const PortfolioDetail = () => {
   }, [id]);
 
   const handleShare = async () => {
-    if (!portfolio || !id) return;
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "wvclhtvetdqhskpzxmbf";
-    const ogUrl = `https://${projectId}.supabase.co/functions/v1/og-share?type=portfolio&id=${id}&origin=${encodeURIComponent(window.location.origin)}`;
+    if (!portfolio) return;
+    const url = window.location.href;
     try {
       if (navigator.share) {
-        await navigator.share({ title: portfolio.title, url: ogUrl });
+        await navigator.share({ title: portfolio.title, text: portfolio.description ?? "", url });
       } else {
-        await navigator.clipboard.writeText(ogUrl);
+        await navigator.clipboard.writeText(url);
         alert("Link berhasil disalin!");
       }
     } catch {}
