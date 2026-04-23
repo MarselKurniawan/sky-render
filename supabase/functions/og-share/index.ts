@@ -46,6 +46,19 @@ Deno.serve(async (req) => {
       canonicalUrl = `${origin}/portfolio/${id}`;
       ogType = "article";
     }
+  } else if (type === "landing" || (!slug && !id)) {
+    const { data } = await supabase
+      .from("seo_settings")
+      .select("title, description, og_title, og_description, og_image_url, canonical_url")
+      .eq("page_path", "/")
+      .maybeSingle();
+    if (data) {
+      title = data.og_title || data.title || title;
+      description = data.og_description || data.description || description;
+      image = data.og_image_url || image;
+      canonicalUrl = data.canonical_url || origin;
+      ogType = "website";
+    }
   } else if (slug) {
     const { data } = await supabase
       .from("articles")
@@ -60,8 +73,6 @@ Deno.serve(async (req) => {
       canonicalUrl = `${origin}/${slug}`;
       ogType = "article";
     }
-  } else {
-    return new Response("Missing slug or id", { status: 400, headers: corsHeaders });
   }
 
   const t = escapeHtml(title);
