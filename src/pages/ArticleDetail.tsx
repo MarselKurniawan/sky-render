@@ -101,7 +101,8 @@ const ArticleDetail = () => {
   const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str);
 
   const handleShare = async () => {
-    const url = window.location.href;
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    const url = `https://${projectId}.supabase.co/functions/v1/og-share?type=article&slug=${slug}&origin=${encodeURIComponent(window.location.origin)}`;
     const title = article?.seo_title || article?.title || "Saat.";
     const text = article?.seo_description || article?.excerpt || "";
     try {
